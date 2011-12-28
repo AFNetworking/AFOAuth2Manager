@@ -9,7 +9,7 @@ This is still in early stages of development, so proceed with caution when using
 ``` objective-c
 NSURL *url = [NSURL URLWithString:@"http://example.com/"];
 AFOAuth2Client *oauthClient = [AFOAuthClient clientWithBaseURL:url];
-[oauthClient registerHTTPOperationClass:[AFJSONRequestOperation class]]];
+[oauthClient registerHTTPOperationClass:[AFJSONRequestOperation class]];
 
 [oauthClient authenticateUsingOAuthWithPath:@"/oauth/token" 
                                    username:@"username"
