@@ -24,6 +24,7 @@
 #import "AFHTTPClient.h"
 
 extern NSString * const kAFOAuthBasicGrantType;
+extern NSString * const kAFOAuthPasswordGrantType;
 extern NSString * const kAFOauthRefreshGrantType;
 
 @class AFOAuthAccount;
@@ -31,6 +32,8 @@ extern NSString * const kAFOauthRefreshGrantType;
 @interface AFOAuth2Client : AFHTTPClient
 
 @property (readonly, nonatomic, copy) NSString *serviceProviderIdentifier;
+@property (nonatomic, assign) AFNetworkAuthorizationTokenFormat tokenValueFormat;
+@property (nonatomic, retain) NSString *grantType; // kAFOAuthBasicGrantType is the default
 
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                               username:(NSString *)username

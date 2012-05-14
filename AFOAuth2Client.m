@@ -25,7 +25,7 @@
 #import "AFHTTPRequestOperation.h"
 
 NSString * const kAFOAuthBasicGrantType = @"user_basic";
-NSString * const kAFOAuthClientCredential = @"password";
+NSString * const kAFOAuthPasswordGrantType = @"password";
 NSString * const kAFOauthRefreshGrantType = @"refresh_token"; 
 
 @interface AFOAuth2Client ()
@@ -34,6 +34,8 @@ NSString * const kAFOauthRefreshGrantType = @"refresh_token";
 
 @implementation AFOAuth2Client
 @synthesize serviceProviderIdentifier = _serviceProviderIdentifier;
+@synthesize tokenValueFormat;
+@synthesize grantType;
 
 - (id)initWithBaseURL:(NSURL *)url {
     self = [super initWithBaseURL:url];
@@ -42,6 +44,7 @@ NSString * const kAFOauthRefreshGrantType = @"refresh_token";
     }
     
     self.serviceProviderIdentifier = [self.baseURL host];
+	self.grantType = kAFOAuthBasicGrantType;
     
     return self;
 }
@@ -60,7 +63,7 @@ NSString * const kAFOauthRefreshGrantType = @"refresh_token";
                                failure:(void (^)(NSError *error))failure
 {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setObject:kAFOAuthClientCredential forKey:@"grant_type"];
+    [parameters setObject:self.grantType forKey:@"grant_type"];
     [parameters setObject:clientID forKey:@"client_id"];
     [parameters setObject:secret forKey:@"client_secret"];
     [parameters setObject:username forKey:@"username"];
@@ -106,7 +109,7 @@ NSString * const kAFOauthRefreshGrantType = @"refresh_token";
 				}
 			}
 		} else {            
-			[self setAuthorizationHeaderWithToken:credential.accessToken];
+			[self setAuthorizationHeaderWithToken:credential.accessToken valueFormat:tokenValueFormat];
 			
 			if (success) {
 				success(account);
