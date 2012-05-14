@@ -122,6 +122,11 @@ NSString * const kAFOauthRefreshGrantType = @"refresh_token";
     }];
 }
 
+- (void)setAuthorizationHeaderWithToken:(NSString *)token
+{
+	[super setAuthorizationHeaderWithToken:token valueFormat:self.tokenValueFormat];
+}
+
 @end
 
 #pragma mark -
