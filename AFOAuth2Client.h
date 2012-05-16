@@ -25,6 +25,7 @@
 
 extern NSString * const kAFOAuthBasicGrantType;
 extern NSString * const kAFOauthRefreshGrantType;
+extern NSString * const kAFOAuthClientCredentialsGrantType;
 
 @class AFOAuthAccount;
 
@@ -42,6 +43,12 @@ extern NSString * const kAFOauthRefreshGrantType;
 
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                           refreshToken:(NSString *)refreshToken
+                              clientID:(NSString *)clientID 
+                                secret:(NSString *)secret 
+                               success:(void (^)(AFOAuthAccount *account))success 
+                               failure:(void (^)(NSError *error))failure;
+
+- (void)authenticateUsingOAuthWithPath:(NSString *)path
                               clientID:(NSString *)clientID 
                                 secret:(NSString *)secret 
                                success:(void (^)(AFOAuthAccount *account))success 
