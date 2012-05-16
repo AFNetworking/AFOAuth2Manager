@@ -23,7 +23,7 @@
 #import "AFOAuth2Client.h"
 
 NSString * const kAFOAuthBasicGrantType = @"user_basic";
-NSString * const kAFOauthRefreshGrantType = @"refresh_token"; 
+NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
 NSString * const kAFOAuthClientCredentialsGrantType = @"client_credentials";
 
 @interface AFOAuth2Client ()
@@ -75,7 +75,7 @@ NSString * const kAFOAuthClientCredentialsGrantType = @"client_credentials";
                                failure:(void (^)(NSError *error))failure
 {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setObject:kAFOauthRefreshGrantType forKey:@"grant_type"];
+    [parameters setObject:kAFOAuthRefreshGrantType forKey:@"grant_type"];
     [parameters setObject:clientID forKey:@"client_id"];
     [parameters setObject:secret forKey:@"client_secret"];
     [parameters setObject:refreshToken forKey:@"refresh_token"];
@@ -110,7 +110,7 @@ NSString * const kAFOAuthClientCredentialsGrantType = @"client_credentials";
         AFOAuthAccount *account = [AFOAuthAccount accountWithUsername:[responseObject valueForKey:@"username"] serviceProviderIdentifier:self.serviceProviderIdentifier credential:credential];
         
         if ([credential isExpired]) {
-            if (![[parameters valueForKey:@"grant_type"] isEqualToString:kAFOauthRefreshGrantType]) {
+            if (![[parameters valueForKey:@"grant_type"] isEqualToString:kAFOAuthRefreshGrantType]) {
                 [self authenticateUsingOAuthWithPath:path refreshToken:credential.refreshToken clientID:[parameters valueForKey:@"client_id"] secret:[parameters valueForKey:@"client_secret"] success:success failure:failure];
             } else {
                 if (failure) {
