@@ -23,9 +23,9 @@
 #import <Foundation/Foundation.h>
 #import "AFHTTPClient.h"
 
-extern NSString * const kAFOAuthBasicGrantType;
-extern NSString * const kAFOAuthRefreshGrantType;
-extern NSString * const kAFOAuthClientCredentialsGrantType;
+extern NSString * const kAFOAuthGrantTypeBasic;
+extern NSString * const kAFOAuthGrantTypeRefresh;
+extern NSString * const kAFOAuthGrantTypeClientCredentials;
 
 @class AFOAuthAccount;
 
