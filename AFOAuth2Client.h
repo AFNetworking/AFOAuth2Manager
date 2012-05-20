@@ -40,19 +40,19 @@ extern NSString * const kAFOauthRefreshGrantType;
                               password:(NSString *)password
                               clientID:(NSString *)clientID 
                                 secret:(NSString *)secret 
-                               success:(void (^)(AFOAuthAccount *account))success 
+                               success:(void (^)(AFOAuthAccount *account, id repsonseObject))success 
                                failure:(void (^)(NSError *error))failure;
 
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                           refreshToken:(NSString *)refreshToken
                               clientID:(NSString *)clientID 
                                 secret:(NSString *)secret 
-                               success:(void (^)(AFOAuthAccount *account))success 
+                               success:(void (^)(AFOAuthAccount *account, id repsonseObject))success 
                                failure:(void (^)(NSError *error))failure;
 
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                             parameters:(NSDictionary *)parameters 
-                               success:(void (^)(AFOAuthAccount *account))success
+                               success:(void (^)(AFOAuthAccount *account, id repsonseObject))success
                                failure:(void (^)(NSError *error))failure;
 
 @end

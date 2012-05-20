@@ -59,7 +59,7 @@ NSString * const kAFOauthRefreshGrantType = @"refresh_token";
                               password:(NSString *)password
                               clientID:(NSString *)clientID 
                                 secret:(NSString *)secret 
-                               success:(void (^)(AFOAuthAccount *account))success 
+                               success:(void (^)(AFOAuthAccount *account, id repsonseObject))success 
                                failure:(void (^)(NSError *error))failure
 {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
@@ -76,7 +76,7 @@ NSString * const kAFOauthRefreshGrantType = @"refresh_token";
                           refreshToken:(NSString *)refreshToken
                               clientID:(NSString *)clientID 
                                 secret:(NSString *)secret 
-                               success:(void (^)(AFOAuthAccount *account))success 
+                               success:(void (^)(AFOAuthAccount *account, id repsonseObject))success 
                                failure:(void (^)(NSError *error))failure
 {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
@@ -90,7 +90,7 @@ NSString * const kAFOauthRefreshGrantType = @"refresh_token";
 
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                             parameters:(NSDictionary *)parameters 
-                               success:(void (^)(AFOAuthAccount *account))success
+                               success:(void (^)(AFOAuthAccount *account, id repsonseObject))success
                                failure:(void (^)(NSError *error))failure
 {    
     [self clearAuthorizationHeader];
@@ -112,7 +112,7 @@ NSString * const kAFOauthRefreshGrantType = @"refresh_token";
 			[self setAuthorizationHeaderWithToken:credential.accessToken valueFormat:tokenValueFormat];
 			
 			if (success) {
-				success(account);
+				success(account, responseObject);
 			}
 		}
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
