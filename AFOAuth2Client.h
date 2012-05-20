@@ -24,6 +24,7 @@
 #import "AFHTTPClient.h"
 
 extern NSString * const kAFOAuthBasicGrantType;
+extern NSString * const kAFOAuthPasswordGrantType;
 extern NSString * const kAFOauthRefreshGrantType;
 
 @class AFOAuthAccount;
@@ -31,25 +32,27 @@ extern NSString * const kAFOauthRefreshGrantType;
 @interface AFOAuth2Client : AFHTTPClient
 
 @property (readonly, nonatomic, copy) NSString *serviceProviderIdentifier;
+@property (nonatomic, assign) AFNetworkAuthorizationTokenFormat tokenValueFormat;
+@property (nonatomic, retain) NSString *grantType; // kAFOAuthBasicGrantType is the default
 
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                               username:(NSString *)username
                               password:(NSString *)password
                               clientID:(NSString *)clientID 
                                 secret:(NSString *)secret 
-                               success:(void (^)(AFOAuthAccount *account))success 
+                               success:(void (^)(AFOAuthAccount *account, id repsonseObject))success 
                                failure:(void (^)(NSError *error))failure;
 
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                           refreshToken:(NSString *)refreshToken
                               clientID:(NSString *)clientID 
                                 secret:(NSString *)secret 
-                               success:(void (^)(AFOAuthAccount *account))success 
+                               success:(void (^)(AFOAuthAccount *account, id repsonseObject))success 
                                failure:(void (^)(NSError *error))failure;
 
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                             parameters:(NSDictionary *)parameters 
-                               success:(void (^)(AFOAuthAccount *account))success
+                               success:(void (^)(AFOAuthAccount *account, id repsonseObject))success
                                failure:(void (^)(NSError *error))failure;
 
 @end
