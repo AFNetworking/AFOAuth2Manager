@@ -22,7 +22,7 @@
 
 #import "AFOAuth2Client.h"
 
-NSString * const kAFOAuthBasicGrantType = @"user_basic";
+NSString * const kAFOAuthBasicGrantType = @"password";
 NSString * const kAFOauthRefreshGrantType = @"refresh_token"; 
 
 @interface AFOAuth2Client ()
@@ -114,6 +114,10 @@ NSString * const kAFOauthRefreshGrantType = @"refresh_token";
             failure(error);
         } 
     }];
+}
+
+- (void)setAuthorizationHeaderWithToken:(NSString *)token {
+    [self setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"Bearer %@", token]];
 }
 
 @end
