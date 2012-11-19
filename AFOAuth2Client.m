@@ -40,6 +40,7 @@ NSString * const kAFOAuthGrantTypeClientCredentials = @"client_credentials";
     }
     
     self.serviceProviderIdentifier = [self.baseURL host];
+    [self setDefaultHeader:@"Accept" value:@"application/json"];
     
     return self;
 }
