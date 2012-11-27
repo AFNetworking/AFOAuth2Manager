@@ -8,21 +8,16 @@ This is still in early stages of development, so proceed with caution when using
 
 ``` objective-c
 NSURL *url = [NSURL URLWithString:@"http://example.com/"];
-AFOAuth2Client *oauthClient = [AFOAuthClient clientWithBaseURL:url];
-[oauthClient registerHTTPOperationClass:[AFJSONRequestOperation class]];
+AFOAuth2Client *oauthClient = [AFOAuth2Client clientWithBaseURL:url clientID:kClientID secret:kClientSecret];
 
-[oauthClient authenticateUsingOAuthWithPath:@"/oauth/token" 
+[oauthClient authenticateUsingOAuthWithPath:@"/oauth/token"
                                    username:@"username"
-                                   password:@"pa55word"
-                                   clientID:kClientID
-                                     secret:kClientSecret 
-                                    success:^(AFOAuthAccount *account) {
-                                      NSLog(@"Credentials: %@", credential.accessToken);
-                                      // If you are already using AFHTTPClient in your application, this would be a good place to set your `Authorization` header.
-                                      // [HTTPClient setAuthorizationHeaderWithToken:credential.accessToken];
+                                   password:@"password"
+                                    success:^(AFOAuthCredential *credential) {
+                                        NSLog(@"I have a token! %@", credential.accessToken);
                                     }
                                     failure:^(NSError *error) {
-                                      NSLog(@"Error: %@", error);
+                                        NSLog(@"Error: %@", error);
                                     }];
 ```
 
