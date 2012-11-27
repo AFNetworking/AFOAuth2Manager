@@ -36,6 +36,10 @@ NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
 
 @implementation AFOAuth2Client
 
++ (AFOAuth2Client *)clientWithBaseURL:(NSURL *)url clientID:(NSString *)clientID secret:(NSString *)secret {
+    return [[self alloc] initWithBaseURL:url clientID:clientID secret:secret];
+}
+
 - (id)initWithBaseURL:(NSURL *)url
              clientID:(NSString *)clientID
                secret:(NSString *)secret
