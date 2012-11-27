@@ -55,6 +55,11 @@ extern NSString * const kAFOAuthRefreshGrantType;
                                failure:(void (^)(NSError *error))failure;
 
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
+                                 scope:(NSString *)scope
+                               success:(void (^)(AFOAuthCredential *credential))success
+                               failure:(void (^)(NSError *error))failure;
+
+- (void)authenticateUsingOAuthWithPath:(NSString *)path
                           refreshToken:(NSString *)refreshToken
                                success:(void (^)(AFOAuthCredential *credential))success 
                                failure:(void (^)(NSError *error))failure;

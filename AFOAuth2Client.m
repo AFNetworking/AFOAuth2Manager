@@ -25,6 +25,7 @@
 #import "AFOAuth2Client.h"
 
 NSString * const kAFOAuthCodeGrantType = @"authorization_code";
+NSString * const kAFOAuthClientCredentialsGrantType = @"client_credentials";
 NSString * const kAFOAuthPasswordCredentialsGrantType = @"password";
 NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
 
@@ -101,6 +102,19 @@ NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
     [mutableParameters setObject:kAFOAuthPasswordCredentialsGrantType forKey:@"grant_type"];
     [mutableParameters setObject:username forKey:@"username"];
     [mutableParameters setObject:password forKey:@"password"];
+    [mutableParameters setObject:scope forKey:@"scope"];
+    NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
+    
+    [self authenticateUsingOAuthWithPath:path parameters:parameters success:success failure:failure];
+}
+
+- (void)authenticateUsingOAuthWithPath:(NSString *)path
+                                 scope:(NSString *)scope
+                               success:(void (^)(AFOAuthCredential *credential))success
+                               failure:(void (^)(NSError *error))failure
+{
+    NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
+    [mutableParameters setObject:kAFOAuthClientCredentialsGrantType forKey:@"grant_type"];
     [mutableParameters setObject:scope forKey:@"scope"];
     NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
     
