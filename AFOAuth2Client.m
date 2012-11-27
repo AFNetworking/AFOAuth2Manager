@@ -93,6 +93,7 @@ NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                               username:(NSString *)username
                               password:(NSString *)password
+                                 scope:(NSString *)scope
                                success:(void (^)(AFOAuthCredential *credential))success
                                failure:(void (^)(NSError *error))failure
 {
@@ -100,6 +101,7 @@ NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
     [mutableParameters setObject:kAFOAuthPasswordCredentialsGrantType forKey:@"grant_type"];
     [mutableParameters setObject:username forKey:@"username"];
     [mutableParameters setObject:password forKey:@"password"];
+    [mutableParameters setObject:scope forKey:@"scope"];
     NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
     
     [self authenticateUsingOAuthWithPath:path parameters:parameters success:success failure:failure];
