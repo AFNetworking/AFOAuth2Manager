@@ -1,6 +1,6 @@
 // AFOAuth2Client.m
 //
-// Copyright (c) 2011 Mattt Thompson (http://mattt.me/)
+// Copyright (c) 2012 Mattt Thompson (http://mattt.me/)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,146 +20,179 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import "AFJSONRequestOperation.h"
+
 #import "AFOAuth2Client.h"
 
-NSString * const kAFOAuthBasicGrantType = @"user_basic";
-NSString * const kAFOauthRefreshGrantType = @"refresh_token"; 
+NSString * const kAFOAuthCodeGrantType = @"authorization_code";
+NSString * const kAFOAuthPasswordCredentialsGrantType = @"password";
+NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
 
 @interface AFOAuth2Client ()
-@property (readwrite, nonatomic, copy) NSString *serviceProviderIdentifier;
+@property (readwrite, nonatomic) NSString *serviceProviderIdentifier;
+@property (readwrite, nonatomic) NSString *clientID;
+@property (readwrite, nonatomic) NSString *secret;
 @end
 
 @implementation AFOAuth2Client
-@synthesize serviceProviderIdentifier = _serviceProviderIdentifier;
 
-- (id)initWithBaseURL:(NSURL *)url {
+- (id)initWithBaseURL:(NSURL *)url
+             clientID:(NSString *)clientID
+               secret:(NSString *)secret
+{
     self = [super initWithBaseURL:url];
     if (!self) {
         return nil;
     }
     
     self.serviceProviderIdentifier = [self.baseURL host];
+    self.clientID = clientID;
+    self.secret = secret;
+    
+    [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
     
     return self;
 }
 
-- (void)dealloc {
-    [_serviceProviderIdentifier release];
-    [super dealloc];
+- (void)setAuthorizationHeaderWithToken:(NSString *)token {
+    // Use the "Bearer" type as an arbitrary default
+    [self setAuthorizationHeaderWithToken:token ofType:@"Bearer"];
+}
+
+- (void)setAuthorizationHeaderWithCredential:(AFOAuthCredential *)credential {
+    [self setAuthorizationHeaderWithToken:credential.accessToken ofType:credential.tokenType];
+}
+
+- (void)setAuthorizationHeaderWithToken:(NSString *)token ofType:(NSString *)type {
+    // http://tools.ietf.org/html/rfc6749#section-7.1
+    // The Bearer type is the only finalized type
+    if ([[type lowercaseString] isEqualToString:@"bearer"]) {
+        [self setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"Bearer %@", token]];
+    }
+}
+
+- (void)authenticateUsingOAuthWithPath:(NSString *)path
+                                  code:(NSString *)code
+                           redirectURI:(NSString *)uri
+                               success:(void (^)(AFOAuthCredential *credential))success
+                               failure:(void (^)(NSError *error))failure
+{
+    NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
+    [mutableParameters setObject:kAFOAuthCodeGrantType forKey:@"grant_type"];
+    [mutableParameters setObject:code forKey:@"code"];
+    [mutableParameters setObject:uri forKey:@"redirect_uri"];
+    NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
+    
+    [self authenticateUsingOAuthWithPath:path parameters:parameters success:success failure:failure];
 }
 
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                               username:(NSString *)username
                               password:(NSString *)password
-                              clientID:(NSString *)clientID 
-                                secret:(NSString *)secret 
-                               success:(void (^)(AFOAuthAccount *account))success 
+                               success:(void (^)(AFOAuthCredential *credential))success
                                failure:(void (^)(NSError *error))failure
 {
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setObject:kAFOAuthBasicGrantType forKey:@"grant_type"];
-    [parameters setObject:clientID forKey:@"client_id"];
-    [parameters setObject:secret forKey:@"client_secret"];
-    [parameters setObject:username forKey:@"username"];
-    [parameters setObject:password forKey:@"password"];
+    NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
+    [mutableParameters setObject:kAFOAuthPasswordCredentialsGrantType forKey:@"grant_type"];
+    [mutableParameters setObject:username forKey:@"username"];
+    [mutableParameters setObject:password forKey:@"password"];
+    NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
     
     [self authenticateUsingOAuthWithPath:path parameters:parameters success:success failure:failure];
 }
 
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                           refreshToken:(NSString *)refreshToken
-                              clientID:(NSString *)clientID 
-                                secret:(NSString *)secret 
-                               success:(void (^)(AFOAuthAccount *account))success 
+                               success:(void (^)(AFOAuthCredential *credential))success
                                failure:(void (^)(NSError *error))failure
 {
-    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    [parameters setObject:kAFOauthRefreshGrantType forKey:@"grant_type"];
-    [parameters setObject:clientID forKey:@"client_id"];
-    [parameters setObject:secret forKey:@"client_secret"];
-    [parameters setObject:refreshToken forKey:@"refresh_token"];
+    NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
+    [mutableParameters setObject:kAFOAuthRefreshGrantType forKey:@"grant_type"];
+    [mutableParameters setObject:refreshToken forKey:@"refresh_token"];
+    NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
     
     [self authenticateUsingOAuthWithPath:path parameters:parameters success:success failure:failure];
 }
 
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
-                            parameters:(NSDictionary *)parameters 
-                               success:(void (^)(AFOAuthAccount *account))success
+                            parameters:(NSDictionary *)parameters
+                               success:(void (^)(AFOAuthCredential *credential))success
                                failure:(void (^)(NSError *error))failure
-{    
+{
+    NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
+    [mutableParameters setObject:self.clientID forKey:@"client_id"];
+    [mutableParameters setObject:self.secret forKey:@"client_secret"];
+    parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
+    
     [self clearAuthorizationHeader];
     
-    [self postPath:path parameters:parameters success:^ (AFHTTPRequestOperation *operation, id responseObject) {
-        AFOauthAccountCredential *credential = [AFOauthAccountCredential credentialWithOAuthToken:[responseObject valueForKey:@"access_token"] tokenSecret:[parameters valueForKey:@"client_secret"]];
-        [credential setRefreshToken:[responseObject valueForKey:@"refresh_token"] expiration:[NSDate dateWithTimeIntervalSinceNow:[[responseObject valueForKey:@"expires_in"] integerValue]]];
-        AFOAuthAccount *account = [AFOAuthAccount accountWithUsername:[responseObject valueForKey:@"username"] serviceProviderIdentifier:self.serviceProviderIdentifier credential:credential];
-        
-        if ([credential isExpired]) {
-            if (![[parameters valueForKey:@"grant_type"] isEqualToString:kAFOauthRefreshGrantType]) {
-                [self authenticateUsingOAuthWithPath:path refreshToken:credential.refreshToken clientID:[parameters valueForKey:@"client_id"] secret:[parameters valueForKey:@"client_secret"] success:success failure:failure];
-            } else {
-                if (failure) {
-                    failure(nil);
-                }
+    NSMutableURLRequest *mutableRequest = [self requestWithMethod:@"POST" path:path parameters:parameters];
+    [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    
+    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:mutableRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if ([responseObject valueForKey:@"error"]) {
+            if (failure) {
+                // TODO: Resolve the `error` field into a proper NSError object
+                // http://tools.ietf.org/html/rfc6749#section-5.2
+                failure(nil);
             }
-        } else {            
-            [self setAuthorizationHeaderWithToken:credential.accessToken];
             
-            if (success) {
-                success(account);
-            }
+            return;
+        }
+        
+        AFOAuthCredential *credential = [AFOAuthCredential credentialWithOAuthToken:[responseObject valueForKey:@"access_token"] tokenType:[responseObject valueForKey:@"token_type"]];
+        [credential setRefreshToken:[responseObject valueForKey:@"refresh_token"] expiration:[NSDate dateWithTimeIntervalSinceNow:[[responseObject valueForKey:@"expires_in"] integerValue]]];
+        
+        [self setAuthorizationHeaderWithCredential:credential];
+        
+        if (success) {
+            success(credential);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
             failure(error);
-        } 
+        }
     }];
+    
+    [self enqueueHTTPRequestOperation:operation];
 }
 
 @end
 
 #pragma mark -
 
-@interface AFOauthAccountCredential ()
-@property (readwrite, nonatomic, copy) NSString *accessToken;
-@property (readwrite, nonatomic, copy) NSString *secret;
-@property (readwrite, nonatomic, copy) NSString *refreshToken;
-@property (readwrite, nonatomic, retain) NSDate *expiration;
+@interface AFOAuthCredential ()
+@property (readwrite, nonatomic) NSString *accessToken;
+@property (readwrite, nonatomic) NSString *tokenType;
+@property (readwrite, nonatomic) NSString *refreshToken;
+@property (readwrite, nonatomic) NSDate *expiration;
 @end
 
-@implementation AFOauthAccountCredential
+@implementation AFOAuthCredential
 @synthesize accessToken = _accessToken;
-@synthesize secret = _secret;
+@synthesize tokenType = _tokenType;
 @synthesize refreshToken = _refreshToken;
 @synthesize expiration = _expiration;
 @dynamic expired;
 
-+ (id)credentialWithOAuthToken:(NSString *)token tokenSecret:(NSString *)secret {
-    return [[[self alloc] initWithOAuthToken:token tokenSecret:secret] autorelease];
++ (id)credentialWithOAuthToken:(NSString *)token tokenType:(NSString *)type {
+    return [[self alloc] initWithOAuthToken:token tokenType:type];
 }
 
-- (id)initWithOAuthToken:(NSString *)token tokenSecret:(NSString *)secret {
+- (id)initWithOAuthToken:(NSString *)token tokenType:(NSString *)type {
     self = [super init];
     if (!self) {
         return nil;
     }
     
     self.accessToken = token;
-    self.secret = secret;
+    self.tokenType = type;
     
     return self;
 }
 
-- (void)dealloc {
-    [_accessToken release];
-    [_secret release];
-    [_refreshToken release];
-    [_expiration release];
-    [super dealloc];
-}
-
 - (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ accessToken:\"%@\" secret:\"%@ refreshToken:\"%@\" expiration:\"%@\">", [self class], self.accessToken, self.secret, self.refreshToken, self.expiration];
+    return [NSString stringWithFormat:@"<%@ accessToken:\"%@\" tokenType:\"%@ refreshToken:\"%@\" expiration:\"%@\">", [self class], self.accessToken, self.tokenType, self.refreshToken, self.expiration];
 }
 
 - (void)setRefreshToken:(NSString *)refreshToken expiration:(NSDate *)expiration {
@@ -180,7 +213,7 @@ NSString * const kAFOauthRefreshGrantType = @"refresh_token";
 - (id)initWithCoder:(NSCoder *)decoder {
     self = [super init];
     self.accessToken = [decoder decodeObjectForKey:@"accessToken"];
-    self.secret = [decoder decodeObjectForKey:@"secret"];
+    self.tokenType = [decoder decodeObjectForKey:@"tokenType"];
     self.refreshToken = [decoder decodeObjectForKey:@"refreshToken"];
     self.expiration = [decoder decodeObjectForKey:@"expiration"];
     
@@ -189,69 +222,9 @@ NSString * const kAFOauthRefreshGrantType = @"refresh_token";
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
     [encoder encodeObject:self.accessToken forKey:@"accessToken"];
-    [encoder encodeObject:self.secret forKey:@"secret"];
+    [encoder encodeObject:self.tokenType forKey:@"tokenType"];
     [encoder encodeObject:self.refreshToken forKey:@"refreshToken"];
     [encoder encodeObject:self.expiration forKey:@"expiration"];
-}
-
-@end
-
-#pragma mark -
-
-@interface AFOAuthAccount ()
-@property (readwrite, nonatomic, copy) NSString *username;
-@property (readwrite, nonatomic, copy) NSString *serviceProviderIdentifier;
-@property (readwrite, nonatomic, retain) AFOauthAccountCredential *credential;
-@end
-
-@implementation AFOAuthAccount
-@synthesize username = _username;
-@synthesize serviceProviderIdentifier = _serviceProviderIdentifier;
-@synthesize credential = _credential;
-
-+ (id)accountWithUsername:(NSString *)username serviceProviderIdentifier:(NSString *)identifier credential:(AFOauthAccountCredential *)credential {
-    return [[[self alloc] initWithUsername:username serviceProviderIdentifier:identifier credential:credential] autorelease];
-}
-
-- (id)initWithUsername:(NSString *)username serviceProviderIdentifier:(NSString *)identifier credential:(AFOauthAccountCredential *)credential {
-    self = [super init];
-    if (!self) {
-        return nil;
-    }
-    
-    self.username = username;
-    self.serviceProviderIdentifier = identifier;
-    self.credential = credential;
-    
-    return self;
-}
-
-- (void)dealloc {
-    [_username release];
-    [_serviceProviderIdentifier release];
-    [_credential release];
-    [super dealloc];
-}
-
-- (NSString *)description {
-    return [NSString stringWithFormat:@"<%@ provider:\"%@\" username:\"%@\" credential:%@>", [self class], self.serviceProviderIdentifier, self.username, self.credential];
-}
-
-#pragma mark - NSCoding
-
-- (id)initWithCoder:(NSCoder *)decoder {
-    self = [super init];
-    self.username = [decoder decodeObjectForKey:@"username"];
-    self.serviceProviderIdentifier = [decoder decodeObjectForKey:@"serviceProviderIdentifier"];
-    self.credential = [decoder decodeObjectForKey:@"credential"];
-    
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)encoder {
-    [encoder encodeObject:self.username forKey:@"username"];
-    [encoder encodeObject:self.serviceProviderIdentifier forKey:@"serviceProviderIdentifier"];
-    [encoder encodeObject:self.credential forKey:@"credential"];
 }
 
 @end
