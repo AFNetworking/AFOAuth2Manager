@@ -149,7 +149,7 @@ NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
     NSMutableURLRequest *mutableRequest = [self requestWithMethod:@"POST" path:path parameters:parameters];
     [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     
-    AFHTTPRequestOperation *operation = [self HTTPRequestOperationWithRequest:mutableRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    AFHTTPRequestOperation *authOperation = [self HTTPRequestOperationWithRequest:mutableRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([responseObject valueForKey:@"error"]) {
             if (failure) {
                 // TODO: Resolve the `error` field into a proper NSError object
@@ -174,7 +174,7 @@ NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
         }
     }];
     
-    [self enqueueHTTPRequestOperation:operation];
+    [self enqueueHTTPRequestOperation:authOperation];
 }
 
 @end
