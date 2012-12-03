@@ -24,10 +24,25 @@
 
 #import "AFOAuth2Client.h"
 
+#ifdef _SECURITY_SECITEM_H_
+NSString * const kAFOAuthCredentialServiceName = @"AFOAuthCredentialService";
+#endif
+
 NSString * const kAFOAuthCodeGrantType = @"authorization_code";
 NSString * const kAFOAuthClientCredentialsGrantType = @"client_credentials";
 NSString * const kAFOAuthPasswordCredentialsGrantType = @"password";
 NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
+
+#ifdef _SECURITY_SECITEM_H_
+static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifier) {
+    NSMutableDictionary *queryDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:(__bridge id)kSecClassGenericPassword, kSecClass, kAFOAuthCredentialServiceName, kSecAttrService, nil];
+    [queryDictionary setObject:identifier forKey:(__bridge id)kSecAttrAccount];
+
+    return queryDictionary;
+}
+#endif
+
+#pragma mark -
 
 @interface AFOAuth2Client ()
 @property (readwrite, nonatomic) NSString *serviceProviderIdentifier;
@@ -59,6 +74,8 @@ NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
     return self;
 }
 
+#pragma mark -
+
 - (void)setAuthorizationHeaderWithToken:(NSString *)token {
     // Use the "Bearer" type as an arbitrary default
     [self setAuthorizationHeaderWithToken:token ofType:@"Bearer"];
@@ -75,6 +92,8 @@ NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
         [self setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"Bearer %@", token]];
     }
 }
+
+#pragma mark -
 
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                                   code:(NSString *)code
@@ -195,6 +214,8 @@ NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
 @synthesize expiration = _expiration;
 @dynamic expired;
 
+#pragma mark -
+
 + (id)credentialWithOAuthToken:(NSString *)token tokenType:(NSString *)type {
     return [[self alloc] initWithOAuthToken:token tokenType:type];
 }
@@ -246,5 +267,70 @@ NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
     [encoder encodeObject:self.refreshToken forKey:@"refreshToken"];
     [encoder encodeObject:self.expiration forKey:@"expiration"];
 }
+
+#pragma mark - Keychain
+
+#ifdef _SECURITY_SECITEM_H_
+
++ (BOOL)storeCredential:(AFOAuthCredential *)credential withIdentifier:(NSString *)identifier {
+    NSMutableDictionary *queryDictionary = AFKeychainQueryDictionaryWithIdentifier(identifier);
+
+    if (!credential) {
+        return [self deleteCredentialWithIdentifier:identifier];
+    }
+
+    NSMutableDictionary *updateDictionary = [NSMutableDictionary dictionary];
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:credential];
+    [updateDictionary setObject:data forKey:(__bridge id)kSecValueData];
+
+    OSStatus status;
+    BOOL exists = ([self retrieveCredentialWithIdentifier:identifier] != nil);
+
+    if (exists) {
+        status = SecItemUpdate((__bridge CFDictionaryRef)queryDictionary, (__bridge CFDictionaryRef)updateDictionary);
+    } else {
+        [queryDictionary addEntriesFromDictionary:updateDictionary];
+        status = SecItemAdd((__bridge CFDictionaryRef)queryDictionary, NULL);
+    }
+
+    if (status != errSecSuccess) {
+        NSLog(@"Unable to %@ credential with identifier \"%@\" (Error %li)", exists ? @"update" : @"add", identifier, status);
+    }
+
+    return (status == errSecSuccess);
+}
+
++ (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier {
+    NSMutableDictionary *queryDictionary = AFKeychainQueryDictionaryWithIdentifier(identifier);
+
+    OSStatus status = SecItemDelete((__bridge CFDictionaryRef)queryDictionary);
+
+    if (status != errSecSuccess) {
+        NSLog(@"Unable to delete credential with identifier \"%@\" (Error %li)", identifier, status);
+    }
+
+    return (status == errSecSuccess);
+}
+
++ (AFOAuthCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier {
+    NSMutableDictionary *queryDictionary = AFKeychainQueryDictionaryWithIdentifier(identifier);
+    [queryDictionary setObject:(__bridge id)kCFBooleanTrue forKey:(__bridge id)kSecReturnData];
+    [queryDictionary setObject:(__bridge id)kSecMatchLimitOne forKey:(__bridge id)kSecMatchLimit];
+
+    CFDataRef result = nil;
+    OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)queryDictionary, (CFTypeRef *)&result);
+
+    if (status != errSecSuccess) {
+        NSLog(@"Unable to fetch credential with identifier \"%@\" (Error %li)", identifier, status);
+        return nil;
+    }
+
+    NSData *data = (__bridge NSData *)result;
+    AFOAuthCredential *credential = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+
+    return credential;
+}
+
+#endif
 
 @end

@@ -22,6 +22,10 @@
 
 #import "AFHTTPClient.h"
 
+#ifndef _SECURITY_SECITEM_H_
+#warning Security framework not found in project, or not included in precompiled header. Keychain persistence functionality will not be available.
+#endif
+
 extern NSString * const kAFOAuthCodeGrantType;
 extern NSString * const kAFOAuthClientCredentialsGrantType;
 extern NSString * const kAFOAuthPasswordCredentialsGrantType;
@@ -81,6 +85,12 @@ extern NSString * const kAFOAuthRefreshGrantType;
 
 @property (readonly, nonatomic) NSString *refreshToken;
 @property (readonly, nonatomic, assign, getter = isExpired) BOOL expired;
+
+#ifdef _SECURITY_SECITEM_H_
++ (BOOL)storeCredential:(AFOAuthCredential *)credential withIdentifier:(NSString *)identifier;
++ (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier;
++ (AFOAuthCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier;
+#endif
 
 + (id)credentialWithOAuthToken:(NSString *)token tokenType:(NSString *)type;
 - (id)initWithOAuthToken:(NSString *)token tokenType:(NSString *)type;
