@@ -36,7 +36,7 @@ NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
 #ifdef _SECURITY_SECITEM_H_
 static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifier) {
     NSMutableDictionary *queryDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:(__bridge id)kSecClassGenericPassword, kSecClass, kAFOAuthCredentialServiceName, kSecAttrService, nil];
-    [queryDictionary setObject:identifier forKey:(__bridge id)kSecAttrAccount];
+    [queryDictionary setValue:identifier forKey:(__bridge id)kSecAttrAccount];
 
     return queryDictionary;
 }
@@ -103,8 +103,8 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 {
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
     [mutableParameters setObject:kAFOAuthCodeGrantType forKey:@"grant_type"];
-    [mutableParameters setObject:code forKey:@"code"];
-    [mutableParameters setObject:uri forKey:@"redirect_uri"];
+    [mutableParameters setValue:code forKey:@"code"];
+    [mutableParameters setValue:uri forKey:@"redirect_uri"];
     NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
     
     [self authenticateUsingOAuthWithPath:path parameters:parameters success:success failure:failure];
@@ -119,9 +119,9 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 {
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
     [mutableParameters setObject:kAFOAuthPasswordCredentialsGrantType forKey:@"grant_type"];
-    [mutableParameters setObject:username forKey:@"username"];
-    [mutableParameters setObject:password forKey:@"password"];
-    [mutableParameters setObject:scope forKey:@"scope"];
+    [mutableParameters setValue:username forKey:@"username"];
+    [mutableParameters setValue:password forKey:@"password"];
+    [mutableParameters setValue:scope forKey:@"scope"];
     NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
     
     [self authenticateUsingOAuthWithPath:path parameters:parameters success:success failure:failure];
@@ -134,7 +134,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 {
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
     [mutableParameters setObject:kAFOAuthClientCredentialsGrantType forKey:@"grant_type"];
-    [mutableParameters setObject:scope forKey:@"scope"];
+    [mutableParameters setValue:scope forKey:@"scope"];
     NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
     
     [self authenticateUsingOAuthWithPath:path parameters:parameters success:success failure:failure];
@@ -147,7 +147,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 {
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
     [mutableParameters setObject:kAFOAuthRefreshGrantType forKey:@"grant_type"];
-    [mutableParameters setObject:refreshToken forKey:@"refresh_token"];
+    [mutableParameters setValue:refreshToken forKey:@"refresh_token"];
     NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
     
     [self authenticateUsingOAuthWithPath:path parameters:parameters success:success failure:failure];
