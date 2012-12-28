@@ -1,17 +1,17 @@
 // AFOAuth2Client.m
 //
 // Copyright (c) 2012 Mattt Thompson (http://mattt.me/)
-// 
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
 // to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 // copies of the Software, and to permit persons to whom the Software is
 // furnished to do so, subject to the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be included in
 // all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 // IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 // FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -64,13 +64,13 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     if (!self) {
         return nil;
     }
-    
+
     self.serviceProviderIdentifier = [self.baseURL host];
     self.clientID = clientID;
     self.secret = secret;
-    
+
     [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
-    
+
     return self;
 }
 
@@ -106,7 +106,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     [mutableParameters setValue:code forKey:@"code"];
     [mutableParameters setValue:uri forKey:@"redirect_uri"];
     NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
-    
+
     [self authenticateUsingOAuthWithPath:path parameters:parameters success:success failure:failure];
 }
 
@@ -123,7 +123,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     [mutableParameters setValue:password forKey:@"password"];
     [mutableParameters setValue:scope forKey:@"scope"];
     NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
-    
+
     [self authenticateUsingOAuthWithPath:path parameters:parameters success:success failure:failure];
 }
 
@@ -136,7 +136,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     [mutableParameters setObject:kAFOAuthClientCredentialsGrantType forKey:@"grant_type"];
     [mutableParameters setValue:scope forKey:@"scope"];
     NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
-    
+
     [self authenticateUsingOAuthWithPath:path parameters:parameters success:success failure:failure];
 }
 
@@ -149,7 +149,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     [mutableParameters setObject:kAFOAuthRefreshGrantType forKey:@"grant_type"];
     [mutableParameters setValue:refreshToken forKey:@"refresh_token"];
     NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
-    
+
     [self authenticateUsingOAuthWithPath:path parameters:parameters success:success failure:failure];
 }
 
@@ -162,9 +162,9 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     [mutableParameters setObject:self.clientID forKey:@"client_id"];
     [mutableParameters setObject:self.secret forKey:@"client_secret"];
     parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
-    
+
     [self clearAuthorizationHeader];
-    
+
     NSMutableURLRequest *mutableRequest = [self requestWithMethod:@"POST" path:path parameters:parameters];
     [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 
@@ -175,18 +175,18 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
                 // http://tools.ietf.org/html/rfc6749#section-5.2
                 failure(nil);
             }
-            
+
             return;
         }
-        
+
         NSString *refreshToken = [responseObject valueForKey:@"refresh_token"];
         refreshToken = refreshToken ? refreshToken : [parameters valueForKey:@"refresh_token"];
 
         AFOAuthCredential *credential = [AFOAuthCredential credentialWithOAuthToken:[responseObject valueForKey:@"access_token"] tokenType:[responseObject valueForKey:@"token_type"]];
         [credential setRefreshToken:refreshToken expiration:[NSDate dateWithTimeIntervalSinceNow:[[responseObject valueForKey:@"expires_in"] integerValue]]];
-        
+
         [self setAuthorizationHeaderWithCredential:credential];
-        
+
         if (success) {
             success(credential);
         }
@@ -195,7 +195,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
             failure(error);
         }
     }];
-    
+
     [self enqueueHTTPRequestOperation:authOperation];
 }
 
@@ -228,10 +228,10 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     if (!self) {
         return nil;
     }
-    
+
     self.accessToken = token;
     self.tokenType = type;
-    
+
     return self;
 }
 
@@ -243,7 +243,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     if (!refreshToken || !expiration) {
         return;
     }
-    
+
     self.refreshToken = refreshToken;
     self.expiration = expiration;
 }
@@ -260,7 +260,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     self.tokenType = [decoder decodeObjectForKey:@"tokenType"];
     self.refreshToken = [decoder decodeObjectForKey:@"refreshToken"];
     self.expiration = [decoder decodeObjectForKey:@"expiration"];
-    
+
     return self;
 }
 
@@ -330,7 +330,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 
     NSData *data = (__bridge NSData *)result;
     AFOAuthCredential *credential = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-
+    
     return credential;
 }
 
