@@ -24,16 +24,14 @@
 
 #import "AFOAuth2Client.h"
 
-#ifdef _SECURITY_SECITEM_H_
-NSString * const kAFOAuthCredentialServiceName = @"AFOAuthCredentialService";
-#endif
-
 NSString * const kAFOAuthCodeGrantType = @"authorization_code";
 NSString * const kAFOAuthClientCredentialsGrantType = @"client_credentials";
 NSString * const kAFOAuthPasswordCredentialsGrantType = @"password";
 NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
 
 #ifdef _SECURITY_SECITEM_H_
+NSString * const kAFOAuthCredentialServiceName = @"AFOAuthCredentialService";
+
 static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifier) {
     NSMutableDictionary *queryDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:(__bridge id)kSecClassGenericPassword, kSecClass, kAFOAuthCredentialServiceName, kSecAttrService, nil];
     [queryDictionary setValue:identifier forKey:(__bridge id)kSecAttrAccount];
@@ -52,7 +50,10 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 
 @implementation AFOAuth2Client
 
-+ (instancetype)clientWithBaseURL:(NSURL *)url clientID:(NSString *)clientID secret:(NSString *)secret {
++ (instancetype)clientWithBaseURL:(NSURL *)url
+                         clientID:(NSString *)clientID
+                           secret:(NSString *)secret
+{
     return [[self alloc] initWithBaseURL:url clientID:clientID secret:secret];
 }
 
@@ -85,7 +86,9 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     [self setAuthorizationHeaderWithToken:credential.accessToken ofType:credential.tokenType];
 }
 
-- (void)setAuthorizationHeaderWithToken:(NSString *)token ofType:(NSString *)type {
+- (void)setAuthorizationHeaderWithToken:(NSString *)token
+                                 ofType:(NSString *)type
+{
     // http://tools.ietf.org/html/rfc6749#section-7.1
     // The Bearer type is the only finalized type
     if ([[type lowercaseString] isEqualToString:@"bearer"]) {
@@ -219,11 +222,15 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 
 #pragma mark -
 
-+ (id)credentialWithOAuthToken:(NSString *)token tokenType:(NSString *)type {
++ (instancetype)credentialWithOAuthToken:(NSString *)token
+                               tokenType:(NSString *)type
+{
     return [[self alloc] initWithOAuthToken:token tokenType:type];
 }
 
-- (id)initWithOAuthToken:(NSString *)token tokenType:(NSString *)type {
+- (id)initWithOAuthToken:(NSString *)token
+               tokenType:(NSString *)type
+{
     self = [super init];
     if (!self) {
         return nil;
@@ -239,7 +246,9 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     return [NSString stringWithFormat:@"<%@ accessToken:\"%@\" tokenType:\"%@\" refreshToken:\"%@\" expiration:\"%@\">", [self class], self.accessToken, self.tokenType, self.refreshToken, self.expiration];
 }
 
-- (void)setRefreshToken:(NSString *)refreshToken expiration:(NSDate *)expiration {
+- (void)setRefreshToken:(NSString *)refreshToken
+             expiration:(NSDate *)expiration
+{
     if (!refreshToken || !expiration) {
         return;
     }
@@ -252,30 +261,13 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     return [self.expiration compare:[NSDate date]] == NSOrderedAscending;
 }
 
-#pragma mark - NSCoding
-
-- (id)initWithCoder:(NSCoder *)decoder {
-    self = [super init];
-    self.accessToken = [decoder decodeObjectForKey:@"accessToken"];
-    self.tokenType = [decoder decodeObjectForKey:@"tokenType"];
-    self.refreshToken = [decoder decodeObjectForKey:@"refreshToken"];
-    self.expiration = [decoder decodeObjectForKey:@"expiration"];
-
-    return self;
-}
-
-- (void)encodeWithCoder:(NSCoder *)encoder {
-    [encoder encodeObject:self.accessToken forKey:@"accessToken"];
-    [encoder encodeObject:self.tokenType forKey:@"tokenType"];
-    [encoder encodeObject:self.refreshToken forKey:@"refreshToken"];
-    [encoder encodeObject:self.expiration forKey:@"expiration"];
-}
-
-#pragma mark - Keychain
+#pragma mark Keychain
 
 #ifdef _SECURITY_SECITEM_H_
 
-+ (BOOL)storeCredential:(AFOAuthCredential *)credential withIdentifier:(NSString *)identifier {
++ (BOOL)storeCredential:(AFOAuthCredential *)credential
+         withIdentifier:(NSString *)identifier
+{
     NSMutableDictionary *queryDictionary = AFKeychainQueryDictionaryWithIdentifier(identifier);
 
     if (!credential) {
@@ -335,5 +327,24 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 }
 
 #endif
+
+#pragma mark - NSCoding
+
+- (id)initWithCoder:(NSCoder *)decoder {
+    self = [super init];
+    self.accessToken = [decoder decodeObjectForKey:@"accessToken"];
+    self.tokenType = [decoder decodeObjectForKey:@"tokenType"];
+    self.refreshToken = [decoder decodeObjectForKey:@"refreshToken"];
+    self.expiration = [decoder decodeObjectForKey:@"expiration"];
+
+    return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)encoder {
+    [encoder encodeObject:self.accessToken forKey:@"accessToken"];
+    [encoder encodeObject:self.tokenType forKey:@"tokenType"];
+    [encoder encodeObject:self.refreshToken forKey:@"refreshToken"];
+    [encoder encodeObject:self.expiration forKey:@"expiration"];
+}
 
 @end

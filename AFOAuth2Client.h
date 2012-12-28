@@ -26,32 +26,64 @@
 #warning Security framework not found in project, or not included in precompiled header. Keychain persistence functionality will not be available.
 #endif
 
-extern NSString * const kAFOAuthCodeGrantType;
-extern NSString * const kAFOAuthClientCredentialsGrantType;
-extern NSString * const kAFOAuthPasswordCredentialsGrantType;
-extern NSString * const kAFOAuthRefreshGrantType;
-
 @class AFOAuthCredential;
 
+/**
+ 
+ */
 @interface AFOAuth2Client : AFHTTPClient
 
+///------------------------------------------
+/// @name Accessing OAuth 2 Client Properties
+///------------------------------------------
+
+/**
+ 
+ */
 @property (readonly, nonatomic) NSString *serviceProviderIdentifier;
+
+/**
+ 
+ */
 @property (readonly, nonatomic) NSString *clientID;
 
+///------------------------------------------------
+/// @name Creating and Initializing OAuth 2 Clients
+///------------------------------------------------
+
+/**
+ 
+ */
 + (instancetype)clientWithBaseURL:(NSURL *)url clientID:(NSString *)clientID secret:(NSString *)secret;
 
+/**
+ 
+ */
 - (id)initWithBaseURL:(NSURL *)url
              clientID:(NSString *)clientID
                secret:(NSString *)secret;
 
+/**
+ 
+ */
 - (void)setAuthorizationHeaderWithCredential:(AFOAuthCredential *)credential;
 
+///---------------------
+/// @name Authenticating
+///---------------------
+
+/**
+ 
+ */
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                                   code:(NSString *)code
                            redirectURI:(NSString *)uri
                                success:(void (^)(AFOAuthCredential *credential))success
                                failure:(void (^)(NSError *error))failure;
 
+/**
+ 
+ */
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                               username:(NSString *)username
                               password:(NSString *)password
@@ -59,16 +91,25 @@ extern NSString * const kAFOAuthRefreshGrantType;
                                success:(void (^)(AFOAuthCredential *credential))success
                                failure:(void (^)(NSError *error))failure;
 
+/**
+ 
+ */
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                                  scope:(NSString *)scope
                                success:(void (^)(AFOAuthCredential *credential))success
                                failure:(void (^)(NSError *error))failure;
 
+/**
+ 
+ */
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                           refreshToken:(NSString *)refreshToken
                                success:(void (^)(AFOAuthCredential *credential))success
                                failure:(void (^)(NSError *error))failure;
 
+/**
+ 
+ */
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                             parameters:(NSDictionary *)parameters
                                success:(void (^)(AFOAuthCredential *credential))success
@@ -78,23 +119,93 @@ extern NSString * const kAFOAuthRefreshGrantType;
 
 #pragma mark -
 
+/**
+ 
+ */
 @interface AFOAuthCredential : NSObject <NSCoding>
 
+///--------------------------------------
+/// @name Accessing Credential Properties
+///--------------------------------------
+
+/**
+ 
+ */
 @property (readonly, nonatomic) NSString *accessToken;
+
+/**
+ 
+ */
 @property (readonly, nonatomic) NSString *tokenType;
 
+/**
+ 
+ */
 @property (readonly, nonatomic) NSString *refreshToken;
+
+/**
+ 
+ */
 @property (readonly, nonatomic, assign, getter = isExpired) BOOL expired;
 
+///--------------------------------------------
+/// @name Creating and Initializing Credentials
+///--------------------------------------------
+
+/**
+ 
+ */
++ (instancetype)credentialWithOAuthToken:(NSString *)token
+                               tokenType:(NSString *)type;
+
+/**
+ 
+ */
+- (id)initWithOAuthToken:(NSString *)token
+               tokenType:(NSString *)type;
+
+///----------------------------
+/// @name Setting Refresh Token
+///----------------------------
+
+/**
+ 
+ */
+- (void)setRefreshToken:(NSString *)refreshToken
+             expiration:(NSDate *)expiration;
+
+///-----------------------------------------
+/// @name Storing and Retrieving Credentials
+///-----------------------------------------
+
 #ifdef _SECURITY_SECITEM_H_
-+ (BOOL)storeCredential:(AFOAuthCredential *)credential withIdentifier:(NSString *)identifier;
+/**
+
+ */
++ (BOOL)storeCredential:(AFOAuthCredential *)credential
+         withIdentifier:(NSString *)identifier;
+
+/**
+
+ */
 + (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier;
+
+/**
+
+ */
 + (AFOAuthCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier;
 #endif
 
-+ (id)credentialWithOAuthToken:(NSString *)token tokenType:(NSString *)type;
-- (id)initWithOAuthToken:(NSString *)token tokenType:(NSString *)type;
-
-- (void)setRefreshToken:(NSString *)refreshToken expiration:(NSDate *)expiration;
-
 @end
+
+///----------------
+/// @name Constants
+///----------------
+
+/**
+ 
+ */
+extern NSString * const kAFOAuthCodeGrantType;
+extern NSString * const kAFOAuthClientCredentialsGrantType;
+extern NSString * const kAFOAuthPasswordCredentialsGrantType;
+extern NSString * const kAFOAuthRefreshGrantType;
