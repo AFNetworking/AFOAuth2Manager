@@ -1,6 +1,6 @@
 // AFOAuth2Client.h
 //
-// Copyright (c) 2011 Mattt Thompson (http://mattt.me/)
+// Copyright (c) 2012 Mattt Thompson (http://mattt.me/)
 // 
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,65 +20,81 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <Foundation/Foundation.h>
 #import "AFHTTPClient.h"
 
-extern NSString * const kAFOAuthBasicGrantType;
-extern NSString * const kAFOauthRefreshGrantType;
+#ifndef _SECURITY_SECITEM_H_
+#warning Security framework not found in project, or not included in precompiled header. Keychain persistence functionality will not be available.
+#endif
 
-@class AFOAuthAccount;
+extern NSString * const kAFOAuthCodeGrantType;
+extern NSString * const kAFOAuthClientCredentialsGrantType;
+extern NSString * const kAFOAuthPasswordCredentialsGrantType;
+extern NSString * const kAFOAuthRefreshGrantType;
+
+@class AFOAuthCredential;
 
 @interface AFOAuth2Client : AFHTTPClient
 
-@property (readonly, nonatomic, copy) NSString *serviceProviderIdentifier;
+@property (readonly, nonatomic) NSString *serviceProviderIdentifier;
+@property (readonly, nonatomic) NSString *clientID;
+
++ (instancetype)clientWithBaseURL:(NSURL *)url clientID:(NSString *)clientID secret:(NSString *)secret;
+
+- (id)initWithBaseURL:(NSURL *)url
+             clientID:(NSString *)clientID
+               secret:(NSString *)secret;
+
+- (void)setAuthorizationHeaderWithCredential:(AFOAuthCredential *)credential;
+
+- (void)authenticateUsingOAuthWithPath:(NSString *)path
+                                  code:(NSString *)code
+                           redirectURI:(NSString *)uri
+                               success:(void (^)(AFOAuthCredential *credential))success
+                               failure:(void (^)(NSError *error))failure;
 
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                               username:(NSString *)username
                               password:(NSString *)password
-                              clientID:(NSString *)clientID 
-                                secret:(NSString *)secret 
-                               success:(void (^)(AFOAuthAccount *account))success 
+                                 scope:(NSString *)scope
+                               success:(void (^)(AFOAuthCredential *credential))success 
+                               failure:(void (^)(NSError *error))failure;
+
+- (void)authenticateUsingOAuthWithPath:(NSString *)path
+                                 scope:(NSString *)scope
+                               success:(void (^)(AFOAuthCredential *credential))success
                                failure:(void (^)(NSError *error))failure;
 
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                           refreshToken:(NSString *)refreshToken
-                              clientID:(NSString *)clientID 
-                                secret:(NSString *)secret 
-                               success:(void (^)(AFOAuthAccount *account))success 
+                               success:(void (^)(AFOAuthCredential *credential))success 
                                failure:(void (^)(NSError *error))failure;
 
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                             parameters:(NSDictionary *)parameters 
-                               success:(void (^)(AFOAuthAccount *account))success
+                               success:(void (^)(AFOAuthCredential *credential))success
                                failure:(void (^)(NSError *error))failure;
 
 @end
 
 #pragma mark -
 
-@interface AFOauthAccountCredential : NSObject <NSCoding>
+@interface AFOAuthCredential : NSObject <NSCoding>
 
-@property (readonly, nonatomic, copy) NSString *accessToken;
-@property (readonly, nonatomic, copy) NSString *secret;
-@property (readonly, nonatomic, copy) NSString *refreshToken;
+@property (readonly, nonatomic) NSString *accessToken;
+@property (readonly, nonatomic) NSString *tokenType;
+
+@property (readonly, nonatomic) NSString *refreshToken;
 @property (readonly, nonatomic, assign, getter = isExpired) BOOL expired;
 
-+ (id)credentialWithOAuthToken:(NSString *)token tokenSecret:(NSString *)secret;
-- (id)initWithOAuthToken:(NSString *)token tokenSecret:(NSString *)secret;
+#ifdef _SECURITY_SECITEM_H_
++ (BOOL)storeCredential:(AFOAuthCredential *)credential withIdentifier:(NSString *)identifier;
++ (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier;
++ (AFOAuthCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier;
+#endif
+
++ (id)credentialWithOAuthToken:(NSString *)token tokenType:(NSString *)type;
+- (id)initWithOAuthToken:(NSString *)token tokenType:(NSString *)type;
 
 - (void)setRefreshToken:(NSString *)refreshToken expiration:(NSDate *)expiration;
-
-@end
-
-#pragma mark -
-
-@interface AFOAuthAccount : NSObject <NSCoding>
-
-@property (readonly, nonatomic, copy) NSString *username;
-@property (readonly, nonatomic, copy) NSString *serviceProviderIdentifier;
-@property (readonly, nonatomic, retain) AFOauthAccountCredential *credential;
-
-+ (id)accountWithUsername:(NSString *)username serviceProviderIdentifier:(NSString *)identifier credential:(AFOauthAccountCredential *)credential;
-- (id)initWithUsername:(NSString *)username serviceProviderIdentifier:(NSString *)identifier credential:(AFOauthAccountCredential *)credential;
 
 @end
