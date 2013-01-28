@@ -61,6 +61,8 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
              clientID:(NSString *)clientID
                secret:(NSString *)secret
 {
+    NSParameterAssert(clientID);
+    
     self = [super initWithBaseURL:url];
     if (!self) {
         return nil;
