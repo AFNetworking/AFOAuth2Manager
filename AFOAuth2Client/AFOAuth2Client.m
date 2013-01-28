@@ -163,9 +163,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 {
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
     [mutableParameters setObject:self.clientID forKey:@"client_id"];
-    if (self.secret.length > 0) {
-        [mutableParameters setObject:self.secret forKey:@"client_secret"];
-    }
+    [mutableParameters setValue:self.secret forKey:@"client_secret"];
     parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
 
     [self clearAuthorizationHeader];
