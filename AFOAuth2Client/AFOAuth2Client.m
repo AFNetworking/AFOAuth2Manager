@@ -62,7 +62,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
                secret:(NSString *)secret
 {
     NSParameterAssert(clientID);
-    
+
     self = [super initWithBaseURL:url];
     if (!self) {
         return nil;
@@ -185,10 +185,19 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
         }
 
         NSString *refreshToken = [responseObject valueForKey:@"refresh_token"];
-        refreshToken = refreshToken ? refreshToken : [parameters valueForKey:@"refresh_token"];
+        if (refreshToken == nil || [refreshToken isEqual:[NSNull null]]) {
+            refreshToken = [parameters valueForKey:@"refresh_token"];
+        }
 
         AFOAuthCredential *credential = [AFOAuthCredential credentialWithOAuthToken:[responseObject valueForKey:@"access_token"] tokenType:[responseObject valueForKey:@"token_type"]];
-        [credential setRefreshToken:refreshToken expiration:[NSDate dateWithTimeIntervalSinceNow:[[responseObject valueForKey:@"expires_in"] doubleValue]]];
+
+        NSDate *expireDate = nil;
+        id expiresIn = [responseObject valueForKey:@"expires_in"];
+        if (expiresIn != nil && ![expiresIn isEqual:[NSNull null]]) {
+            expireDate = [NSDate dateWithTimeIntervalSinceNow:[expiresIn doubleValue]];
+        }
+
+        [credential setRefreshToken:refreshToken expiration:expireDate];
 
         [self setAuthorizationHeaderWithCredential:credential];
 
@@ -324,7 +333,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 
     NSData *data = (__bridge NSData *)result;
     AFOAuthCredential *credential = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-    
+
     return credential;
 }
 
