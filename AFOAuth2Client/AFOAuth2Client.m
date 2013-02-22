@@ -188,9 +188,6 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
         refreshToken = refreshToken ? refreshToken : [parameters valueForKey:@"refresh_token"];
 
         AFOAuthCredential *credential = [AFOAuthCredential credentialWithOAuthToken:[responseObject valueForKey:@"access_token"] tokenType:[responseObject valueForKey:@"token_type"]];
-        //expires_in date should be considered as double
-        //1-It's the tru type of NSTimeInterval
-        //2-For permamnent exiration dates = more than 20 years
         [credential setRefreshToken:refreshToken expiration:[NSDate dateWithTimeIntervalSinceNow:[[responseObject valueForKey:@"expires_in"] doubleValue]]];
 
         [self setAuthorizationHeaderWithCredential:credential];
