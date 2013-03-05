@@ -173,7 +173,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     NSMutableURLRequest *mutableRequest = [self requestWithMethod:@"POST" path:path parameters:parameters];
     [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 
-    AFHTTPRequestOperation *authOperation = [self HTTPRequestOperationWithRequest:mutableRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    AFHTTPRequestOperation *requestOperation = [self HTTPRequestOperationWithRequest:mutableRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([responseObject valueForKey:@"error"]) {
             if (failure) {
                 // TODO: Resolve the `error` field into a proper NSError object
@@ -210,7 +210,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
         }
     }];
 
-    [self enqueueHTTPRequestOperation:authOperation];
+    [self enqueueHTTPRequestOperation:requestOperation];
 }
 
 @end
