@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "group:AFOAuth2Client"
+      name = "AFOAuth2Client">
+      <FileRef
+         location = "group:AFOAuth2Client.h">
+      </FileRef>
+      <FileRef
+         location = "group:AFOAuth2Client.m">
+      </FileRef>
+   </Group>
+</Workspace>
