@@ -333,6 +333,10 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 
     NSData *data = (__bridge NSData *)result;
     AFOAuthCredential *credential = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    
+    if (result) {
+        CFRelease(result);
+    }
 
     return credential;
 }
