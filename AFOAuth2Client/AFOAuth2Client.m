@@ -331,7 +331,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
         return nil;
     }
 
-    NSData *data = (__bridge NSData *)result;
+    NSData *data = (__bridge_transfer NSData *)result;
     AFOAuthCredential *credential = [NSKeyedUnarchiver unarchiveObjectWithData:data];
 
     return credential;
