@@ -28,6 +28,7 @@ NSString * const kAFOAuthCodeGrantType = @"authorization_code";
 NSString * const kAFOAuthClientCredentialsGrantType = @"client_credentials";
 NSString * const kAFOAuthPasswordCredentialsGrantType = @"password";
 NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
+NSString * const AFOAuthClientError = @"com.alamofire.networking.oauth2.error";
 
 #ifdef _SECURITY_SECITEM_H_
 NSString * const kAFOAuthCredentialServiceName = @"AFOAuthCredentialService";
@@ -39,6 +40,34 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     return queryDictionary;
 }
 #endif
+
+// OAuth 2 Error Response
+// See http://tools.ietf.org/html/rfc6749#section-5.2
+static NSError * AFOAuth2ErrorFromResponseObject(NSDictionary *responseObject) {
+    id value = [responseObject valueForKey:@"error"];
+    NSString *localizedDescription = nil;
+
+    if (value) {
+        if ([value isEqualToString:@"invalid_request"]) {
+            localizedDescription = NSLocalizedStringFromTable(@"The request is missing a required parameter, includes an unsupported parameter value (other than grant type), repeats a parameter, includes multiple credentials, utilizes more than one mechanism for authenticating the client, or is otherwise malformed.", @"AFOAuth2Client", nil);
+        } else if ([value isEqualToString:@"invalid_client"]) {
+            localizedDescription = NSLocalizedStringFromTable(@"Client authentication failed (e.g., unknown client, no client authentication included, or unsupported authentication method). The authorization server MAY return an HTTP 401 (Unauthorized) status code to indicate which HTTP authentication schemes are supported. If the client attempted to authenticate via the \"Authorization\" request header field, the authorization server MUST respond with an HTTP 401 (Unauthorized) status code and include the \"WWW-Authenticate\" response header field matching the authentication scheme used by the client.", @"AFOAuth2Client", nil);
+        } else if ([value isEqualToString:@"invalid_grant"]) {
+            localizedDescription = NSLocalizedStringFromTable(@"The provided authorization grant (e.g., authorization code, resource owner credentials) or refresh token is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client.", @"AFOAuth2Client", nil);
+        } else if ([value isEqualToString:@"unauthorized_client"]) {
+            localizedDescription = NSLocalizedStringFromTable(@"The authenticated client is not authorized to use this authorization grant type.", @"AFOAuth2Client", nil);
+        } else if ([value isEqualToString:@"unsupported_grant_type"]) {
+            localizedDescription = NSLocalizedStringFromTable(@"The authorization grant type is not supported by the authorization server.", @"AFOAuth2Client", nil);
+        }
+
+        if (localizedDescription) {
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:localizedDescription forKey:NSLocalizedDescriptionKey];
+            return [NSError errorWithDomain:AFOAuthClientError code:-1 userInfo:userInfo];
+        }
+    }
+
+    return nil;
+}
 
 #pragma mark -
 
@@ -176,9 +205,8 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     AFHTTPRequestOperation *requestOperation = [self HTTPRequestOperationWithRequest:mutableRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([responseObject valueForKey:@"error"]) {
             if (failure) {
-                // TODO: Resolve the `error` field into a proper NSError object
-                // http://tools.ietf.org/html/rfc6749#section-5.2
-                failure(nil);
+                NSError *error = AFOAuth2ErrorFromResponseObject(responseObject);
+                failure(error);
             }
 
             return;
