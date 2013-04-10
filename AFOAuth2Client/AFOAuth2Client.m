@@ -53,13 +53,15 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 + (instancetype)clientWithBaseURL:(NSURL *)url
                          clientID:(NSString *)clientID
                            secret:(NSString *)secret
+                tokenEndpointPath:(NSString *)tokenEndpointPath
 {
-    return [[self alloc] initWithBaseURL:url clientID:clientID secret:secret];
+    return [[self alloc] initWithBaseURL:url clientID:clientID secret:secret tokenEndpointPath:(NSString *)tokenEndpointPath];
 }
 
 - (id)initWithBaseURL:(NSURL *)url
              clientID:(NSString *)clientID
                secret:(NSString *)secret
+    tokenEndpointPath:(NSString *)tokenEndpointPath
 {
     NSParameterAssert(clientID);
 
@@ -71,6 +73,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     self.serviceProviderIdentifier = [self.baseURL host];
     self.clientID = clientID;
     self.secret = secret;
+    self.tokenEndpointPath = tokenEndpointPath;
 
     [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
 
