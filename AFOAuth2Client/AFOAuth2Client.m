@@ -173,7 +173,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     AFHTTPClientParameterEncoding originalParameterEncoding = self.parameterEncoding;
     self.parameterEncoding = AFFormURLParameterEncoding;
 
-    NSMutableURLRequest *mutableRequest = [self requestWithMethod:@"POST" path:path parameters:parameters];
+    NSMutableURLRequest *mutableRequest = [self requestWithMethod:@"POST" path:self.tokenEndpointPath parameters:parameters];
     [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     
     self.parameterEncoding = originalParameterEncoding;

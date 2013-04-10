@@ -47,6 +47,8 @@
  */
 @property (readonly, nonatomic) NSString *clientID;
 
+@property (nonatomic, strong) NSString *tokenEndpointPath;
+
 ///------------------------------------------------
 /// @name Creating and Initializing OAuth 2 Clients
 ///------------------------------------------------
@@ -54,14 +56,15 @@
 /**
  
  */
-+ (instancetype)clientWithBaseURL:(NSURL *)url clientID:(NSString *)clientID secret:(NSString *)secret;
++ (instancetype)clientWithBaseURL:(NSURL *)url clientID:(NSString *)clientID secret:(NSString *)secret tokenEndpointPath:(NSString *)tokenEndpointPath;
 
 /**
  
  */
 - (id)initWithBaseURL:(NSURL *)url
              clientID:(NSString *)clientID
-               secret:(NSString *)secret;
+               secret:(NSString *)secret
+    tokenEndpointPath:(NSString *)tokenEndpointPath;
 
 /**
  
