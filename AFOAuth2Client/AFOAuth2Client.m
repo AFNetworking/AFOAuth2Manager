@@ -152,7 +152,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 {
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
     [mutableParameters setObject:kAFOAuthRefreshGrantType forKey:@"grant_type"];
-    [mutableParameters setValue:refreshToken forKey:@"refresh_token"];
+    [mutableParameters setValue:self.credential.refreshToken forKey:@"refresh_token"];
     NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
 
     [self authenticateUsingOAuthWithPath:path parameters:parameters success:success failure:failure];
