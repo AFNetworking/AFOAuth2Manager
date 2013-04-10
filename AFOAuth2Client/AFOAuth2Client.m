@@ -170,7 +170,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 
     [self clearAuthorizationHeader];
 
-    NSMutableURLRequest *mutableRequest = [self requestWithMethod:@"POST" path:path parameters:parameters];
+    NSMutableURLRequest *mutableRequest = [self requestWithMethod:@"POST" path:self.tokenEndpointPath parameters:parameters];
     [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 
     AFHTTPRequestOperation *requestOperation = [self HTTPRequestOperationWithRequest:mutableRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
