@@ -75,45 +75,39 @@
 /**
  
  */
-- (void)authenticateUsingOAuthWithPath:(NSString *)path
-                                  code:(NSString *)code
-                           redirectURI:(NSString *)uri
-                               success:(void (^)(AFOAuthCredential *credential))success
-                               failure:(void (^)(NSError *error))failure;
+- (void)obtainAccessTokenUsingAuthorizationCodeGrantWithCode:(NSString *)code
+                                                 redirectURI:(NSString *)uri
+                                                     success:(void (^)(AFOAuthCredential *credential))success
+                                                     failure:(void (^)(NSError *error))failure;
 
 /**
  
  */
-- (void)authenticateUsingOAuthWithPath:(NSString *)path
-                              username:(NSString *)username
-                              password:(NSString *)password
-                                 scope:(NSString *)scope
-                               success:(void (^)(AFOAuthCredential *credential))success
-                               failure:(void (^)(NSError *error))failure;
+- (void)obtainAccessTokenUsingResourceOwnerPasswordCredentialsGrantWithUsername:(NSString *)username
+                                                                       password:(NSString *)password
+                                                                          scope:(NSString *)scope
+                                                                        success:(void (^)(AFOAuthCredential *credential))success
+                                                                        failure:(void (^)(NSError *error))failure;
 
 /**
  
  */
-- (void)authenticateUsingOAuthWithPath:(NSString *)path
-                                 scope:(NSString *)scope
-                               success:(void (^)(AFOAuthCredential *credential))success
-                               failure:(void (^)(NSError *error))failure;
+- (void)obtainAccessTokenUsingClientCredentialsGrantWithScope:(NSString *)scope
+                                                      success:(void (^)(AFOAuthCredential *credential))success
+                                                      failure:(void (^)(NSError *error))failure;
 
 /**
  
  */
-- (void)authenticateUsingOAuthWithPath:(NSString *)path
-                          refreshToken:(NSString *)refreshToken
-                               success:(void (^)(AFOAuthCredential *credential))success
-                               failure:(void (^)(NSError *error))failure;
+- (void)refreshAccessTokenWithSuccess:(void (^)(AFOAuthCredential *credential))success
+                              failure:(void (^)(NSError *error))failure;
 
 /**
  
  */
-- (void)authenticateUsingOAuthWithPath:(NSString *)path
-                            parameters:(NSDictionary *)parameters
-                               success:(void (^)(AFOAuthCredential *credential))success
-                               failure:(void (^)(NSError *error))failure;
+- (void)requestTokenEndpointWithParameters:(NSDictionary *)parameters
+                                   success:(void (^)(AFOAuthCredential *credential))success
+                                   failure:(void (^)(NSError *error))failure;
 
 @end
 
