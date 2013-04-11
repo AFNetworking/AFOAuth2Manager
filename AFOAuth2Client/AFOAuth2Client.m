@@ -220,13 +220,17 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
                                                     success:(void (^)(AFHTTPRequestOperation *, id))success
                                                     failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
 {
+    // Extended failure-block to automatically refresh access-tokens
     void (^refreshingFailure)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *request, NSError *error) {
+        // If the call was contacting the token-endpoint already, fail immediately.
         if ([urlRequest.URL.path rangeOfString:self.tokenEndpointPath].location != NSNotFound) {
             if (failure) {
                 failure(request, error);
             }
         }
         
+        // Check for expired credential. TODO: Check server-response instead of our cached version
+        // Make sure there is only one refresh-request at a time.
         if (self.credential.isExpired && ! self.isRefreshing) {
             self.isRefreshing = YES;
             NSInteger originalMaxConcurrentOperationCount = self.operationQueue.maxConcurrentOperationCount;
@@ -236,6 +240,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
                 self.isRefreshing = NO;
                 self.operationQueue.maxConcurrentOperationCount = originalMaxConcurrentOperationCount;
                 
+                // Update authorization-header of the original request with the new token.
                 NSMutableURLRequest *mutableRequest = urlRequest.mutableCopy;
                 NSMutableDictionary *headers = mutableRequest.allHTTPHeaderFields.mutableCopy;
                 [headers setValue:[NSString stringWithFormat:@"Bearer %@", credential.accessToken] forKey:@"Authorization"];
@@ -254,6 +259,8 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
             }];
             
         } else if (self.isRefreshing) {
+            // When refreshing is currently in progress, just re-queue all other requests that fail.
+            // FIXME: They will fail a second time and initiate another refresh because they still have the old token in their header.
             AFHTTPRequestOperation *retryOperation = [self HTTPRequestOperationWithRequest:urlRequest success:success failure:failure];
             [self enqueueHTTPRequestOperation:retryOperation];
         } else {
