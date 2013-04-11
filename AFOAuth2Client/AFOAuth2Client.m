@@ -58,6 +58,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     AFOAuthCredential *cachedCredential = [AFOAuthCredential retrieveCredentialWithIdentifier:self.serviceProviderIdentifier];
     if (cachedCredential) {
         _credential = cachedCredential;
+        [self setAuthorizationHeaderWithCredential:cachedCredential];
         return cachedCredential;
     }
     return nil;
