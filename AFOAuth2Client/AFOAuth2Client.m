@@ -46,6 +46,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 @property (readwrite, nonatomic) NSString *serviceProviderIdentifier;
 @property (readwrite, nonatomic) NSString *clientID;
 @property (readwrite, nonatomic) NSString *secret;
+@property (nonatomic, assign) BOOL isRefreshing;
 @end
 
 @implementation AFOAuth2Client
@@ -211,6 +212,58 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     }];
 
     [self enqueueHTTPRequestOperation:requestOperation];
+}
+
+#pragma mark -
+
+- (AFHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)urlRequest
+                                                    success:(void (^)(AFHTTPRequestOperation *, id))success
+                                                    failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
+{
+    void (^refreshingFailure)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *request, NSError *error) {
+        if ([urlRequest.URL.path rangeOfString:self.tokenEndpointPath].location != NSNotFound) {
+            if (failure) {
+                failure(request, error);
+            }
+        }
+        
+        if (self.credential.isExpired && ! self.isRefreshing) {
+            self.isRefreshing = YES;
+            NSInteger originalMaxConcurrentOperationCount = self.operationQueue.maxConcurrentOperationCount;
+            self.operationQueue.maxConcurrentOperationCount = 1;
+            
+            [self refreshAccessTokenWithSuccess:^(AFOAuthCredential *credential) {
+                self.isRefreshing = NO;
+                self.operationQueue.maxConcurrentOperationCount = originalMaxConcurrentOperationCount;
+                
+                NSMutableURLRequest *mutableRequest = urlRequest.mutableCopy;
+                NSMutableDictionary *headers = mutableRequest.allHTTPHeaderFields.mutableCopy;
+                [headers setValue:[NSString stringWithFormat:@"Bearer %@", credential.accessToken] forKey:@"Authorization"];
+                mutableRequest.allHTTPHeaderFields = headers;
+                
+                AFHTTPRequestOperation *retryOperation = [self HTTPRequestOperationWithRequest:mutableRequest success:success failure:failure];
+                [self enqueueHTTPRequestOperation:retryOperation];
+                
+            } failure:^(NSError *refreshError) {
+                self.isRefreshing = NO;
+                self.operationQueue.maxConcurrentOperationCount = originalMaxConcurrentOperationCount;
+                
+                if (failure) {
+                    failure(request, refreshError);
+                }
+            }];
+            
+        } else if (self.isRefreshing) {
+            AFHTTPRequestOperation *retryOperation = [self HTTPRequestOperationWithRequest:urlRequest success:success failure:failure];
+            [self enqueueHTTPRequestOperation:retryOperation];
+        } else {
+            if (failure) {
+                failure(request, error);
+            }
+        }
+    };
+    
+    return [super HTTPRequestOperationWithRequest:urlRequest success:success failure:refreshingFailure];
 }
 
 @end
