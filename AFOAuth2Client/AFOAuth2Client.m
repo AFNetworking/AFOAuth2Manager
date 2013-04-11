@@ -49,6 +49,31 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 @end
 
 @implementation AFOAuth2Client
+@synthesize credential = _credential;
+
+- (AFOAuthCredential *)credential {
+    if (_credential) {
+        return _credential;
+    }
+    AFOAuthCredential *cachedCredential = [AFOAuthCredential retrieveCredentialWithIdentifier:self.serviceProviderIdentifier];
+    if (cachedCredential) {
+        _credential = cachedCredential;
+        [self setAuthorizationHeaderWithCredential:cachedCredential];
+        return cachedCredential;
+    }
+    return nil;
+}
+
+- (void)setCredential:(AFOAuthCredential *)credential {
+    _credential = credential;
+    if (credential) {
+        [AFOAuthCredential storeCredential:credential withIdentifier:self.serviceProviderIdentifier];
+    } else {
+        [AFOAuthCredential deleteCredentialWithIdentifier:self.serviceProviderIdentifier];
+    }
+}
+
+#pragma mark -
 
 + (instancetype)clientWithBaseURL:(NSURL *)url
                          clientID:(NSString *)clientID
@@ -200,11 +225,14 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
         [credential setRefreshToken:refreshToken expiration:expireDate];
 
         [self setAuthorizationHeaderWithCredential:credential];
-
+        self.credential = credential;
+        
         if (success) {
             success(credential);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        self.credential = nil;
+        
         if (failure) {
             failure(error);
         }

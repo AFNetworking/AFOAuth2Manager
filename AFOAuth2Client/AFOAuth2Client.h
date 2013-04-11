@@ -47,6 +47,8 @@
  */
 @property (readonly, nonatomic) NSString *clientID;
 
+@property (nonatomic, strong) AFOAuthCredential *credential;
+
 ///------------------------------------------------
 /// @name Creating and Initializing OAuth 2 Clients
 ///------------------------------------------------
