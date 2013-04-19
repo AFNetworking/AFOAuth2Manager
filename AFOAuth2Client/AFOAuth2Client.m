@@ -46,6 +46,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 @property (readwrite, nonatomic) NSString *serviceProviderIdentifier;
 @property (readwrite, nonatomic) NSString *clientID;
 @property (readwrite, nonatomic) NSString *secret;
+@property (nonatomic, assign) BOOL isRefreshing;
 @end
 
 @implementation AFOAuth2Client
@@ -211,6 +212,66 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     }];
 
     [self enqueueHTTPRequestOperation:requestOperation];
+}
+
+#pragma mark -
+
+- (AFHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)urlRequest
+                                                    success:(void (^)(AFHTTPRequestOperation *, id))success
+                                                    failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
+{
+    // Extended failure-block to automatically refresh access-tokens
+    void (^refreshingFailure)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *request, NSError *error) {
+        // If the call was contacting the token-endpoint already, fail immediately.
+        if ([urlRequest.URL.path rangeOfString:self.tokenEndpointPath].location != NSNotFound) {
+            if (failure) {
+                failure(request, error);
+            }
+            return;
+        }
+        
+        // Check for expired credential. TODO: Check server-response instead of our cached version
+        // Make sure there is only one refresh-request at a time.
+        if (self.credential.isExpired && ! self.isRefreshing) {
+            self.isRefreshing = YES;
+            NSInteger originalMaxConcurrentOperationCount = self.operationQueue.maxConcurrentOperationCount;
+            self.operationQueue.maxConcurrentOperationCount = 1;
+            
+            [self refreshAccessTokenWithSuccess:^(AFOAuthCredential *credential) {
+                self.isRefreshing = NO;
+                self.operationQueue.maxConcurrentOperationCount = originalMaxConcurrentOperationCount;
+                
+                // Update authorization-header of the original request with the new token.
+                NSMutableURLRequest *mutableRequest = urlRequest.mutableCopy;
+                NSMutableDictionary *headers = mutableRequest.allHTTPHeaderFields.mutableCopy;
+                [headers setValue:[NSString stringWithFormat:@"Bearer %@", credential.accessToken] forKey:@"Authorization"];
+                mutableRequest.allHTTPHeaderFields = headers;
+                
+                AFHTTPRequestOperation *retryOperation = [self HTTPRequestOperationWithRequest:mutableRequest success:success failure:failure];
+                [self enqueueHTTPRequestOperation:retryOperation];
+                
+            } failure:^(NSError *refreshError) {
+                self.isRefreshing = NO;
+                self.operationQueue.maxConcurrentOperationCount = originalMaxConcurrentOperationCount;
+                
+                if (failure) {
+                    failure(request, refreshError);
+                }
+            }];
+            
+        } else if (self.isRefreshing) {
+            // When refreshing is currently in progress, just re-queue all other requests that fail.
+            // FIXME: They will fail a second time and initiate another refresh because they still have the old token in their header.
+            AFHTTPRequestOperation *retryOperation = [self HTTPRequestOperationWithRequest:urlRequest success:success failure:failure];
+            [self enqueueHTTPRequestOperation:retryOperation];
+        } else {
+            if (failure) {
+                failure(request, error);
+            }
+        }
+    };
+    
+    return [super HTTPRequestOperationWithRequest:urlRequest success:success failure:refreshingFailure];
 }
 
 @end
