@@ -227,6 +227,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
             if (failure) {
                 failure(request, error);
             }
+            return;
         }
         
         // Check for expired credential. TODO: Check server-response instead of our cached version
