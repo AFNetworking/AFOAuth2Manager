@@ -32,11 +32,15 @@ NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
 #ifdef _SECURITY_SECITEM_H_
 NSString * const kAFOAuthCredentialServiceName = @"AFOAuthCredentialService";
 
-static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifier) {
-    NSMutableDictionary *queryDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:(__bridge id)kSecClassGenericPassword, kSecClass, kAFOAuthCredentialServiceName, kSecAttrService, nil];
+static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifierAndServiceName(NSString *identifier, NSString *serviceName) {
+    NSMutableDictionary *queryDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:(__bridge id)kSecClassGenericPassword, kSecClass, serviceName, kSecAttrService, nil];
     [queryDictionary setValue:identifier forKey:(__bridge id)kSecAttrAccount];
 
     return queryDictionary;
+}
+
+static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifier) {
+    return AFKeychainQueryDictionaryWithIdentifierAndServiceName(identifier, kAFOAuthCredentialServiceName);
 }
 #endif
 
@@ -279,10 +283,17 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 + (BOOL)storeCredential:(AFOAuthCredential *)credential
          withIdentifier:(NSString *)identifier
 {
-    NSMutableDictionary *queryDictionary = AFKeychainQueryDictionaryWithIdentifier(identifier);
+    return [AFOAuthCredential storeCredential:credential withIdentifier:identifier andServiceName:kAFOAuthCredentialServiceName];
+}
+
++ (BOOL)storeCredential:(AFOAuthCredential *)credential
+         withIdentifier:(NSString *)identifier
+         andServiceName:(NSString *)serviceName
+{
+    NSMutableDictionary *queryDictionary = AFKeychainQueryDictionaryWithIdentifierAndServiceName(identifier, serviceName);
 
     if (!credential) {
-        return [self deleteCredentialWithIdentifier:identifier];
+        return [self deleteCredentialWithIdentifier:identifier andServiceName:serviceName];
     }
 
     NSMutableDictionary *updateDictionary = [NSMutableDictionary dictionary];
@@ -290,7 +301,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     [updateDictionary setObject:data forKey:(__bridge id)kSecValueData];
 
     OSStatus status;
-    BOOL exists = ([self retrieveCredentialWithIdentifier:identifier] != nil);
+    BOOL exists = ([self retrieveCredentialWithIdentifier:identifier andServiceName:serviceName] != nil);
 
     if (exists) {
         status = SecItemUpdate((__bridge CFDictionaryRef)queryDictionary, (__bridge CFDictionaryRef)updateDictionary);
@@ -307,7 +318,13 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 }
 
 + (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier {
-    NSMutableDictionary *queryDictionary = AFKeychainQueryDictionaryWithIdentifier(identifier);
+    return [AFOAuthCredential deleteCredentialWithIdentifier:identifier andServiceName:kAFOAuthCredentialServiceName];
+}
+
++ (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier
+                        andServiceName:(NSString *)serviceName
+{
+    NSMutableDictionary *queryDictionary = AFKeychainQueryDictionaryWithIdentifierAndServiceName(identifier, serviceName);
 
     OSStatus status = SecItemDelete((__bridge CFDictionaryRef)queryDictionary);
 
@@ -319,7 +336,13 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 }
 
 + (AFOAuthCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier {
-    NSMutableDictionary *queryDictionary = AFKeychainQueryDictionaryWithIdentifier(identifier);
+    return [AFOAuthCredential retrieveCredentialWithIdentifier:identifier andServiceName:kAFOAuthCredentialServiceName];
+}
+
++ (AFOAuthCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier
+                                         andServiceName:(NSString *)serviceName
+{
+    NSMutableDictionary *queryDictionary = AFKeychainQueryDictionaryWithIdentifierAndServiceName(identifier, serviceName);
     [queryDictionary setObject:(__bridge id)kCFBooleanTrue forKey:(__bridge id)kSecReturnData];
     [queryDictionary setObject:(__bridge id)kSecMatchLimitOne forKey:(__bridge id)kSecMatchLimit];
 
