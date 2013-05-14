@@ -188,12 +188,33 @@
 /**
 
  */
++ (BOOL)storeCredential:(AFOAuthCredential *)credential
+         withIdentifier:(NSString *)identifier
+         andServiceName:(NSString *)serviceName;
+
+
+/**
+
+ */
 + (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier;
 
 /**
 
  */
++ (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier
+                        andServiceName:(NSString *)serviceName;
+
+
+/**
+
+ */
 + (AFOAuthCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier;
+
+/**
+
+ */
++ (AFOAuthCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier
+                                         andServiceName:(NSString *)serviceName;
 #endif
 
 @end
