@@ -91,29 +91,13 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 - (void)setAuthorizationHeaderWithToken:(NSString *)token
                                  ofType:(NSString *)type
 {
-    // http://tools.ietf.org/html/rfc6749#section-7.1
-    // The Bearer type is the only finalized type
+    // See http://tools.ietf.org/html/rfc6749#section-7.1
     if ([[type lowercaseString] isEqualToString:@"bearer"]) {
         [self setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"Bearer %@", token]];
     }
 }
 
 #pragma mark -
-
-- (void)authenticateUsingOAuthWithPath:(NSString *)path
-                                  code:(NSString *)code
-                           redirectURI:(NSString *)uri
-                               success:(void (^)(AFOAuthCredential *credential))success
-                               failure:(void (^)(NSError *error))failure
-{
-    NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
-    [mutableParameters setObject:kAFOAuthCodeGrantType forKey:@"grant_type"];
-    [mutableParameters setValue:code forKey:@"code"];
-    [mutableParameters setValue:uri forKey:@"redirect_uri"];
-    NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
-
-    [self authenticateUsingOAuthWithPath:path parameters:parameters success:success failure:failure];
-}
 
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                               username:(NSString *)username
@@ -153,6 +137,21 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
     [mutableParameters setObject:kAFOAuthRefreshGrantType forKey:@"grant_type"];
     [mutableParameters setValue:refreshToken forKey:@"refresh_token"];
+    NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
+
+    [self authenticateUsingOAuthWithPath:path parameters:parameters success:success failure:failure];
+}
+
+- (void)authenticateUsingOAuthWithPath:(NSString *)path
+                                  code:(NSString *)code
+                           redirectURI:(NSString *)uri
+                               success:(void (^)(AFOAuthCredential *credential))success
+                               failure:(void (^)(NSError *error))failure
+{
+    NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
+    [mutableParameters setObject:kAFOAuthCodeGrantType forKey:@"grant_type"];
+    [mutableParameters setValue:code forKey:@"code"];
+    [mutableParameters setValue:uri forKey:@"redirect_uri"];
     NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
 
     [self authenticateUsingOAuthWithPath:path parameters:parameters success:success failure:failure];
