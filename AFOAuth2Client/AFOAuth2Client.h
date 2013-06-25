@@ -163,6 +163,22 @@
                                success:(void (^)(AFOAuthCredential *credential))success
                                failure:(void (^)(NSError *error))failure;
 
+/**
+ Creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server with the specified parameters.
+ 
+ @param path The path to be appended to the HTTP client's base URL and used as the request URL.
+ @param username The username to login with
+ @param password The password to login with
+ @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes a single argument: the OAuth credential returned by the server.
+ @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes a single argument: the error returned from the server.
+
+ Authentiate with a username and password but passing the client id and secret using Basic Auth
+ */
+- (void)authenticateUsingOAuthWithPath:(NSString *)path
+                              username:(NSString *)username
+                              password:(NSString *)password
+                               success:(void (^)(AFOAuthCredential *credential))success
+                               failure:(void (^)(NSError *error))failure;
 @end
 
 #pragma mark -
