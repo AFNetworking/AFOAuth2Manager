@@ -171,12 +171,13 @@
  @param password The password to login with
  @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes a single argument: the OAuth credential returned by the server.
  @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes a single argument: the error returned from the server.
-
- Authentiate with a username and password but passing the client id and secret using Basic Auth
+ 
+ Authentiate with a username and password but passing the client id and secret as described in http://tools.ietf.org/html/rfc6749#section-4.3.2
  */
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                               username:(NSString *)username
                               password:(NSString *)password
+                            parameters:(NSDictionary *)parameters
                                success:(void (^)(AFOAuthCredential *credential))success
                                failure:(void (^)(NSError *error))failure;
 @end

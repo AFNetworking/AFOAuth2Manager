@@ -171,53 +171,18 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 
     NSMutableURLRequest *mutableRequest = [self requestWithMethod:@"POST" path:path parameters:parameters];
     [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-
-    AFHTTPRequestOperation *requestOperation = [self HTTPRequestOperationWithRequest:mutableRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if ([responseObject valueForKey:@"error"]) {
-            if (failure) {
-                // TODO: Resolve the `error` field into a proper NSError object
-                // http://tools.ietf.org/html/rfc6749#section-5.2
-                failure(nil);
-            }
-
-            return;
-        }
-
-        NSString *refreshToken = [responseObject valueForKey:@"refresh_token"];
-        if (refreshToken == nil || [refreshToken isEqual:[NSNull null]]) {
-            refreshToken = [parameters valueForKey:@"refresh_token"];
-        }
-
-        AFOAuthCredential *credential = [AFOAuthCredential credentialWithOAuthToken:[responseObject valueForKey:@"access_token"] tokenType:[responseObject valueForKey:@"token_type"]];
-
-        NSDate *expireDate = nil;
-        id expiresIn = [responseObject valueForKey:@"expires_in"];
-        if (expiresIn != nil && ![expiresIn isEqual:[NSNull null]]) {
-            expireDate = [NSDate dateWithTimeIntervalSinceNow:[expiresIn doubleValue]];
-        }
-
-        [credential setRefreshToken:refreshToken expiration:expireDate];
-
-        [self setAuthorizationHeaderWithCredential:credential];
-
-        if (success) {
-            success(credential);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-
-    [self enqueueHTTPRequestOperation:requestOperation];
+    
+    [self authenticateUsingOAuthWithRequest:mutableRequest parameters:parameters success:success failure:failure];
 }
 
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                               username:(NSString *)username
                               password:(NSString *)password
+                            parameters:(NSDictionary *)parameters
                                success:(void (^)(AFOAuthCredential *credential))success
                                failure:(void (^)(NSError *error))failure
 {
+    // implementing authentication as described http://tools.ietf.org/html/rfc6749#section-4.3.2
     [self clearAuthorizationHeader];
     [self setAuthorizationHeaderWithUsername:self.clientID password:self.secret];
     
@@ -228,11 +193,20 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     
     NSString *queryParams = AFQueryStringFromParametersWithEncoding(mutableParameters, self.stringEncoding);
     
-    NSString *paramPath = [path stringByAppendingFormat:[path rangeOfString:@"?"].location == NSNotFound ? @"?%@" : @"&%@", AFQueryStringFromParametersWithEncoding(mutableParameters, self.stringEncoding)];
+    NSString *pathWithQueryParams = [path stringByAppendingFormat:[path rangeOfString:@"?"].location == NSNotFound ? @"?%@" : @"&%@", AFQueryStringFromParametersWithEncoding(mutableParameters, self.stringEncoding)];
     
-    NSMutableURLRequest *mutableRequest = [self requestWithMethod:@"POST" path:paramPath parameters:nil];
+    
+    NSMutableURLRequest *mutableRequest = [self requestWithMethod:@"POST" path:pathWithQueryParams parameters:nil];
     [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     
+    [self authenticateUsingOAuthWithRequest:mutableRequest parameters:parameters success:success failure:failure];
+}
+
+- (void)authenticateUsingOAuthWithRequest:(NSMutableURLRequest *)mutableRequest
+                               parameters:(NSDictionary *)parameters
+                                  success:(void (^)(AFOAuthCredential *credential))success
+                                  failure:(void (^)(NSError *error))failure
+{
     AFHTTPRequestOperation *requestOperation = [self HTTPRequestOperationWithRequest:mutableRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([responseObject valueForKey:@"error"]) {
             if (failure) {
@@ -243,11 +217,11 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
             
             return;
         }
-#warning need to handle rerfreshTokne
+        
         NSString *refreshToken = [responseObject valueForKey:@"refresh_token"];
-        //        if (refreshToken == nil || [refreshToken isEqual:[NSNull null]]) {
-        //            refreshToken = [parameters valueForKey:@"refresh_token"];
-        //        }
+        if (refreshToken == nil || [refreshToken isEqual:[NSNull null]]) {
+            refreshToken = [parameters valueForKey:@"refresh_token"];
+        }
         
         AFOAuthCredential *credential = [AFOAuthCredential credentialWithOAuthToken:[responseObject valueForKey:@"access_token"] tokenType:[responseObject valueForKey:@"token_type"]];
         
