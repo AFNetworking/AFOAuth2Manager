@@ -1,6 +1,6 @@
 // AFOAuth1ClientViewController.m
 //
-// Copyright (c) 2011 Mattt Thompson (http://mattt.me/)
+// Copyright (c) 2013 Lari Haataja (http://larihaataja.fi)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -26,81 +26,107 @@
 
 @property (nonatomic,strong) UIWebView* webView;
 @property (nonatomic,strong) NSString* redirect;
+@property (nonatomic,strong) NSString* responseType;
+@property (nonatomic,strong) NSString* clientID;
+@property (nonatomic,strong) NSString* secret;
+@property (nonatomic,strong) NSString* verifyPath;
 
 @end
 
 @implementation AFOAuth2ClientViewController
 
+
 - (id)initWithBaseURL:(NSString *)baseURL
+   authenticationPath:(NSString *)authPath
+     verificationPath:(NSString *)verifyPath
+         responseType:(NSString *)responseType
              clientID:(NSString *)clientID
                secret:(NSString *)secret
-                 path:(NSString *)path
                 scope:(NSString *)scope
           redirectURL:(NSString *)redirectURL
              delegate:(id<AFOAuth2ClientViewControllerDelegate>)delegate {
 
+    self.responseType = responseType;
+    self.redirect = redirectURL;
+    self.clientID = clientID;
+    self.secret = secret;
+    self.verifyPath = verifyPath;
+    self.delegate = delegate;
+    
 	self = [super init];
 	if (self) {
         self.client = [[AFOAuth2Client alloc] initWithBaseURL:[NSURL URLWithString:baseURL] clientID:clientID secret:secret];
         if (self.view != nil) {
-            NSString* url = [NSString stringWithFormat:@"%@%@?response_type=token%%20id_token&client_id=%@&redirect_uri=%@&scope=%@",baseURL,path,clientID,redirectURL,scope];
+            NSString* url = [NSString stringWithFormat:@"%@%@?response_type=%@&client_id=%@&redirect_uri=%@&scope=%@",baseURL,authPath,responseType,clientID,redirectURL,scope];
             [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:url]]];
         }
 	}
 	return self;
 }
 
+/*
+ * Grab the code/token from a redirect url.
+ * If we get the code, request a token.
+ * If we get the token, create a credential with it.
+ */
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-    NSString *url = [[request URL] host];
-    NSLog(@"Will load: %@", [[request URL] absoluteString]);
-    if ([url isEqualToString:@"localhost"]) {
-        
-        NSString *code;
-        
+    // If we're loading the redirect URL, scan it for parameters (code / token)
+    if ([[[request URL] absoluteString] rangeOfString:self.redirect].location != NSNotFound) {
+        // Scan the URL for parameters
         NSScanner *scanner = [NSScanner scannerWithString:[[request URL] absoluteString]];
         [scanner setCharactersToBeSkipped:[NSCharacterSet characterSetWithCharactersInString:@"&?"]];
         NSString *tempKey;
         NSString *tempValue;
-        [scanner scanUpToString:@"?" intoString:nil]; //ignore the beginning of the string and skip to the vars
+        [scanner scanUpToString:@"?" intoString:nil]; // Skip to the url parameters
+        
+        NSString *code, *token, *tokenType;
+        
         while ([scanner scanUpToString:@"=" intoString:&tempKey]) {
             [scanner scanUpToString:@"&" intoString:&tempValue];
             if ([tempKey isEqualToString:@"code"]) {
                 code = [tempValue substringFromIndex:1];
+                NSLog(@"got code: %@", code);
+            } else if ([tempKey isEqualToString:@"token"]) {
+                token = [tempValue substringFromIndex:1];
+                NSLog(@"got token: %@", token);
+            } else if ([tempKey isEqualToString:@"token_type"]) {
+                tokenType = [tempValue substringFromIndex:1];
+                NSLog(@"got token_type: %@", tokenType);
             }
         }
         
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"OAuth"
-                                                        message:[NSString stringWithFormat:@"Your OAuth code is %@", code]
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        [alert show];
-        [self dismissViewControllerAnimated:YES completion:^() {}];
+        if (code) {
+            [self getAccessTokenForCode:code];
+        } else if (token) {
+            [self setCredentialWithToken:token ofType:tokenType];
+        }
+
+        // TODO: Error handling??
     }
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView
+- (void)getAccessTokenForCode:(NSString *)code
 {
-	NSString* urlString = [[webView.request URL]absoluteString];
-    
-    NSLog(@"Webview loaded url: %@", urlString);
-    
-	if ([urlString rangeOfString:@"oauth_verifier"].location != NSNotFound) {
-		NSString* verifier = [[urlString componentsSeparatedByString:@"="]lastObject];
-		//self.client.accessToken.verifier = verifier;
-		[self getAccessToken];
-		[self dismissViewControllerAnimated:YES completion:nil];
-	}
+    [self.client authenticateUsingOAuthWithPath:self.verifyPath
+                                           code:code
+                                    redirectURI:self.redirect
+                                        success:^(AFOAuthCredential *credential) {
+                                            [self.delegate oAuthViewController:self
+                                                      didSucceedWithClient:self.client];
+                                            [self dismissViewControllerAnimated:YES completion:^() {}];
+                                        }
+                                        failure:^(NSError *error) {
+                                            [self.delegate oAuthViewController:self
+                                                              didFailWithError:error];
+                                            [self dismissViewControllerAnimated:YES completion:^() {}];
+                                        }];
 }
 
-- (void)getAccessToken
-{
-	/*[self.client acquireOAuthAccessTokenWithPath:self.accessTokenPath requestToken:self.client.accessToken accessMethod:self.accessMethod success:^(AFOAuth1Token *accessToken, id responseObject) {
-		self.client.accessToken = accessToken;
-		[self.delegate didGetAccessPermissionWithClient:self.client attributes:[self.client parametersFromResponseObject:responseObject]];
-	} failure:^(NSError *error) {
-		NSLog(@"%@",error);
-	}];*/
+- (void)setCredentialWithToken:(NSString *)token ofType:(NSString *)type {
+    AFOAuthCredential *credential = [AFOAuthCredential credentialWithOAuthToken:token tokenType:type];
+    [self.client setAuthorizationHeaderWithCredential:credential];
+    [self.delegate oAuthViewController:self didSucceedWithClient:self.client];
+    [self dismissViewControllerAnimated:YES completion:^() {}];
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil

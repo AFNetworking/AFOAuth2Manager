@@ -1,6 +1,6 @@
 // AFOAuth1ClientViewController.m
 //
-// Copyright (c) 2011 Mattt Thompson (http://mattt.me/)
+// Copyright (c) 2013 Lari Haataja (http://larihaataja.fi)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -23,11 +23,13 @@
 #import <UIKit/UIKit.h>
 #import "AFOAuth2Client.h"
 
+@class AFOAuth2ClientViewController;
+
 @protocol AFOAuth2ClientViewControllerDelegate <NSObject>
 
 @optional
-- (void)didGetCredentials:(AFOAuthCredential *)credentials;
-- (void)didFailWithError:(NSError *)error;
+- (void)oAuthViewController:(AFOAuth2ClientViewController *)viewController didSucceedWithClient:(AFOAuth2Client *)client;
+- (void)oAuthViewController:(AFOAuth2ClientViewController *)viewController didFailWithError:(NSError *)error;
 
 @end
 
@@ -37,11 +39,17 @@
 @property (nonatomic,assign) id<AFOAuth2ClientViewControllerDelegate> delegate;
 
 - (id)initWithBaseURL:(NSString *)baseURL
+   authenticationPath:(NSString *)authPath
+     verificationPath:(NSString *)verifyPath
+         responseType:(NSString *)responseType
              clientID:(NSString *)clientID
                secret:(NSString *)secret
-                 path:(NSString *)path
                 scope:(NSString *)scope
           redirectURL:(NSString *)redirectURL
              delegate:(id<AFOAuth2ClientViewControllerDelegate>)delegate;
 
+
 @end
+
+
+
