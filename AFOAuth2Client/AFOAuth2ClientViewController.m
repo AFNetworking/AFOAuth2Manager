@@ -71,7 +71,7 @@
  */
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     // If we're loading the redirect URL, scan it for parameters (code / token)
-    if ([[[request URL] absoluteString] rangeOfString:self.redirect].location != NSNotFound) {
+    if ([[[request URL] absoluteString] rangeOfString:self.redirect].location != NSNotFound && [[request URL] host] == [[NSURL URLWithString:self.redirect] host]) {
         // Scan the URL for parameters
         NSScanner *scanner = [NSScanner scannerWithString:[[request URL] absoluteString]];
         [scanner setCharactersToBeSkipped:[NSCharacterSet characterSetWithCharactersInString:@"&?"]];
@@ -99,9 +99,9 @@
             [self getAccessTokenForCode:code];
         } else if (token) {
             [self setCredentialWithToken:token ofType:tokenType];
+        } else {
+            [self failWithErrorDescription:@"Could not resolve server response (no code or token received)." recoverySuggestion:@"Make sure that you get a code or token from the server."];
         }
-
-        // TODO: Error handling??
     }
 }
 
@@ -126,6 +126,15 @@
     AFOAuthCredential *credential = [AFOAuthCredential credentialWithOAuthToken:token tokenType:type];
     [self.client setAuthorizationHeaderWithCredential:credential];
     [self.delegate oAuthViewController:self didSucceedWithClient:self.client];
+    [self dismissViewControllerAnimated:YES completion:^() {}];
+}
+
+- (void)failWithErrorDescription:(NSString *)description recoverySuggestion:(NSString *)suggestion {
+    NSMutableDictionary* details = [NSMutableDictionary dictionary];
+    [details setValue:description forKey:NSLocalizedDescriptionKey];
+    [details setValue:suggestion forKey:NSLocalizedRecoverySuggestionErrorKey];
+    NSError *e = [NSError errorWithDomain:@"oauth" code:@"100" userInfo:details];
+    [self.delegate oAuthViewController:self didFailWithError:e];
     [self dismissViewControllerAnimated:YES completion:^() {}];
 }
 
