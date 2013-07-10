@@ -10,5 +10,11 @@
       <FileRef
          location = "group:AFOAuth2Client.m">
       </FileRef>
+      <FileRef
+         location = "group:AFOAuth2ClientViewController.h">
+      </FileRef>
+      <FileRef
+         location = "group:AFOAuth2ClientViewController.m">
+      </FileRef>
    </Group>
 </Workspace>

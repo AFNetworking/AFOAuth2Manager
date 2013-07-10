@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>BE750BB3-CF54-4360-B388-4AC073707AD5</string>
+	<key>IDESourceControlProjectName</key>
+	<string>AFOAuth2Client</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>7302805C-682C-48B2-AC90-0DB1DFABF047</key>
+		<string>ssh://github.com/larih/AFOAuth2Client.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>AFOAuth2Client.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>7302805C-682C-48B2-AC90-0DB1DFABF047</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/larih/AFOAuth2Client.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>7302805C-682C-48B2-AC90-0DB1DFABF047</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>7302805C-682C-48B2-AC90-0DB1DFABF047</string>
+			<key>IDESourceControlWCCName</key>
+			<string>AFOAuth2Client</string>
+		</dict>
+	</array>
+</dict>
+</plist>
