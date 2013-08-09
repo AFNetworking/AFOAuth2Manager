@@ -187,9 +187,22 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
         if (refreshToken == nil || [refreshToken isEqual:[NSNull null]]) {
             refreshToken = [parameters valueForKey:@"refresh_token"];
         }
-
-        AFOAuthCredential *credential = [AFOAuthCredential credentialWithOAuthToken:[responseObject valueForKey:@"access_token"] tokenType:[responseObject valueForKey:@"token_type"]];
-
+    
+        // Ensure response contains access_token
+        if(![responseObject valueForKey:@"access_token"]){
+            NSDictionary *errorDictionary = @{ NSLocalizedDescriptionKey : @"Access token not setted"};
+            failure([NSError errorWithDomain:@"AFOAuth2Client" code:1 userInfo:errorDictionary]);
+        }
+        
+        // Check for token_type
+        NSString *tokenType = [responseObject valueForKey:@"token_type"];
+        if(!tokenType){
+            NSLog(@"Waring: Server response does not contain token_type, using Bearer.");
+            tokenType = @"Bearer";
+        }
+        
+        AFOAuthCredential *credential = [AFOAuthCredential credentialWithOAuthToken:[responseObject valueForKey:@"access_token"] tokenType:tokenType];
+        
         NSDate *expireDate = nil;
         id expiresIn = [responseObject valueForKey:@"expires_in"];
         if (expiresIn != nil && ![expiresIn isEqual:[NSNull null]]) {
