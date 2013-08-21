@@ -26,7 +26,7 @@
 #warning Security framework not found in project, or not included in precompiled header. Keychain persistence functionality will not be available.
 #endif
 
-@class AFOAuthCredential;
+@class AFHTTPRequestOperation, AFOAuthCredential;
 
 /**
  `AFOAuth2Client` encapsulates common patterns to authenticate against a resource server conforming to the behavior outlined in the OAuth 2.0 specification.
@@ -107,7 +107,7 @@
                               password:(NSString *)password
                                  scope:(NSString *)scope
                                success:(void (^)(AFOAuthCredential *credential))success
-                               failure:(void (^)(NSError *error))failure;
+                               failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 
 /**
  Creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server with a designated scope.
@@ -120,7 +120,7 @@
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                                  scope:(NSString *)scope
                                success:(void (^)(AFOAuthCredential *credential))success
-                               failure:(void (^)(NSError *error))failure;
+                               failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 
 /**
  Creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server using the specified refresh token.
@@ -133,7 +133,7 @@
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                           refreshToken:(NSString *)refreshToken
                                success:(void (^)(AFOAuthCredential *credential))success
-                               failure:(void (^)(NSError *error))failure;
+                               failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 
 /**
  Creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server with an authorization code, redirecting to a specified URI upon successful authentication.
@@ -148,7 +148,7 @@
                                   code:(NSString *)code
                            redirectURI:(NSString *)uri
                                success:(void (^)(AFOAuthCredential *credential))success
-                               failure:(void (^)(NSError *error))failure;
+                               failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 
 /**
  Creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server with the specified parameters.
@@ -161,7 +161,7 @@
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                             parameters:(NSDictionary *)parameters
                                success:(void (^)(AFOAuthCredential *credential))success
-                               failure:(void (^)(NSError *error))failure;
+                               failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure;
 
 @end
 
