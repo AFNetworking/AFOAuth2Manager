@@ -71,9 +71,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     self.serviceProviderIdentifier = [self.baseURL host];
     self.clientID = clientID;
     self.secret = secret;
-
-    [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
-
+    
     return self;
 }
 
