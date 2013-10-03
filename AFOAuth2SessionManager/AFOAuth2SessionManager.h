@@ -1,6 +1,6 @@
-// AFOAuth2Client.h
+// AFOAuth2SessionManager.h
 //
-// Copyright (c) 2012 Mattt Thompson (http://mattt.me/)
+// Copyright (c) 2013 AFNetworking (http://afnetworking.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "AFHTTPClient.h"
+#import "AFHTTPSessionManager.h"
 
 #ifndef _SECURITY_SECITEM_H_
 #warning Security framework not found in project, or not included in precompiled header. Keychain persistence functionality will not be available.
@@ -29,13 +29,11 @@
 @class AFOAuthCredential;
 
 /**
- `AFOAuth2Client` encapsulates common patterns to authenticate against a resource server conforming to the behavior outlined in the OAuth 2.0 specification.
- 
- In your application, it is recommended that you use `AFOAuth2Client` exclusively to get an authorization token, which is then passed to another `AFHTTPClient` subclass.
- 
+ `AFOAuth2SessionManager` encapsulates common patterns to authenticate against a resource server conforming to the behavior outlined in the OAuth 2.0 specification.
+
  @see RFC 6749 The OAuth 2.0 Authorization Framework: http://tools.ietf.org/html/rfc6749
  */
-@interface AFOAuth2Client : AFHTTPClient
+@interface AFOAuth2SessionManager : AFHTTPSessionManager
 
 ///------------------------------------------
 /// @name Accessing OAuth 2 Client Properties
@@ -56,26 +54,26 @@
 ///------------------------------------------------
 
 /**
- Creates and initializes an `AFOAuth2Client` object with the specified base URL, client identifier, and secret.
+ Creates and initializes an `AFOAuth2SessionManager` object with the specified base URL, client identifier, and secret.
 
  @param url The base URL for the HTTP client. This argument must not be `nil`.
  @param clientID The client identifier issued by the authorization server, uniquely representing the registration information provided by the client.
  @param secret The client secret.
 
- @return The newly-initialized OAuth 2 client
+ @return The newly-initialized OAuth 2 manager
  */
-+ (instancetype)clientWithBaseURL:(NSURL *)url
++ (instancetype)managerWithBaseURL:(NSURL *)url
                          clientID:(NSString *)clientID
                            secret:(NSString *)secret;
 
 /**
- Initializes an `AFOAuth2Client` object with the specified base URL, client identifier, and secret.
+ Initializes an `AFOAuth2SessionManager` object with the specified base URL, client identifier, and secret.
 
  @param url The base URL for the HTTP client. This argument must not be `nil`.
  @param clientID The client identifier issued by the authorization server, uniquely representing the registration information provided by the client.
  @param secret The client secret.
 
- @return The newly-initialized OAuth 2 client
+ @return The newly-initialized OAuth 2 manager
  */
 - (id)initWithBaseURL:(NSURL *)url
              clientID:(NSString *)clientID

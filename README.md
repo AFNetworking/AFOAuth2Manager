@@ -1,6 +1,6 @@
-# AFOAuth2Client
+# AFOAuth2SessionManager
 
-AFOAuth2Client is an extension for [AFNetworking](http://github.com/AFNetworking/AFNetworking/) that greatly simplifies the process of authenticating against an [OAuth 2](http://oauth.net/2/) provider.
+AFOAuth2SessionManager is an extension for [AFNetworking](http://github.com/AFNetworking/AFNetworking/) that greatly simplifies the process of authenticating against an [OAuth 2](http://oauth.net/2/) provider.
 
 ## Example Usage
 
@@ -23,6 +23,12 @@ AFOAuth2Client *oauthClient = [AFOAuth2Client clientWithBaseURL:url clientID:kCl
 
 ## Contact
 
+Gabriel Rinaldi
+
+- http://github.com/gabrielrinaldi
+- http://twitter.com/gabriel_rinaldi
+- gabriel@gabrielrinaldi.me
+
 Mattt Thompson
 
 - http://github.com/mattt
@@ -31,4 +37,4 @@ Mattt Thompson
 
 ## License
 
-AFOAuth2Client is available under the MIT license. See the LICENSE file for more info.
+AFOAuth2SessionManager is available under the MIT license. See the LICENSE file for more info.

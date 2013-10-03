@@ -1,6 +1,6 @@
-// AFOAuth2Client.m
+// AFOAuth2SessionManager.m
 //
-// Copyright (c) 2012 Mattt Thompson (http://mattt.me/)
+// Copyright (c) 2013 AFNetworking (http://afnetworking.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -20,9 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "AFJSONRequestOperation.h"
-
-#import "AFOAuth2Client.h"
+#import "AFHTTPRequestOperation.h"
+#import "AFOAuth2SessionManager.h"
 
 NSString * const kAFOAuthCodeGrantType = @"authorization_code";
 NSString * const kAFOAuthClientCredentialsGrantType = @"client_credentials";
@@ -42,15 +41,16 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 
 #pragma mark -
 
-@interface AFOAuth2Client ()
+@interface AFOAuth2SessionManager ()
 @property (readwrite, nonatomic) NSString *serviceProviderIdentifier;
 @property (readwrite, nonatomic) NSString *clientID;
 @property (readwrite, nonatomic) NSString *secret;
+@property (readwrite, nonatomic) NSDictionary *authenticationHeaders;
 @end
 
-@implementation AFOAuth2Client
+@implementation AFOAuth2SessionManager
 
-+ (instancetype)clientWithBaseURL:(NSURL *)url
++ (instancetype)managerWithBaseURL:(NSURL *)url
                          clientID:(NSString *)clientID
                            secret:(NSString *)secret
 {
@@ -72,8 +72,6 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     self.clientID = clientID;
     self.secret = secret;
 
-    [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
-
     return self;
 }
 
@@ -93,8 +91,17 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 {
     // See http://tools.ietf.org/html/rfc6749#section-7.1
     if ([[type lowercaseString] isEqualToString:@"bearer"]) {
-        [self setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"Bearer %@", token]];
+        [self setAuthenticationHeaders:@{ @"Authorization" : [NSString stringWithFormat:@"Bearer %@", token] }];
     }
+}
+
+- (NSURLSessionDataTask *)dataTaskWithRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLResponse *, id, NSError *))completionHandler {
+    NSMutableURLRequest *mutableRequest = [request mutableCopy];
+    for (NSString *key in [[self authenticationHeaders] allKeys]) {
+        [mutableRequest setValue:[[self authenticationHeaders] objectForKey:key] forHTTPHeaderField:key];
+    }
+
+    return [super dataTaskWithRequest:mutableRequest completionHandler:completionHandler];
 }
 
 #pragma mark -
@@ -167,12 +174,14 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     [mutableParameters setValue:self.secret forKey:@"client_secret"];
     parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
 
-    [self clearAuthorizationHeader];
+    [self setAuthenticationHeaders:nil];
 
-    NSMutableURLRequest *mutableRequest = [self requestWithMethod:@"POST" path:path parameters:parameters];
+    NSMutableURLRequest *mutableRequest = [[self requestSerializer] requestWithMethod:@"POST" URLString:[[NSURL URLWithString:path relativeToURL:[self baseURL]] absoluteString] parameters:parameters];
     [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 
-    AFHTTPRequestOperation *requestOperation = [self HTTPRequestOperationWithRequest:mutableRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    AFHTTPRequestOperation *requestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:mutableRequest];
+    [requestOperation setResponseSerializer:[AFJSONResponseSerializer serializer]];
+    [requestOperation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([responseObject valueForKey:@"error"]) {
             if (failure) {
                 // TODO: Resolve the `error` field into a proper NSError object
@@ -209,7 +218,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
         }
     }];
 
-    [self enqueueHTTPRequestOperation:requestOperation];
+    [requestOperation start];
 }
 
 @end
