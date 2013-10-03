@@ -45,7 +45,6 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 @property (readwrite, nonatomic) NSString *serviceProviderIdentifier;
 @property (readwrite, nonatomic) NSString *clientID;
 @property (readwrite, nonatomic) NSString *secret;
-@property (readwrite, nonatomic) NSDictionary *authenticationHeaders;
 @end
 
 @implementation AFOAuth2SessionManager
@@ -91,17 +90,10 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 {
     // See http://tools.ietf.org/html/rfc6749#section-7.1
     if ([[type lowercaseString] isEqualToString:@"bearer"]) {
-        [self setAuthenticationHeaders:@{ @"Authorization" : [NSString stringWithFormat:@"Bearer %@", token] }];
+        AFHTTPSerializer *serializer = [AFHTTPSerializer serializer];
+        [serializer setValue:[NSString stringWithFormat:@"Bearer %@", token] forHTTPHeaderField:@"Authorization"];
+        [self setRequestSerializer:serializer];
     }
-}
-
-- (NSURLSessionDataTask *)dataTaskWithRequest:(NSURLRequest *)request completionHandler:(void (^)(NSURLResponse *, id, NSError *))completionHandler {
-    NSMutableURLRequest *mutableRequest = [request mutableCopy];
-    for (NSString *key in [[self authenticationHeaders] allKeys]) {
-        [mutableRequest setValue:[[self authenticationHeaders] objectForKey:key] forHTTPHeaderField:key];
-    }
-
-    return [super dataTaskWithRequest:mutableRequest completionHandler:completionHandler];
 }
 
 #pragma mark -
@@ -174,10 +166,12 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     [mutableParameters setValue:self.secret forKey:@"client_secret"];
     parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
 
-    [self setAuthenticationHeaders:nil];
+    AFHTTPSerializer *serializer = [AFHTTPSerializer serializer];
+    [serializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [self setRequestSerializer:serializer];
 
-    NSMutableURLRequest *mutableRequest = [[self requestSerializer] requestWithMethod:@"POST" URLString:[[NSURL URLWithString:path relativeToURL:[self baseURL]] absoluteString] parameters:parameters];
-    [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    NSString *urlString = [[NSURL URLWithString:path relativeToURL:[self baseURL]] absoluteString];
+    NSMutableURLRequest *mutableRequest = [[self requestSerializer] requestWithMethod:@"POST" URLString:urlString parameters:parameters];
 
     AFHTTPRequestOperation *requestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:mutableRequest];
     [requestOperation setResponseSerializer:[AFJSONResponseSerializer serializer]];
