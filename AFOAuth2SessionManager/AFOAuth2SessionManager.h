@@ -49,6 +49,11 @@
  */
 @property (readonly, nonatomic) NSString *clientID;
 
+/**
+ The OAuth URL if different than the base URL.
+ */
+@property (readonly, nonatomic) NSURL *oauthURL;
+
 ///------------------------------------------------
 /// @name Creating and Initializing OAuth 2 Clients
 ///------------------------------------------------

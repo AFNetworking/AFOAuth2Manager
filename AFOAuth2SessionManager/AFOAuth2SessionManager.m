@@ -171,6 +171,9 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     [self setRequestSerializer:serializer];
 
     NSString *urlString = [[NSURL URLWithString:path relativeToURL:[self baseURL]] absoluteString];
+    if ([self oauthURL]) {
+        urlString = [[NSURL URLWithString:path relativeToURL:[self oauthURL]] absoluteString];
+    }
     NSMutableURLRequest *mutableRequest = [[self requestSerializer] requestWithMethod:@"POST" URLString:urlString parameters:parameters];
 
     AFHTTPRequestOperation *requestOperation = [[AFHTTPRequestOperation alloc] initWithRequest:mutableRequest];
