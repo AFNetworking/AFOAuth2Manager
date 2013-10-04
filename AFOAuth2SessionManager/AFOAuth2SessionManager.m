@@ -194,8 +194,8 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     [self setRequestSerializer:serializer];
 
     NSString *urlString = [[NSURL URLWithString:path relativeToURL:[self baseURL]] absoluteString];
-    if ([self oauthURL]) {
-        urlString = [[NSURL URLWithString:path relativeToURL:[self oauthURL]] absoluteString];
+    if ([self oAuthURL]) {
+        urlString = [[NSURL URLWithString:path relativeToURL:[self oAuthURL]] absoluteString];
     }
     NSMutableURLRequest *mutableRequest = [[self requestSerializer] requestWithMethod:@"POST" URLString:urlString parameters:parameters];
 
