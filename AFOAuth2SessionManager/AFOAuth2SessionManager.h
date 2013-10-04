@@ -52,7 +52,7 @@
 /**
  The OAuth URL if different than the base URL.
  */
-@property (readonly, nonatomic) NSURL *oauthURL;
+@property (readonly, nonatomic) NSURL *oAuthURL;
 
 ///------------------------------------------------
 /// @name Creating and Initializing OAuth 2 Clients
@@ -72,6 +72,21 @@
                            secret:(NSString *)secret;
 
 /**
+ Creates and initializes an `AFOAuth2SessionManager` object with the specified base URL, client identifier, and secret.
+
+ @param url The base URL for the HTTP client. This argument must not be `nil`.
+ @param oAuthURL The OAuth URL for the HTTP client if different than the base URL.
+ @param clientID The client identifier issued by the authorization server, uniquely representing the registration information provided by the client.
+ @param secret The client secret.
+
+ @return The newly-initialized OAuth 2 manager
+ */
++ (instancetype)managerWithBaseURL:(NSURL *)url
+                          oAuthURL:(NSURL *)oAuthURL
+                          clientID:(NSString *)clientID
+                            secret:(NSString *)secret;
+
+/**
  Initializes an `AFOAuth2SessionManager` object with the specified base URL, client identifier, and secret.
 
  @param url The base URL for the HTTP client. This argument must not be `nil`.
@@ -81,6 +96,21 @@
  @return The newly-initialized OAuth 2 manager
  */
 - (id)initWithBaseURL:(NSURL *)url
+             clientID:(NSString *)clientID
+               secret:(NSString *)secret;
+
+/**
+ Initializes an `AFOAuth2SessionManager` object with the specified base URL, client identifier, and secret.
+
+ @param url The base URL for the HTTP client. This argument must not be `nil`.
+ @param oAuthURL The OAuth URL for the HTTP client if different than the base URL.
+ @param clientID The client identifier issued by the authorization server, uniquely representing the registration information provided by the client.
+ @param secret The client secret.
+
+ @return The newly-initialized OAuth 2 manager
+ */
+- (id)initWithBaseURL:(NSURL *)url
+             oAuthURL:(NSURL *)oAuthURL
              clientID:(NSString *)clientID
                secret:(NSString *)secret;
 
