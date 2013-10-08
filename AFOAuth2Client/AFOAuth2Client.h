@@ -19,8 +19,7 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
-#import "AFHTTPClient.h"
+#import "AFNetworking.h"
 
 #ifndef _SECURITY_SECITEM_H_
 #warning Security framework not found in project, or not included in precompiled header. Keychain persistence functionality will not be available.
@@ -35,14 +34,15 @@
  
  @see RFC 6749 The OAuth 2.0 Authorization Framework: http://tools.ietf.org/html/rfc6749
  */
-@interface AFOAuth2Client : AFHTTPClient
+
+@interface AFOAuth2Client : AFHTTPRequestOperationManager
 
 ///------------------------------------------
 /// @name Accessing OAuth 2 Client Properties
 ///------------------------------------------
 
 /**
- The service provider identifier used to store and retrieve OAuth credentials by `AFOAuthCredential`. Equivalent to the hostname of the client `baseURL`. 
+ The service provider identifier used to store and retrieve OAuth credentials by `AFOAuthCredential`. Equivalent to the hostname of the client `baseURL`.
  */
 @property (readonly, nonatomic) NSString *serviceProviderIdentifier;
 
@@ -57,11 +57,11 @@
 
 /**
  Creates and initializes an `AFOAuth2Client` object with the specified base URL, client identifier, and secret.
-
+ 
  @param url The base URL for the HTTP client. This argument must not be `nil`.
  @param clientID The client identifier issued by the authorization server, uniquely representing the registration information provided by the client.
  @param secret The client secret.
-
+ 
  @return The newly-initialized OAuth 2 client
  */
 + (instancetype)clientWithBaseURL:(NSURL *)url
@@ -70,11 +70,11 @@
 
 /**
  Initializes an `AFOAuth2Client` object with the specified base URL, client identifier, and secret.
-
+ 
  @param url The base URL for the HTTP client. This argument must not be `nil`.
  @param clientID The client identifier issued by the authorization server, uniquely representing the registration information provided by the client.
  @param secret The client secret.
-
+ 
  @return The newly-initialized OAuth 2 client
  */
 - (id)initWithBaseURL:(NSURL *)url
@@ -83,7 +83,7 @@
 
 /**
  Sets the "Authorization" HTTP header set in request objects made by the HTTP client to a basic authentication value with Base64-encoded username and password. This overwrites any existing value for this header.
-
+ 
  @param credential The OAuth credential
  */
 - (void)setAuthorizationHeaderWithCredential:(AFOAuthCredential *)credential;
@@ -93,75 +93,75 @@
 ///---------------------
 
 /**
- Creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server using a specified username and password, with a designated scope. 
+ Creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server using a specified username and password, with a designated scope.
  
- @param path The path to be appended to the HTTP client's base URL and used as the request URL.
+ @param urlString The string to be appended to the HTTP client's base URL and used as the request URL.
  @param username The username used for authentication
  @param password The password used for authentication
  @param scope The authorization scope
  @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes a single argument: the OAuth credential returned by the server.
  @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes a single argument: the error returned from the server.
  */
-- (void)authenticateUsingOAuthWithPath:(NSString *)path
-                              username:(NSString *)username
-                              password:(NSString *)password
-                                 scope:(NSString *)scope
-                               success:(void (^)(AFOAuthCredential *credential))success
-                               failure:(void (^)(NSError *error))failure;
+- (void)authenticateUsingOAuthWithURLString:(NSString *)urlString
+                                   username:(NSString *)username
+                                   password:(NSString *)password
+                                      scope:(NSString *)scope
+                                    success:(void (^)(AFOAuthCredential *credential))success
+                                    failure:(void (^)(NSError *error))failure;
 
 /**
  Creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server with a designated scope.
-
- @param path The path to be appended to the HTTP client's base URL and used as the request URL.
+ 
+ @param urlString The string to be appended to the HTTP client's base URL and used as the request URL.
  @param scope The authorization scope
  @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes a single argument: the OAuth credential returned by the server.
  @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes a single argument: the error returned from the server.
  */
-- (void)authenticateUsingOAuthWithPath:(NSString *)path
-                                 scope:(NSString *)scope
-                               success:(void (^)(AFOAuthCredential *credential))success
-                               failure:(void (^)(NSError *error))failure;
+- (void)authenticateUsingOAuthWithURLString:(NSString *)urlString
+                                      scope:(NSString *)scope
+                                    success:(void (^)(AFOAuthCredential *credential))success
+                                    failure:(void (^)(NSError *error))failure;
 
 /**
  Creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server using the specified refresh token.
-
- @param path The path to be appended to the HTTP client's base URL and used as the request URL.
+ 
+ @param urlString The string to be appended to the HTTP client's base URL and used as the request URL.
  @param refreshToken The OAuth refresh token
  @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes a single argument: the OAuth credential returned by the server.
  @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes a single argument: the error returned from the server.
  */
-- (void)authenticateUsingOAuthWithPath:(NSString *)path
-                          refreshToken:(NSString *)refreshToken
-                               success:(void (^)(AFOAuthCredential *credential))success
-                               failure:(void (^)(NSError *error))failure;
+- (void)authenticateUsingOAuthWithURLString:(NSString *)urlString
+                               refreshToken:(NSString *)refreshToken
+                                    success:(void (^)(AFOAuthCredential *credential))success
+                                    failure:(void (^)(NSError *error))failure;
 
 /**
  Creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server with an authorization code, redirecting to a specified URI upon successful authentication.
-
- @param path The path to be appended to the HTTP client's base URL and used as the request URL.
+ 
+ @param urlString The string to be appended to the HTTP client's base URL and used as the request URL.
  @param code The authorization code
  @param redirectURI The URI to redirect to after successful authentication
  @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes a single argument: the OAuth credential returned by the server.
  @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes a single argument: the error returned from the server.
  */
-- (void)authenticateUsingOAuthWithPath:(NSString *)path
-                                  code:(NSString *)code
-                           redirectURI:(NSString *)uri
-                               success:(void (^)(AFOAuthCredential *credential))success
-                               failure:(void (^)(NSError *error))failure;
+- (void)authenticateUsingOAuthWithURLString:(NSString *)urlString
+                                       code:(NSString *)code
+                                redirectURI:(NSString *)uri
+                                    success:(void (^)(AFOAuthCredential *credential))success
+                                    failure:(void (^)(NSError *error))failure;
 
 /**
  Creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server with the specified parameters.
-
- @param path The path to be appended to the HTTP client's base URL and used as the request URL.
+ 
+ @param urlString The string to be appended to the HTTP client's base URL and used as the request URL.
  @param parameters The parameters to be encoded and set in the request HTTP body.
  @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes a single argument: the OAuth credential returned by the server.
  @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes a single argument: the error returned from the server.
  */
-- (void)authenticateUsingOAuthWithPath:(NSString *)path
-                            parameters:(NSDictionary *)parameters
-                               success:(void (^)(AFOAuthCredential *credential))success
-                               failure:(void (^)(NSError *error))failure;
+- (void)authenticateUsingOAuthWithURLString:(NSString *)urlString
+                                 parameters:(NSDictionary *)parameters
+                                    success:(void (^)(AFOAuthCredential *credential))success
+                                    failure:(void (^)(NSError *error))failure;
 
 @end
 
@@ -213,7 +213,7 @@
 
 /**
  Initialize an OAuth credential from a token string, with a specified type.
-
+ 
  @param token The OAuth token string.
  @param type The OAuth token type.
  */
@@ -260,9 +260,9 @@
 
 /**
  Deletes the OAuth credential stored with the specified service identifier from the Keychain.
-
+ 
  @param identifier The service identifier associated with the specified credential.
-
+ 
  @return Whether or not the credential was deleted from the keychain.
  */
 + (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier;
@@ -278,7 +278,7 @@
  ## OAuth Grant Types
  
  OAuth 2.0 provides several grant types, covering several different use cases. The following grant type string constants are provided:
-
+ 
  `kAFOAuthCodeGrantType`: "authorization_code"
  `kAFOAuthClientCredentialsGrantType`: "client_credentials"
  `kAFOAuthPasswordCredentialsGrantType`: "password"
