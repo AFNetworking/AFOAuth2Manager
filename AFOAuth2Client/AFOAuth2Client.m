@@ -22,7 +22,7 @@
 
 
 #import "AFOAuth2Client.h"
-#import "AFNetworking/AFNetworking.h"
+#import "AFNetworking.h"
 
 NSString * const kAFOAuthCodeGrantType = @"authorization_code";
 NSString * const kAFOAuthClientCredentialsGrantType = @"client_credentials";
