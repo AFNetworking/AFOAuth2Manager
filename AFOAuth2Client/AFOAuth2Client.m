@@ -259,12 +259,12 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 - (void)setRefreshToken:(NSString *)refreshToken
              expiration:(NSDate *)expiration
 {
-    if (!refreshToken || !expiration) {
-        return;
+    if (refreshToken) {
+        self.refreshToken = refreshToken;
     }
-
-    self.refreshToken = refreshToken;
-    self.expiration = expiration;
+    if (expiration) {
+        self.expiration = expiration;
+    }
 }
 
 - (BOOL)isExpired {
