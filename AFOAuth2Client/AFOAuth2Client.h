@@ -225,10 +225,10 @@
 ///----------------------------
 
 /**
- Set the credential refresh token, with a specified expiration.
+ Set the credential refresh token, with a specified expiration. 
  
  @param refreshToken The OAuth refresh token.
- @param expiration The expiration of the access token.
+ @param expiration The expiration of the access token. This must not be `nil`.
  */
 - (void)setRefreshToken:(NSString *)refreshToken
              expiration:(NSDate *)expiration;
