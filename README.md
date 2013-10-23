@@ -21,6 +21,10 @@ AFOAuth2Client *oauthClient = [AFOAuth2Client clientWithBaseURL:url clientID:kCl
                                     }];
 ```
 
+## Docs
+
+Docs for current 0.1.1 release: [cocoadocs.org/docsets/AFOAuth2Client/0.1.1](http://cocoadocs.org/docsets/AFOAuth2Client/0.1.1/)
+
 ## Contact
 
 Mattt Thompson
