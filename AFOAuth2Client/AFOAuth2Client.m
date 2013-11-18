@@ -271,10 +271,15 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 
 #ifdef _SECURITY_SECITEM_H_
 
-+ (BOOL)storeCredential:(AFOAuthCredential *)credential
++ (BOOL)storeCredential:(AFOAuth1Token *)credential
          withIdentifier:(NSString *)identifier
 {
-    return [[self class] storeCredential:credential withIdentifier:identifier withAccessibility:(__bridge id)kSecAttrAccessibleWhenUnlocked];
+    id securityAccessibility = nil;
+#if (defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 43000) || (defined(__MAC_OS_X_VERSION_MAX_ALLOWED) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 1090)
+    securityAccessibility = (__bridge id)kSecAttrAccessibleWhenUnlocked;
+#endif
+    
+    return [[self class] storeCredential:credential withIdentifier:identifier withAccessibility:securityAccessibility];
 }
 
 + (BOOL)storeCredential:(AFOAuthCredential *)credential
@@ -290,7 +295,9 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     NSMutableDictionary *updateDictionary = [NSMutableDictionary dictionary];
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:credential];
     [updateDictionary setObject:data forKey:(__bridge id)kSecValueData];
-    [updateDictionary setObject:securityAccessibility forKey:(__bridge id)kSecAttrAccessible];
+    if (securityAccessibility) {
+        [updateDictionary setObject:securityAccessibility forKey:(__bridge id)kSecAttrAccessible];
+    }
 
     OSStatus status;
     BOOL exists = ([self retrieveCredentialWithIdentifier:identifier] != nil);
