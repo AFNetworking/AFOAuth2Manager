@@ -203,35 +203,37 @@
 ///--------------------------------------------
 
 /**
- Create an OAuth credential from a token string, with a specified type.
+ Create an OAuth credential from a token string, with a specified type and specified expiration.
  
  @param token The OAuth token string.
  @param type The OAuth token type.
+ @param expiration The expiration of the access token. This must not be 'nil'.
  */
 + (instancetype)credentialWithOAuthToken:(NSString *)token
-                               tokenType:(NSString *)type;
+                               tokenType:(NSString *)type
+                              expiration:(NSDate *)expiration;
 
 /**
- Initialize an OAuth credential from a token string, with a specified type.
+ Initialize an OAuth credential from a token string, with a specified type and specified expiration.
 
  @param token The OAuth token string.
  @param type The OAuth token type.
+ @param expiration The expiration of the access token. This must not be 'nil'.
  */
 - (id)initWithOAuthToken:(NSString *)token
-               tokenType:(NSString *)type;
+               tokenType:(NSString *)type
+              expiration:(NSDate *)expiration;
 
 ///----------------------------
 /// @name Setting Refresh Token
 ///----------------------------
 
 /**
- Set the credential refresh token, with a specified expiration. 
+ Set the credential refresh token.
  
  @param refreshToken The OAuth refresh token.
- @param expiration The expiration of the access token. This must not be `nil`.
  */
-- (void)setRefreshToken:(NSString *)refreshToken
-             expiration:(NSDate *)expiration;
+- (void)setRefreshToken:(NSString *)refreshToken;
 
 ///-----------------------------------------
 /// @name Storing and Retrieving Credentials

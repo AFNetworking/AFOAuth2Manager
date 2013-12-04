@@ -186,15 +186,18 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
             refreshToken = [parameters valueForKey:@"refresh_token"];
         }
 
-        AFOAuthCredential *credential = [AFOAuthCredential credentialWithOAuthToken:[responseObject valueForKey:@"access_token"] tokenType:[responseObject valueForKey:@"token_type"]];
-
         NSDate *expireDate = nil;
         id expiresIn = [responseObject valueForKey:@"expires_in"];
         if (expiresIn != nil && ![expiresIn isEqual:[NSNull null]]) {
             expireDate = [NSDate dateWithTimeIntervalSinceNow:[expiresIn doubleValue]];
         }
+        
+        AFOAuthCredential *credential = [AFOAuthCredential credentialWithOAuthToken:[responseObject valueForKey:@"access_token"] tokenType:[responseObject valueForKey:@"token_type"] expiration:expireDate];
 
-        [credential setRefreshToken:refreshToken expiration:expireDate];
+        if (refreshToken)
+        {
+            [credential setRefreshToken:refreshToken];
+        }
 
         [self setAuthorizationHeaderWithCredential:credential];
 
@@ -232,20 +235,25 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 
 + (instancetype)credentialWithOAuthToken:(NSString *)token
                                tokenType:(NSString *)type
+                              expiration:(NSDate *)expiration
 {
-    return [[self alloc] initWithOAuthToken:token tokenType:type];
+    return [[self alloc] initWithOAuthToken:token tokenType:type expiration:expiration];
 }
 
 - (id)initWithOAuthToken:(NSString *)token
                tokenType:(NSString *)type
+              expiration:(NSDate *)expiration
 {
     self = [super init];
     if (!self) {
         return nil;
     }
 
+    NSParameterAssert(expiration);
+    
     self.accessToken = token;
     self.tokenType = type;
+    self.expiration = expiration;
 
     return self;
 }
@@ -255,12 +263,9 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 }
 
 - (void)setRefreshToken:(NSString *)refreshToken
-             expiration:(NSDate *)expiration
 {
-    NSParameterAssert(expiration);
-
+    
     self.refreshToken = refreshToken;
-    self.expiration = expiration;
 }
 
 - (BOOL)isExpired {
