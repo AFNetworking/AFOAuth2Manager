@@ -46,6 +46,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 @property (readwrite, nonatomic) NSString *serviceProviderIdentifier;
 @property (readwrite, nonatomic) NSString *clientID;
 @property (readwrite, nonatomic) NSString *secret;
+@property (readonly, nonatomic)  BOOL basicAuth;
 @end
 
 @implementation AFOAuth2Client
@@ -57,9 +58,17 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     return [[self alloc] initWithBaseURL:url clientID:clientID secret:secret];
 }
 
+-(id)initWithBaseURL:(NSURL *)url
+            clientID:(NSString *)clientID
+              secret:(NSString *)secret
+{
+    return [self initWithBaseURL:url clientID:clientID secret:secret withBasicAuth:YES];
+}
+
 - (id)initWithBaseURL:(NSURL *)url
              clientID:(NSString *)clientID
                secret:(NSString *)secret
+        withBasicAuth:(BOOL)basicAuth
 {
     NSParameterAssert(clientID);
 
@@ -71,6 +80,11 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     self.serviceProviderIdentifier = [self.baseURL host];
     self.clientID = clientID;
     self.secret = secret;
+    _basicAuth = basicAuth;
+    if (self.basicAuth)
+    {
+        [self setAuthorizationHeaderWithUsername:clientID password:secret];
+    }
 
     [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
 
@@ -163,8 +177,11 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
                                failure:(void (^)(NSError *error))failure
 {
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
-    [mutableParameters setObject:self.clientID forKey:@"client_id"];
-    [mutableParameters setValue:self.secret forKey:@"client_secret"];
+    if (!self.basicAuth)
+    {
+        [mutableParameters setObject:self.clientID forKey:@"client_id"];
+        [mutableParameters setValue:self.secret forKey:@"client_secret"];
+    }
     parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
 
     NSMutableURLRequest *mutableRequest = [self requestWithMethod:@"POST" path:path parameters:parameters];
@@ -202,6 +219,10 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
             success(credential);
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (self.basicAuth)
+        {
+            [self setAuthorizationHeaderWithUsername:self.clientID password:self.secret];
+        }
         if (failure) {
             failure(error);
         }
