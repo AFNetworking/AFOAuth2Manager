@@ -198,6 +198,13 @@
  */
 @property (readonly, nonatomic, assign, getter = isExpired) BOOL expired;
 
+/**
+ Authorization dictionary (available for application specific data)
+ */
+
+@property (readonly, nonatomic) NSDictionary *authorizationResponse;
+
+
 ///--------------------------------------------
 /// @name Creating and Initializing Credentials
 ///--------------------------------------------
@@ -209,7 +216,8 @@
  @param type The OAuth token type.
  */
 + (instancetype)credentialWithOAuthToken:(NSString *)token
-                               tokenType:(NSString *)type;
+                               tokenType:(NSString *)type
+								response:(NSDictionary*)response;
 
 /**
  Initialize an OAuth credential from a token string, with a specified type.
@@ -218,7 +226,8 @@
  @param type The OAuth token type.
  */
 - (id)initWithOAuthToken:(NSString *)token
-               tokenType:(NSString *)type;
+               tokenType:(NSString *)type
+				response:(NSDictionary*)response;
 
 ///----------------------------
 /// @name Setting Refresh Token

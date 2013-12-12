@@ -190,7 +190,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
             refreshToken = [parameters valueForKey:@"refresh_token"];
         }
         
-        AFOAuthCredential *credential = [AFOAuthCredential credentialWithOAuthToken:[responseObject valueForKey:@"access_token"] tokenType:[responseObject valueForKey:@"token_type"]];
+        AFOAuthCredential *credential = [AFOAuthCredential credentialWithOAuthToken:[responseObject valueForKey:@"access_token"] tokenType:[responseObject valueForKey:@"token_type"] response:responseObject];
         
         NSDate *expireDate = nil;
         id expiresIn = [responseObject valueForKey:@"expires_in"];
@@ -222,6 +222,8 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 @property (readwrite, nonatomic) NSString *tokenType;
 @property (readwrite, nonatomic) NSString *refreshToken;
 @property (readwrite, nonatomic) NSDate *expiration;
+@property (readwrite, nonatomic) NSDictionary *authorizationResponse;
+
 @end
 
 @implementation AFOAuthCredential
@@ -229,18 +231,21 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 @synthesize tokenType = _tokenType;
 @synthesize refreshToken = _refreshToken;
 @synthesize expiration = _expiration;
+@synthesize authorizationResponse = _authorizationResponse;
 @dynamic expired;
 
 #pragma mark -
 
 + (instancetype)credentialWithOAuthToken:(NSString *)token
                                tokenType:(NSString *)type
+								response:(NSDictionary*)response
 {
-    return [[self alloc] initWithOAuthToken:token tokenType:type];
+    return [[self alloc] initWithOAuthToken:token tokenType:type response:response];
 }
 
 - (id)initWithOAuthToken:(NSString *)token
                tokenType:(NSString *)type
+				response:(NSDictionary*)response
 {
     self = [super init];
     if (!self) {
@@ -249,7 +254,8 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     
     self.accessToken = token;
     self.tokenType = type;
-    
+    self.authorizationResponse = response;
+
     return self;
 }
 
