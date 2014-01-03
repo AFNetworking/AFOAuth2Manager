@@ -262,12 +262,6 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     return [NSString stringWithFormat:@"<%@ accessToken:\"%@\" tokenType:\"%@\" refreshToken:\"%@\" expiration:\"%@\">", [self class], self.accessToken, self.tokenType, self.refreshToken, self.expiration];
 }
 
-- (void)setRefreshToken:(NSString *)refreshToken
-{
-    
-    self.refreshToken = refreshToken;
-}
-
 - (BOOL)isExpired {
     return [self.expiration compare:[NSDate date]] == NSOrderedAscending;
 }
