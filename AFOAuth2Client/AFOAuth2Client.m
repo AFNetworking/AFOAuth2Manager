@@ -31,10 +31,10 @@ NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
 NSString * const AFOAuthClientError = @"com.alamofire.networking.oauth2.error";
 
 #ifdef _SECURITY_SECITEM_H_
-NSString * const kAFOAuthCredentialServiceName = @"AFOAuthCredentialService";
+NSString * const kAFOAuth2CredentialServiceName = @"AFOAuthCredentialService";
 
 static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifier) {
-    NSMutableDictionary *queryDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:(__bridge id)kSecClassGenericPassword, kSecClass, kAFOAuthCredentialServiceName, kSecAttrService, nil];
+    NSMutableDictionary *queryDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:(__bridge id)kSecClassGenericPassword, kSecClass, kAFOAuth2CredentialServiceName, kSecAttrService, nil];
     [queryDictionary setValue:identifier forKey:(__bridge id)kSecAttrAccount];
 
     return queryDictionary;
@@ -120,29 +120,13 @@ static NSError * AFOAuth2ErrorFromResponseObject(NSDictionary *responseObject) {
 - (void)setAuthorizationHeaderWithToken:(NSString *)token
                                  ofType:(NSString *)type
 {
-    // http://tools.ietf.org/html/rfc6749#section-7.1
-    // The Bearer type is the only finalized type
+    // See http://tools.ietf.org/html/rfc6749#section-7.1
     if ([[type lowercaseString] isEqualToString:@"bearer"]) {
         [self setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"Bearer %@", token]];
     }
 }
 
 #pragma mark -
-
-- (void)authenticateUsingOAuthWithPath:(NSString *)path
-                                  code:(NSString *)code
-                           redirectURI:(NSString *)uri
-                               success:(void (^)(AFOAuthCredential *credential))success
-                               failure:(void (^)(NSError *error))failure
-{
-    NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
-    [mutableParameters setObject:kAFOAuthCodeGrantType forKey:@"grant_type"];
-    [mutableParameters setValue:code forKey:@"code"];
-    [mutableParameters setValue:uri forKey:@"redirect_uri"];
-    NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
-
-    [self authenticateUsingOAuthWithPath:path parameters:parameters success:success failure:failure];
-}
 
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
                               username:(NSString *)username
@@ -188,6 +172,21 @@ static NSError * AFOAuth2ErrorFromResponseObject(NSDictionary *responseObject) {
 }
 
 - (void)authenticateUsingOAuthWithPath:(NSString *)path
+                                  code:(NSString *)code
+                           redirectURI:(NSString *)uri
+                               success:(void (^)(AFOAuthCredential *credential))success
+                               failure:(void (^)(NSError *error))failure
+{
+    NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
+    [mutableParameters setObject:kAFOAuthCodeGrantType forKey:@"grant_type"];
+    [mutableParameters setValue:code forKey:@"code"];
+    [mutableParameters setValue:uri forKey:@"redirect_uri"];
+    NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
+
+    [self authenticateUsingOAuthWithPath:path parameters:parameters success:success failure:failure];
+}
+
+- (void)authenticateUsingOAuthWithPath:(NSString *)path
                             parameters:(NSDictionary *)parameters
                                success:(void (^)(AFOAuthCredential *credential))success
                                failure:(void (^)(NSError *error))failure
@@ -196,8 +195,6 @@ static NSError * AFOAuth2ErrorFromResponseObject(NSDictionary *responseObject) {
     [mutableParameters setObject:self.clientID forKey:@"client_id"];
     [mutableParameters setValue:self.secret forKey:@"client_secret"];
     parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
-
-    [self clearAuthorizationHeader];
 
     NSMutableURLRequest *mutableRequest = [self requestWithMethod:@"POST" path:path parameters:parameters];
     [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
@@ -288,9 +285,7 @@ static NSError * AFOAuth2ErrorFromResponseObject(NSDictionary *responseObject) {
 - (void)setRefreshToken:(NSString *)refreshToken
              expiration:(NSDate *)expiration
 {
-    if (!refreshToken || !expiration) {
-        return;
-    }
+    NSParameterAssert(expiration);
 
     self.refreshToken = refreshToken;
     self.expiration = expiration;
@@ -304,8 +299,20 @@ static NSError * AFOAuth2ErrorFromResponseObject(NSDictionary *responseObject) {
 
 #ifdef _SECURITY_SECITEM_H_
 
++ (BOOL)storeCredential:(AFOAuth1Token *)credential
+         withIdentifier:(NSString *)identifier
+{
+    id securityAccessibility = nil;
+#if (defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 43000) || (defined(__MAC_OS_X_VERSION_MAX_ALLOWED) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 1090)
+    securityAccessibility = (__bridge id)kSecAttrAccessibleWhenUnlocked;
+#endif
+    
+    return [[self class] storeCredential:credential withIdentifier:identifier withAccessibility:securityAccessibility];
+}
+
 + (BOOL)storeCredential:(AFOAuthCredential *)credential
          withIdentifier:(NSString *)identifier
+      withAccessibility:(id)securityAccessibility
 {
     NSMutableDictionary *queryDictionary = AFKeychainQueryDictionaryWithIdentifier(identifier);
 
@@ -316,6 +323,9 @@ static NSError * AFOAuth2ErrorFromResponseObject(NSDictionary *responseObject) {
     NSMutableDictionary *updateDictionary = [NSMutableDictionary dictionary];
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:credential];
     [updateDictionary setObject:data forKey:(__bridge id)kSecValueData];
+    if (securityAccessibility) {
+        [updateDictionary setObject:securityAccessibility forKey:(__bridge id)kSecAttrAccessible];
+    }
 
     OSStatus status;
     BOOL exists = ([self retrieveCredentialWithIdentifier:identifier] != nil);

@@ -11,6 +11,7 @@ AFOAuth2Client *oauthClient = [AFOAuth2Client clientWithBaseURL:url clientID:kCl
 [oauthClient authenticateUsingOAuthWithPath:@"/oauth/token"
                                    username:@"username"
                                    password:@"password"
+                                      scope:@"email"
                                     success:^(AFOAuthCredential *credential) {
                                         NSLog(@"I have a token! %@", credential.accessToken);
                                         [AFOAuthCredential storeCredential:credential withIdentifier:oauthClient.serviceProviderIdentifier];
@@ -19,6 +20,10 @@ AFOAuth2Client *oauthClient = [AFOAuth2Client clientWithBaseURL:url clientID:kCl
                                         NSLog(@"Error: %@", error);
                                     }];
 ```
+
+## Documentation
+
+Documentation for all releases of AFOAuth1Client, including the latest, are [available on CocoaDocs](http://cocoadocs.org/docsets/AFOAuth2Client/).
 
 ## Contact
 
