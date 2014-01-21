@@ -310,7 +310,13 @@ extern NSString * const kAFOAuthRefreshGrantType;
  */
 extern NSString * const AFOAuth2ClientError;
 
+/**
+ ## AFOAuth2Client error codes
+ 
+ AFOAuth2OtherError implies some error outside of the OAuth2 spec (possibly an underlying error)
+ */
 typedef NS_ENUM(NSInteger, AFOAuth2ClientErrorCode) {
+    AFOAuth2OtherError = -1,
     AFOAuth2InvalidRequest = 0,
     AFOAuth2InvalidClient,
     AFOAuth2InvalidGrant,

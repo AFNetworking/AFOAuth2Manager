@@ -43,10 +43,10 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 
 // OAuth 2 Error Response
 // See http://tools.ietf.org/html/rfc6749#section-5.2
-static NSError * AFOAuth2ErrorFromResponseObject(NSDictionary *responseObject) {
+static NSError * AFOAuth2ErrorFromResponseObjectAndError(NSDictionary *responseObject, NSError * underlyingError) {
     id value = [responseObject valueForKey:@"error"];
     NSString *localizedDescription = nil;
-    AFOAuth2ClientErrorCode code = -1;
+    AFOAuth2ClientErrorCode code = AFOAuth2OtherError;
 
     if (value) {
         if ([value isEqualToString:@"invalid_request"]) {
@@ -70,7 +70,11 @@ static NSError * AFOAuth2ErrorFromResponseObject(NSDictionary *responseObject) {
         }
 
         if (localizedDescription) {
-            NSDictionary *userInfo = [NSDictionary dictionaryWithObject:localizedDescription forKey:NSLocalizedDescriptionKey];
+            NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      localizedDescription, NSLocalizedDescriptionKey,
+                                      underlyingError, NSUnderlyingErrorKey,
+                                      nil
+                                      ];
             return [NSError errorWithDomain:AFOAuth2ClientError code:code userInfo:userInfo];
         }
     }
@@ -211,7 +215,7 @@ static NSError * AFOAuth2ErrorFromResponseObject(NSDictionary *responseObject) {
     AFHTTPRequestOperation *requestOperation = [self HTTPRequestOperationWithRequest:mutableRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([responseObject valueForKey:@"error"]) {
             if (failure) {
-                NSError *error = AFOAuth2ErrorFromResponseObject(responseObject);
+                NSError *error = AFOAuth2ErrorFromResponseObjectAndError(responseObject, nil);
                 failure(error);
             }
 
@@ -240,7 +244,8 @@ static NSError * AFOAuth2ErrorFromResponseObject(NSDictionary *responseObject) {
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
-            failure(error);
+            NSError * e = AFOAuth2ErrorFromResponseObjectAndError((id)operation.responseData, error);
+            failure(e);
         }
     }];
 
