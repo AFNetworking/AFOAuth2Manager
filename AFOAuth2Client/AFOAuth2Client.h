@@ -303,4 +303,18 @@ extern NSString * const kAFOAuthClientCredentialsGrantType;
 extern NSString * const kAFOAuthPasswordCredentialsGrantType;
 extern NSString * const kAFOAuthRefreshGrantType;
 
-extern NSString * const AFOAuthClientError;
+/**
+ ## AFOAuth2Client error domain
+ 
+ A domain equal to this implies any code present is of type AFOAuth2ClientErrorCode
+ */
+extern NSString * const AFOAuth2ClientError;
+
+typedef NS_ENUM(NSInteger, AFOAuth2ClientErrorCode) {
+    AFOAuth2InvalidRequest = 0,
+    AFOAuth2InvalidClient,
+    AFOAuth2InvalidGrant,
+    AFOAuth2UnauthorizedClient,
+    AFOAuth2UnsupportedGrantType,
+    AFOAuth2InvalidScope
+};
