@@ -171,13 +171,12 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 
     AFHTTPRequestOperation *requestOperation = [self HTTPRequestOperationWithRequest:mutableRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if ([responseObject valueForKey:@"error"]) {
+        if (responseObject == nil || [responseObject valueForKey:@"error"]) {
             if (failure) {
                 // TODO: Resolve the `error` field into a proper NSError object
                 // http://tools.ietf.org/html/rfc6749#section-5.2
                 failure(nil);
             }
-
             return;
         }
 
@@ -277,7 +276,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     id securityAccessibility = nil;
 #if (defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 43000) || (defined(__MAC_OS_X_VERSION_MAX_ALLOWED) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 1090)
     if( &kSecAttrAccessibleWhenUnlocked != NULL )
-        securityAccessibility = kSecAttrAccessibleWhenUnlocked;
+        securityAccessibility = (__bridge id)(kSecAttrAccessibleWhenUnlocked);
 #endif
     
     return [[self class] storeCredential:credential withIdentifier:identifier withAccessibility:securityAccessibility];
