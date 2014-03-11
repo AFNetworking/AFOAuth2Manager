@@ -186,15 +186,18 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
             refreshToken = [parameters valueForKey:@"refresh_token"];
         }
 
-        AFOAuthCredential *credential = [AFOAuthCredential credentialWithOAuthToken:[responseObject valueForKey:@"access_token"] tokenType:[responseObject valueForKey:@"token_type"]];
-
         NSDate *expireDate = [NSDate distantFuture];
         id expiresIn = [responseObject valueForKey:@"expires_in"];
         if (expiresIn != nil && ![expiresIn isEqual:[NSNull null]]) {
             expireDate = [NSDate dateWithTimeIntervalSinceNow:[expiresIn doubleValue]];
         }
+        
+        AFOAuthCredential *credential = [AFOAuthCredential credentialWithOAuthToken:[responseObject valueForKey:@"access_token"] tokenType:[responseObject valueForKey:@"token_type"] expiration:expireDate];
 
-        [credential setRefreshToken:refreshToken expiration:expireDate];
+        if (refreshToken)
+        {
+            [credential setRefreshToken:refreshToken];
+        }
 
         [self setAuthorizationHeaderWithCredential:credential];
 
@@ -232,35 +235,31 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 
 + (instancetype)credentialWithOAuthToken:(NSString *)token
                                tokenType:(NSString *)type
+                              expiration:(NSDate *)expiration
 {
-    return [[self alloc] initWithOAuthToken:token tokenType:type];
+    return [[self alloc] initWithOAuthToken:token tokenType:type expiration:expiration];
 }
 
 - (id)initWithOAuthToken:(NSString *)token
                tokenType:(NSString *)type
+              expiration:(NSDate *)expiration
 {
     self = [super init];
     if (!self) {
         return nil;
     }
 
+    NSParameterAssert(expiration);
+    
     self.accessToken = token;
     self.tokenType = type;
+    self.expiration = expiration;
 
     return self;
 }
 
 - (NSString *)description {
     return [NSString stringWithFormat:@"<%@ accessToken:\"%@\" tokenType:\"%@\" refreshToken:\"%@\" expiration:\"%@\">", [self class], self.accessToken, self.tokenType, self.refreshToken, self.expiration];
-}
-
-- (void)setRefreshToken:(NSString *)refreshToken
-             expiration:(NSDate *)expiration
-{
-    NSParameterAssert(expiration);
-
-    self.refreshToken = refreshToken;
-    self.expiration = expiration;
 }
 
 - (BOOL)isExpired {
@@ -277,7 +276,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     id securityAccessibility = nil;
 #if (defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 43000) || (defined(__MAC_OS_X_VERSION_MAX_ALLOWED) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 1090)
     if( &kSecAttrAccessibleWhenUnlocked != NULL )
-        securityAccessibility = kSecAttrAccessibleWhenUnlocked;
+        securityAccessibility = (__bridge id)(kSecAttrAccessibleWhenUnlocked);
 #endif
     
     return [[self class] storeCredential:credential withIdentifier:identifier withAccessibility:securityAccessibility];
