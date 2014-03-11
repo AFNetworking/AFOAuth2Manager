@@ -245,7 +245,11 @@ static NSError * AFOAuth2ErrorFromResponseObjectAndError(NSDictionary *responseO
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
             NSError * e = AFOAuth2ErrorFromResponseObjectAndError([(AFJSONRequestOperation*)operation responseJSON], error);
-            failure(e);
+            if (e != nil)
+            {
+                failure(e);
+            }
+            failure(error);
         }
     }];
 
