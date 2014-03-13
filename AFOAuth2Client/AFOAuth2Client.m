@@ -249,7 +249,10 @@ static NSError * AFOAuth2ErrorFromResponseObjectAndError(NSDictionary *responseO
             {
                 failure(e);
             }
-            failure(error);
+            else
+            {
+                failure(error);
+            }
         }
     }];
 
