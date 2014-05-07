@@ -23,7 +23,7 @@ AFOAuth2Client *oauthClient = [AFOAuth2Client clientWithBaseURL:url clientID:kCl
 
 ## Documentation
 
-Documentation for all releases of AFOAuth1Client, including the latest, are [available on CocoaDocs](http://cocoadocs.org/docsets/AFOAuth2Client/).
+Documentation for all releases of AFOAuth2Client, including the latest, are [available on CocoaDocs](http://cocoadocs.org/docsets/AFOAuth2Client/).
 
 ## Contact
 
