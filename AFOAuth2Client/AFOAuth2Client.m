@@ -20,8 +20,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "AFJSONRequestOperation.h"
-
 #import "AFOAuth2Client.h"
 
 NSString * const kAFOAuthCodeGrantType = @"authorization_code";
@@ -72,29 +70,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     self.clientID = clientID;
     self.secret = secret;
 
-    [self registerHTTPOperationClass:[AFJSONRequestOperation class]];
-
     return self;
-}
-
-#pragma mark -
-
-- (void)setAuthorizationHeaderWithToken:(NSString *)token {
-    // Use the "Bearer" type as an arbitrary default
-    [self setAuthorizationHeaderWithToken:token ofType:@"Bearer"];
-}
-
-- (void)setAuthorizationHeaderWithCredential:(AFOAuthCredential *)credential {
-    [self setAuthorizationHeaderWithToken:credential.accessToken ofType:credential.tokenType];
-}
-
-- (void)setAuthorizationHeaderWithToken:(NSString *)token
-                                 ofType:(NSString *)type
-{
-    // See http://tools.ietf.org/html/rfc6749#section-7.1
-    if ([[type lowercaseString] isEqualToString:@"bearer"]) {
-        [self setDefaultHeader:@"Authorization" value:[NSString stringWithFormat:@"Bearer %@", token]];
-    }
 }
 
 #pragma mark -
@@ -167,7 +143,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     [mutableParameters setValue:self.secret forKey:@"client_secret"];
     parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
 
-    NSMutableURLRequest *mutableRequest = [self requestWithMethod:@"POST" path:path parameters:parameters];
+    NSMutableURLRequest *mutableRequest = [self.requestSerializer requestWithMethod:@"POST" URLString:path parameters:parameters error:nil];
     [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 
     AFHTTPRequestOperation *requestOperation = [self HTTPRequestOperationWithRequest:mutableRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -196,8 +172,6 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 
         [credential setRefreshToken:refreshToken expiration:expireDate];
 
-        [self setAuthorizationHeaderWithCredential:credential];
-
         if (success) {
             success(credential);
         }
@@ -207,7 +181,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
         }
     }];
 
-    [self enqueueHTTPRequestOperation:requestOperation];
+    [self.operationQueue addOperation:requestOperation];
 }
 
 @end

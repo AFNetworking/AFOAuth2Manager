@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "AFHTTPClient.h"
+#import "AFHTTPRequestOperationManager.h"
 
 #ifndef _SECURITY_SECITEM_H_
 #warning Security framework not found in project, or not included in precompiled header. Keychain persistence functionality will not be available.
@@ -35,7 +35,7 @@
  
  @see RFC 6749 The OAuth 2.0 Authorization Framework: http://tools.ietf.org/html/rfc6749
  */
-@interface AFOAuth2Client : AFHTTPClient
+@interface AFOAuth2Client : AFHTTPRequestOperationManager
 
 ///------------------------------------------
 /// @name Accessing OAuth 2 Client Properties
@@ -80,13 +80,6 @@
 - (id)initWithBaseURL:(NSURL *)url
              clientID:(NSString *)clientID
                secret:(NSString *)secret;
-
-/**
- Sets the "Authorization" HTTP header set in request objects made by the HTTP client to a basic authentication value with Base64-encoded username and password. This overwrites any existing value for this header.
-
- @param credential The OAuth credential
- */
-- (void)setAuthorizationHeaderWithCredential:(AFOAuthCredential *)credential;
 
 ///---------------------
 /// @name Authenticating
