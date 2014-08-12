@@ -70,6 +70,8 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     self.clientID = clientID;
     self.secret = secret;
 
+    [self.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+
     return self;
 }
 
@@ -143,10 +145,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     [mutableParameters setValue:self.secret forKey:@"client_secret"];
     parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
 
-    NSMutableURLRequest *mutableRequest = [self.requestSerializer requestWithMethod:@"POST" URLString:path parameters:parameters error:nil];
-    [mutableRequest setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-
-    AFHTTPRequestOperation *requestOperation = [self HTTPRequestOperationWithRequest:mutableRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self POST:path parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if ([responseObject valueForKey:@"error"]) {
             if (failure) {
                 // TODO: Resolve the `error` field into a proper NSError object
@@ -180,8 +179,6 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
             failure(error);
         }
     }];
-
-    [self.operationQueue addOperation:requestOperation];
 }
 
 @end
