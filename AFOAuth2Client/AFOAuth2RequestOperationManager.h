@@ -1,4 +1,4 @@
-// AFOAuth2Client.h
+// AFOAuth2RequestOperationManager.h
 //
 // Copyright (c) 2012 Mattt Thompson (http://mattt.me/)
 //
@@ -29,13 +29,13 @@
 @class AFOAuthCredential;
 
 /**
- `AFOAuth2Client` encapsulates common patterns to authenticate against a resource server conforming to the behavior outlined in the OAuth 2.0 specification.
+ `AFOAuth2RequestOperationManager` encapsulates common patterns to authenticate against a resource server conforming to the behavior outlined in the OAuth 2.0 specification.
  
- In your application, it is recommended that you use `AFOAuth2Client` exclusively to get an authorization token, which is then passed to another `AFHTTPClient` subclass.
+ In your application, it is recommended that you use `AFOAuth2RequestOperationManager` exclusively to get an authorization token, which is then passed to another `AFHTTPClient` subclass.
  
  @see RFC 6749 The OAuth 2.0 Authorization Framework: http://tools.ietf.org/html/rfc6749
  */
-@interface AFOAuth2Client : AFHTTPRequestOperationManager
+@interface AFOAuth2RequestOperationManager : AFHTTPRequestOperationManager
 
 ///------------------------------------------
 /// @name Accessing OAuth 2 Client Properties
@@ -56,7 +56,7 @@
 ///------------------------------------------------
 
 /**
- Creates and initializes an `AFOAuth2Client` object with the specified base URL, client identifier, and secret.
+ Creates and initializes an `AFOAuth2RequestOperationManager` object with the specified base URL, client identifier, and secret.
 
  @param url The base URL for the HTTP client. This argument must not be `nil`.
  @param clientID The client identifier issued by the authorization server, uniquely representing the registration information provided by the client.
@@ -69,7 +69,7 @@
                            secret:(NSString *)secret;
 
 /**
- Initializes an `AFOAuth2Client` object with the specified base URL, client identifier, and secret.
+ Initializes an `AFOAuth2RequestOperationManager` object with the specified base URL, client identifier, and secret.
 
  @param url The base URL for the HTTP client. This argument must not be `nil`.
  @param clientID The client identifier issued by the authorization server, uniquely representing the registration information provided by the client.

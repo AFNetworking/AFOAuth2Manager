@@ -1,4 +1,4 @@
-// AFOAuth2Client.m
+// AFOAuth2RequestOperationManager.m
 //
 // Copyright (c) 2012 Mattt Thompson (http://mattt.me/)
 //
@@ -20,7 +20,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "AFOAuth2Client.h"
+#import "AFOAuth2RequestOperationManager.h"
 
 NSString * const kAFOAuthCodeGrantType = @"authorization_code";
 NSString * const kAFOAuthClientCredentialsGrantType = @"client_credentials";
@@ -40,13 +40,13 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 
 #pragma mark -
 
-@interface AFOAuth2Client ()
+@interface AFOAuth2RequestOperationManager ()
 @property (readwrite, nonatomic) NSString *serviceProviderIdentifier;
 @property (readwrite, nonatomic) NSString *clientID;
 @property (readwrite, nonatomic) NSString *secret;
 @end
 
-@implementation AFOAuth2Client
+@implementation AFOAuth2RequestOperationManager
 
 + (instancetype)clientWithBaseURL:(NSURL *)url
                          clientID:(NSString *)clientID
