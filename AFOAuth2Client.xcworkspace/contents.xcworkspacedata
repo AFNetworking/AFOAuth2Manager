@@ -5,10 +5,16 @@
       location = "group:AFOAuth2Client"
       name = "AFOAuth2Client">
       <FileRef
-         location = "group:AFOAuth2Client.h">
+         location = "group:AFOAuth2RequestOperationManager.h">
       </FileRef>
       <FileRef
-         location = "group:AFOAuth2Client.m">
+         location = "group:AFOAuth2RequestOperationManager.m">
+      </FileRef>
+      <FileRef
+         location = "group:AFHTTPRequestSerializer+OAuth2.h">
+      </FileRef>
+      <FileRef
+         location = "group:AFHTTPRequestSerializer+OAuth2.m">
       </FileRef>
    </Group>
 </Workspace>

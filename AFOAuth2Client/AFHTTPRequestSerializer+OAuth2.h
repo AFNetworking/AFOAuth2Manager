@@ -10,7 +10,7 @@
 
 @class AFOAuthCredential;
 
-@interface AFOAuth2RequestSerializer : AFHTTPRequestSerializer
+@interface AFHTTPRequestSerializer (OAuth2)
 
 /**
  Sets the "Authorization" HTTP header set in request objects made by the HTTP client to contain the access token within the OAuth credential. This overwrites any existing value for this header.

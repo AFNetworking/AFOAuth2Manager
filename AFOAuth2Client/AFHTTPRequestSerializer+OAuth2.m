@@ -6,10 +6,10 @@
 //  Copyright (c) 2014 DeskConnect. All rights reserved.
 //
 
-#import "AFOAuth2RequestSerializer.h"
+#import "AFHTTPRequestSerializer+OAuth2.h"
 #import "AFOAuth2RequestOperationManager.h"
 
-@implementation AFOAuth2RequestSerializer
+@implementation AFHTTPRequestSerializer (OAuth2)
 
 - (void)setAuthorizationHeaderFieldWithCredential:(AFOAuthCredential *)credential {
     if ([credential.tokenType compare:@"Bearer" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
