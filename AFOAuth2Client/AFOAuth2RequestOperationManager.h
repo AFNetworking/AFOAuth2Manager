@@ -133,7 +133,7 @@
 
  @param URLString The URL string used to create the request URL.
  @param code The authorization code
- @param redirectURI The URI to redirect to after successful authentication
+ @param uri The URI to redirect to after successful authentication
  @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes a single argument: the OAuth credential returned by the server.
  @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes a single argument: the error returned from the server.
  */
@@ -246,7 +246,7 @@
 /**
  Stores the specified OAuth token for a given web service identifier in the Keychain.
 
- @param token The OAuth credential to be stored.
+ @param credential The OAuth credential to be stored.
  @param identifier The service identifier associated with the specified token.
  @param securityAccessibility The Keychain security accessibility to store the credential with.
 
