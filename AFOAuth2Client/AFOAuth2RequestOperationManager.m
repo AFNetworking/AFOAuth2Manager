@@ -157,7 +157,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
         }
 
         NSString *refreshToken = [responseObject valueForKey:@"refresh_token"];
-        if (refreshToken == nil || [refreshToken isEqual:[NSNull null]]) {
+        if (!refreshToken || [refreshToken isEqual:[NSNull null]]) {
             refreshToken = [parameters valueForKey:@"refresh_token"];
         }
 
