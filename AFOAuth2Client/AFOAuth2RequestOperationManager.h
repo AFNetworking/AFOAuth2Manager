@@ -20,11 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "AFHTTPRequestOperationManager.h"
+#import <Foundation/Foundation.h>
 
-#ifndef _SECURITY_SECITEM_H_
-#warning Security framework not found in project, or not included in precompiled header. Keychain persistence functionality will not be available.
-#endif
+#import "AFHTTPRequestOperationManager.h"
 
 @class AFOAuthCredential;
 
@@ -230,7 +228,6 @@
 /// @name Storing and Retrieving Credentials
 ///-----------------------------------------
 
-#ifdef _SECURITY_SECITEM_H_
 /**
  Stores the specified OAuth credential for a given web service identifier in the Keychain.
  with the default Keychain Accessibilty of kSecAttrAccessibleWhenUnlocked.
@@ -273,7 +270,6 @@
  @return Whether or not the credential was deleted from the keychain.
  */
 + (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier;
-#endif
 
 @end
 

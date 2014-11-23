@@ -20,6 +20,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+#import <Security/Security.h>
+
 #import "AFOAuth2RequestOperationManager.h"
 
 NSString * const kAFOAuthCodeGrantType = @"authorization_code";
@@ -27,7 +29,6 @@ NSString * const kAFOAuthClientCredentialsGrantType = @"client_credentials";
 NSString * const kAFOAuthPasswordCredentialsGrantType = @"password";
 NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
 
-#ifdef _SECURITY_SECITEM_H_
 NSString * const kAFOAuth2CredentialServiceName = @"AFOAuthCredentialService";
 
 static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifier) {
@@ -36,7 +37,6 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 
     return queryDictionary;
 }
-#endif
 
 #pragma mark -
 
@@ -240,8 +240,6 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 
 #pragma mark Keychain
 
-#ifdef _SECURITY_SECITEM_H_
-
 + (BOOL)storeCredential:(AFOAuthCredential *)credential
          withIdentifier:(NSString *)identifier
 {
@@ -318,8 +316,6 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 
     return credential;
 }
-
-#endif
 
 #pragma mark - NSCoding
 
