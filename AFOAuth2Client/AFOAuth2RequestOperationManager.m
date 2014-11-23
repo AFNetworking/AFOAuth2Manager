@@ -145,7 +145,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
     [mutableParameters setValue:self.secret forKey:@"client_secret"];
     parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
 
-    [self POST:URLString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self POST:URLString parameters:parameters success:^(__unused AFHTTPRequestOperation *operation, id responseObject) {
         if ([responseObject valueForKey:@"error"]) {
             if (failure) {
                 // TODO: Resolve the `error` field into a proper NSError object
@@ -174,7 +174,7 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
         if (success) {
             success(credential);
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(__unused AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
             failure(error);
         }
