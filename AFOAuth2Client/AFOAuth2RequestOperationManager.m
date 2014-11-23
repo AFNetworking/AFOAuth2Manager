@@ -325,19 +325,19 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 
 - (id)initWithCoder:(NSCoder *)decoder {
     self = [super init];
-    self.accessToken = [decoder decodeObjectForKey:@"accessToken"];
-    self.tokenType = [decoder decodeObjectForKey:@"tokenType"];
-    self.refreshToken = [decoder decodeObjectForKey:@"refreshToken"];
-    self.expiration = [decoder decodeObjectForKey:@"expiration"];
+    self.accessToken = [decoder decodeObjectForKey:NSStringFromSelector(@selector(accessToken))];
+    self.tokenType = [decoder decodeObjectForKey:NSStringFromSelector(@selector(tokenType))];
+    self.refreshToken = [decoder decodeObjectForKey:NSStringFromSelector(@selector(refreshToken))];
+    self.expiration = [decoder decodeObjectForKey:NSStringFromSelector(@selector(expiration))];
 
     return self;
 }
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
-    [encoder encodeObject:self.accessToken forKey:@"accessToken"];
-    [encoder encodeObject:self.tokenType forKey:@"tokenType"];
-    [encoder encodeObject:self.refreshToken forKey:@"refreshToken"];
-    [encoder encodeObject:self.expiration forKey:@"expiration"];
+    [encoder encodeObject:self.accessToken forKey:NSStringFromSelector(@selector(accessToken))];
+    [encoder encodeObject:self.tokenType forKey:NSStringFromSelector(@selector(tokenType))];
+    [encoder encodeObject:self.refreshToken forKey:NSStringFromSelector(@selector(refreshToken))];
+    [encoder encodeObject:self.expiration forKey:NSStringFromSelector(@selector(expiration))];
 }
 
 @end
