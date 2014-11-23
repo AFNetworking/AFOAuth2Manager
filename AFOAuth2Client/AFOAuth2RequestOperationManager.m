@@ -193,10 +193,6 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 @end
 
 @implementation AFOAuthCredential
-@synthesize accessToken = _accessToken;
-@synthesize tokenType = _tokenType;
-@synthesize refreshToken = _refreshToken;
-@synthesize expiration = _expiration;
 @dynamic expired;
 
 #pragma mark -
