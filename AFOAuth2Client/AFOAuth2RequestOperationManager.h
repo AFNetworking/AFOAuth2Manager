@@ -42,12 +42,12 @@
 /**
  The service provider identifier used to store and retrieve OAuth credentials by `AFOAuthCredential`. Equivalent to the hostname of the client `baseURL`. 
  */
-@property (readonly, nonatomic) NSString *serviceProviderIdentifier;
+@property (readonly, nonatomic, copy) NSString *serviceProviderIdentifier;
 
 /**
  The client identifier issued by the authorization server, uniquely representing the registration information provided by the client.
  */
-@property (readonly, nonatomic) NSString *clientID;
+@property (readonly, nonatomic, copy) NSString *clientID;
 
 ///------------------------------------------------
 /// @name Creating and Initializing OAuth 2 Clients
@@ -172,17 +172,17 @@
 /**
  The OAuth access token.
  */
-@property (readonly, nonatomic) NSString *accessToken;
+@property (readonly, nonatomic, copy) NSString *accessToken;
 
 /**
  The OAuth token type (e.g. "bearer").
  */
-@property (readonly, nonatomic) NSString *tokenType;
+@property (readonly, nonatomic, copy) NSString *tokenType;
 
 /**
  The OAuth refresh token.
  */
-@property (readonly, nonatomic) NSString *refreshToken;
+@property (readonly, nonatomic, copy) NSString *refreshToken;
 
 /**
  Whether the OAuth credentials are expired.

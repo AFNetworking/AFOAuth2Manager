@@ -41,9 +41,9 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 #pragma mark -
 
 @interface AFOAuth2RequestOperationManager ()
-@property (readwrite, nonatomic) NSString *serviceProviderIdentifier;
-@property (readwrite, nonatomic) NSString *clientID;
-@property (readwrite, nonatomic) NSString *secret;
+@property (readwrite, nonatomic, copy) NSString *serviceProviderIdentifier;
+@property (readwrite, nonatomic, copy) NSString *clientID;
+@property (readwrite, nonatomic, copy) NSString *secret;
 @end
 
 @implementation AFOAuth2RequestOperationManager
@@ -186,10 +186,10 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
 #pragma mark -
 
 @interface AFOAuthCredential ()
-@property (readwrite, nonatomic) NSString *accessToken;
-@property (readwrite, nonatomic) NSString *tokenType;
-@property (readwrite, nonatomic) NSString *refreshToken;
-@property (readwrite, nonatomic) NSDate *expiration;
+@property (readwrite, nonatomic, copy) NSString *accessToken;
+@property (readwrite, nonatomic, copy) NSString *tokenType;
+@property (readwrite, nonatomic, copy) NSString *refreshToken;
+@property (readwrite, nonatomic, copy) NSDate *expiration;
 @end
 
 @implementation AFOAuthCredential
