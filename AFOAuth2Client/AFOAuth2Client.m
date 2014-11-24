@@ -33,6 +33,8 @@ NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
 NSString * const kAFOAuth2CredentialServiceName = @"AFOAuthCredentialService";
 
 static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifier) {
+    NSCParameterAssert(identifier);
+
     NSMutableDictionary *queryDictionary = [NSMutableDictionary dictionaryWithObjectsAndKeys:(__bridge id)kSecClassGenericPassword, kSecClass, kAFOAuth2CredentialServiceName, kSecAttrService, nil];
     [queryDictionary setValue:identifier forKey:(__bridge id)kSecAttrAccount];
 
@@ -106,6 +108,10 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
                                success:(void (^)(AFOAuthCredential *credential))success
                                failure:(void (^)(NSError *error))failure
 {
+    NSParameterAssert(username);
+    NSParameterAssert(password);
+    NSParameterAssert(scope);
+
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
     [mutableParameters setObject:kAFOAuthPasswordCredentialsGrantType forKey:@"grant_type"];
     [mutableParameters setValue:username forKey:@"username"];
@@ -121,6 +127,8 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
                                success:(void (^)(AFOAuthCredential *credential))success
                                failure:(void (^)(NSError *error))failure
 {
+    NSParameterAssert(scope);
+
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
     [mutableParameters setObject:kAFOAuthClientCredentialsGrantType forKey:@"grant_type"];
     [mutableParameters setValue:scope forKey:@"scope"];
@@ -134,6 +142,8 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
                                success:(void (^)(AFOAuthCredential *credential))success
                                failure:(void (^)(NSError *error))failure
 {
+    NSParameterAssert(refreshToken);
+
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
     [mutableParameters setObject:kAFOAuthRefreshGrantType forKey:@"grant_type"];
     [mutableParameters setValue:refreshToken forKey:@"refresh_token"];
@@ -148,6 +158,9 @@ static NSMutableDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *i
                                success:(void (^)(AFOAuthCredential *credential))success
                                failure:(void (^)(NSError *error))failure
 {
+    NSParameterAssert(code);
+    NSParameterAssert(uri);
+
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
     [mutableParameters setObject:kAFOAuthCodeGrantType forKey:@"grant_type"];
     [mutableParameters setValue:code forKey:@"code"];
