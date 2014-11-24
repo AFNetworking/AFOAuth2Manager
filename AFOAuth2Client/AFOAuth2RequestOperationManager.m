@@ -155,8 +155,8 @@ static NSDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifi
                                     failure:(void (^)(NSError *error))failure
 {
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
-    [mutableParameters setObject:self.clientID forKey:@"client_id"];
-    [mutableParameters setValue:self.secret forKey:@"client_secret"];
+    mutableParameters[@"client_id"] = self.clientID;
+    mutableParameters[@"client_secret"] = self.secret;
     parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
 
     [self POST:URLString parameters:parameters success:^(__unused AFHTTPRequestOperation *operation, id responseObject) {
@@ -274,11 +274,10 @@ static NSDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifi
     }
 
     NSMutableDictionary *updateDictionary = [NSMutableDictionary dictionary];
-    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:credential];
-    [updateDictionary setObject:data forKey:(__bridge id)kSecValueData];
-    
+    updateDictionary[(__bridge id)kSecValueData] = [NSKeyedArchiver archivedDataWithRootObject:credential];
+
     if (securityAccessibility) {
-        [updateDictionary setObject:securityAccessibility forKey:(__bridge id)kSecAttrAccessible];
+        updateDictionary[(__bridge id)kSecAttrAccessible] = securityAccessibility;
     }
 
     OSStatus status;
@@ -312,8 +311,8 @@ static NSDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifi
 
 + (AFOAuthCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier {
     NSMutableDictionary *queryDictionary = [AFKeychainQueryDictionaryWithIdentifier(identifier) mutableCopy];
-    [queryDictionary setObject:(__bridge id)kCFBooleanTrue forKey:(__bridge id)kSecReturnData];
-    [queryDictionary setObject:(__bridge id)kSecMatchLimitOne forKey:(__bridge id)kSecMatchLimit];
+    queryDictionary[(__bridge id)kSecReturnData] = (__bridge id)kCFBooleanTrue;
+    queryDictionary[(__bridge id)kSecMatchLimit] = (__bridge id)kSecMatchLimitOne;
 
     CFDataRef result = nil;
     OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)queryDictionary, (CFTypeRef *)&result);
