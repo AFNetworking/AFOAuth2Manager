@@ -358,10 +358,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
         return nil;
     }
 
-    NSData *data = (__bridge_transfer NSData *)result;
-    AFOAuthCredential *credential = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-
-    return credential;
+    return [NSKeyedUnarchiver unarchiveObjectWithData:(__bridge_transfer NSData *)result];
 }
 
 #pragma mark - NSCoding
