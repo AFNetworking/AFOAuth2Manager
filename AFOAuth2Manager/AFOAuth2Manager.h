@@ -1,4 +1,4 @@
-// AFOAuth2RequestOperationManager.h
+// AFOAuth2Manager.h
 //
 // Copyright (c) 2012-2014 AFNetworking (http://afnetworking.com)
 //
@@ -27,20 +27,20 @@
 @class AFOAuthCredential;
 
 /**
- `AFOAuth2RequestOperationManager` encapsulates common patterns to authenticate against a resource server conforming to the behavior outlined in the OAuth 2.0 specification.
- 
- In your application, it is recommended that you use `AFOAuth2RequestOperationManager` exclusively to get an authorization token, which is then passed to another `AFHTTPClient` subclass.
- 
+ `AFOAuth2Manager` encapsulates common patterns to authenticate against a resource server conforming to the behavior outlined in the OAuth 2.0 specification.
+
+ In your application, it is recommended that you use `AFOAuth2Manager` exclusively to get an authorization token, which is then passed to another `AFHTTPClient` subclass.
+
  @see RFC 6749 The OAuth 2.0 Authorization Framework: http://tools.ietf.org/html/rfc6749
  */
-@interface AFOAuth2RequestOperationManager : AFHTTPRequestOperationManager
+@interface AFOAuth2Manager : AFHTTPRequestOperationManager
 
 ///------------------------------------------
 /// @name Accessing OAuth 2 Client Properties
 ///------------------------------------------
 
 /**
- The service provider identifier used to store and retrieve OAuth credentials by `AFOAuthCredential`. Equivalent to the hostname of the client `baseURL`. 
+ The service provider identifier used to store and retrieve OAuth credentials by `AFOAuthCredential`. Equivalent to the hostname of the client `baseURL`.
  */
 @property (readonly, nonatomic, copy) NSString *serviceProviderIdentifier;
 
@@ -54,7 +54,7 @@
 ///------------------------------------------------
 
 /**
- Creates and initializes an `AFOAuth2RequestOperationManager` object with the specified base URL, client identifier, and secret.
+ Creates and initializes an `AFOAuth2Manager` object with the specified base URL, client identifier, and secret.
 
  @param url The base URL for the HTTP client. This argument must not be `nil`.
  @param clientID The client identifier issued by the authorization server, uniquely representing the registration information provided by the client.
@@ -67,7 +67,7 @@
                            secret:(NSString *)secret;
 
 /**
- Initializes an `AFOAuth2RequestOperationManager` object with the specified base URL, client identifier, and secret.
+ Initializes an `AFOAuth2Manager` object with the specified base URL, client identifier, and secret.
 
  @param url The base URL for the HTTP client. This argument must not be `nil`.
  @param clientID The client identifier issued by the authorization server, uniquely representing the registration information provided by the client.
@@ -84,8 +84,8 @@
 ///---------------------
 
 /**
- Creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server using a specified username and password, with a designated scope. 
- 
+ Creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server using a specified username and password, with a designated scope.
+
  @param URLString The URL string used to create the request URL.
  @param username The username used for authentication
  @param password The password used for authentication
@@ -160,7 +160,7 @@
 
 /**
  `AFOAuthCredential` models the credentials returned from an OAuth server, storing the token type, access & refresh tokens, and whether the token is expired.
- 
+
  OAuth credentials can be stored in the user's keychain, and retrieved on subsequent launches.
  */
 @interface AFOAuthCredential : NSObject <NSCoding>
@@ -195,7 +195,7 @@
 
 /**
  Create an OAuth credential from a token string, with a specified type.
- 
+
  @param token The OAuth token string.
  @param type The OAuth token type.
  */
@@ -216,8 +216,8 @@
 ///----------------------------
 
 /**
- Set the credential refresh token, with a specified expiration. 
- 
+ Set the credential refresh token, with a specified expiration.
+
  @param refreshToken The OAuth refresh token.
  @param expiration The expiration of the access token. This must not be `nil`.
  */
@@ -234,7 +234,7 @@
 
  @param credential The OAuth credential to be stored.
  @param identifier The service identifier associated with the specified credential.
- 
+
  @return Whether or not the credential was stored in the keychain.
  */
 + (BOOL)storeCredential:(AFOAuthCredential *)credential
@@ -255,9 +255,9 @@
 
 /**
  Retrieves the OAuth credential stored with the specified service identifier from the Keychain.
- 
+
  @param identifier The service identifier associated with the specified credential.
- 
+
  @return The retrieved OAuth credential.
  */
 + (AFOAuthCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier;
@@ -285,7 +285,7 @@
  - `NSString * const AFOAuth2ErrorDomain`
 
  ## OAuth Grant Types
- 
+
  OAuth 2.0 provides several grant types, covering several different use cases. The following grant type string constants are provided:
 
  `kAFOAuthCodeGrantType`: "authorization_code"
@@ -300,4 +300,5 @@ extern NSString * const kAFOAuthClientCredentialsGrantType;
 extern NSString * const kAFOAuthPasswordCredentialsGrantType;
 extern NSString * const kAFOAuthRefreshGrantType;
 
-@compatibility_alias AFOAuth2Client AFOAuth2RequestOperationManager;
+@compatibility_alias AFOAuth2Client AFOAuth2Manager;
+@compatibility_alias AFOAuth2RequestOperationManager AFOAuth2Manager;

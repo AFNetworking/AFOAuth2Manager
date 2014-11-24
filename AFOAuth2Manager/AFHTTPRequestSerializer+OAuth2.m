@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #import "AFHTTPRequestSerializer+OAuth2.h"
-#import "AFOAuth2RequestOperationManager.h"
+#import "AFOAuth2Manager.h"
 
 @implementation AFHTTPRequestSerializer (OAuth2)
 

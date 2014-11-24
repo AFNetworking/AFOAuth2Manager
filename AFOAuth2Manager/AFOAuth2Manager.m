@@ -1,4 +1,4 @@
-// AFOAuth2RequestOperationManager.m
+// AFOAuth2Manager.m
 //
 // Copyright (c) 2012-2014 AFNetworking (http://afnetworking.com)
 //
@@ -22,7 +22,7 @@
 
 #import <Security/Security.h>
 
-#import "AFOAuth2RequestOperationManager.h"
+#import "AFOAuth2Manager.h"
 
 NSString * const AFOAuth2ErrorDomain = @"com.alamofire.networking.oauth2.error";
 
@@ -56,15 +56,15 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
         description = [object valueForKey:@"error_description"];
     } else {
         if ([[object valueForKey:@"error"] isEqualToString:@"invalid_request"]) {
-            description = NSLocalizedStringFromTable(@"The request is missing a required parameter, includes an unsupported parameter value (other than grant type), repeats a parameter, includes multiple credentials, utilizes more than one mechanism for authenticating the client, or is otherwise malformed.", @"AFOAuth2Client", @"invalid_request");
+            description = NSLocalizedStringFromTable(@"The request is missing a required parameter, includes an unsupported parameter value (other than grant type), repeats a parameter, includes multiple credentials, utilizes more than one mechanism for authenticating the client, or is otherwise malformed.", @"AFOAuth2Manager", @"invalid_request");
         } else if ([[object valueForKey:@"error"] isEqualToString:@"invalid_client"]) {
-            description = NSLocalizedStringFromTable(@"Client authentication failed (e.g., unknown client, no client authentication included, or unsupported authentication method).  The authorization server MAY return an HTTP 401 (Unauthorized) status code to indicate which HTTP authentication schemes are supported.  If the client attempted to authenticate via the \"Authorization\" request header field, the authorization server MUST respond with an HTTP 401 (Unauthorized) status code and include the \"WWW-Authenticate\" response header field matching the authentication scheme used by the client.", @"AFOAuth2Client", @"invalid_request");
+            description = NSLocalizedStringFromTable(@"Client authentication failed (e.g., unknown client, no client authentication included, or unsupported authentication method).  The authorization server MAY return an HTTP 401 (Unauthorized) status code to indicate which HTTP authentication schemes are supported.  If the client attempted to authenticate via the \"Authorization\" request header field, the authorization server MUST respond with an HTTP 401 (Unauthorized) status code and include the \"WWW-Authenticate\" response header field matching the authentication scheme used by the client.", @"AFOAuth2Manager", @"invalid_request");
         } else if ([[object valueForKey:@"error"] isEqualToString:@"invalid_grant"]) {
-            description = NSLocalizedStringFromTable(@"The provided authorization grant (e.g., authorization code, resource owner credentials) or refresh token is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client.", @"AFOAuth2Client", @"invalid_request");
+            description = NSLocalizedStringFromTable(@"The provided authorization grant (e.g., authorization code, resource owner credentials) or refresh token is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client.", @"AFOAuth2Manager", @"invalid_request");
         } else if ([[object valueForKey:@"error"] isEqualToString:@"unauthorized_client"]) {
-            description = NSLocalizedStringFromTable(@"The authenticated client is not authorized to use this authorization grant type.", @"AFOAuth2Client", @"invalid_request");
+            description = NSLocalizedStringFromTable(@"The authenticated client is not authorized to use this authorization grant type.", @"AFOAuth2Manager", @"invalid_request");
         } else if ([[object valueForKey:@"error"] isEqualToString:@"unsupported_grant_type"]) {
-            description = NSLocalizedStringFromTable(@"The authorization grant type is not supported by the authorization server.", @"AFOAuth2Client", @"invalid_request");
+            description = NSLocalizedStringFromTable(@"The authorization grant type is not supported by the authorization server.", @"AFOAuth2Manager", @"invalid_request");
         }
     }
 
@@ -81,13 +81,13 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 
 #pragma mark -
 
-@interface AFOAuth2RequestOperationManager ()
+@interface AFOAuth2Manager ()
 @property (readwrite, nonatomic, copy) NSString *serviceProviderIdentifier;
 @property (readwrite, nonatomic, copy) NSString *clientID;
 @property (readwrite, nonatomic, copy) NSString *secret;
 @end
 
-@implementation AFOAuth2RequestOperationManager
+@implementation AFOAuth2Manager
 
 + (instancetype)clientWithBaseURL:(NSURL *)url
                          clientID:(NSString *)clientID
@@ -305,7 +305,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
         securityAccessibility = (__bridge id)kSecAttrAccessibleWhenUnlocked;
     }
 #endif
-    
+
     return [[self class] storeCredential:credential withIdentifier:identifier withAccessibility:securityAccessibility];
 }
 
