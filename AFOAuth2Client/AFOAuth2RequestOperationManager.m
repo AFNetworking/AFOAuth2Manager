@@ -87,12 +87,16 @@ static NSDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifi
                                     success:(void (^)(AFOAuthCredential *credential))success
                                     failure:(void (^)(NSError *error))failure
 {
-    NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
-    [mutableParameters setObject:kAFOAuthPasswordCredentialsGrantType forKey:@"grant_type"];
-    [mutableParameters setValue:username forKey:@"username"];
-    [mutableParameters setValue:password forKey:@"password"];
-    [mutableParameters setValue:scope forKey:@"scope"];
-    NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
+    NSParameterAssert(username);
+    NSParameterAssert(password);
+    NSParameterAssert(scope);
+
+    NSDictionary *parameters = @{
+                                 @"grant_type": kAFOAuthPasswordCredentialsGrantType,
+                                 @"username": username,
+                                 @"password": password,
+                                 @"scope": scope
+                                };
 
     [self authenticateUsingOAuthWithURLString:URLString parameters:parameters success:success failure:failure];
 }
@@ -102,10 +106,12 @@ static NSDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifi
                                     success:(void (^)(AFOAuthCredential *credential))success
                                     failure:(void (^)(NSError *error))failure
 {
-    NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
-    [mutableParameters setObject:kAFOAuthClientCredentialsGrantType forKey:@"grant_type"];
-    [mutableParameters setValue:scope forKey:@"scope"];
-    NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
+    NSParameterAssert(scope);
+
+    NSDictionary *parameters = @{
+                                 @"grant_type": kAFOAuthClientCredentialsGrantType,
+                                 @"scope": scope
+                                };
 
     [self authenticateUsingOAuthWithURLString:URLString parameters:parameters success:success failure:failure];
 }
@@ -115,10 +121,12 @@ static NSDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifi
                                     success:(void (^)(AFOAuthCredential *credential))success
                                     failure:(void (^)(NSError *error))failure
 {
-    NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
-    [mutableParameters setObject:kAFOAuthRefreshGrantType forKey:@"grant_type"];
-    [mutableParameters setValue:refreshToken forKey:@"refresh_token"];
-    NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
+    NSParameterAssert(refreshToken);
+
+    NSDictionary *parameters = @{
+                                 @"grant_type": kAFOAuthRefreshGrantType,
+                                 @"refresh_token": refreshToken
+                                };
 
     [self authenticateUsingOAuthWithURLString:URLString parameters:parameters success:success failure:failure];
 }
@@ -129,11 +137,14 @@ static NSDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifi
                                     success:(void (^)(AFOAuthCredential *credential))success
                                     failure:(void (^)(NSError *error))failure
 {
-    NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionary];
-    [mutableParameters setObject:kAFOAuthCodeGrantType forKey:@"grant_type"];
-    [mutableParameters setValue:code forKey:@"code"];
-    [mutableParameters setValue:uri forKey:@"redirect_uri"];
-    NSDictionary *parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
+    NSParameterAssert(code);
+    NSParameterAssert(uri);
+
+    NSDictionary *parameters = @{
+                                 @"grant_type": kAFOAuthCodeGrantType,
+                                 @"code": code,
+                                 @"redirect_uri": uri
+                                };
 
     [self authenticateUsingOAuthWithURLString:URLString parameters:parameters success:success failure:failure];
 }
