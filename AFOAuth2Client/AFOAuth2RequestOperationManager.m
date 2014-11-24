@@ -24,6 +24,8 @@
 
 #import "AFOAuth2RequestOperationManager.h"
 
+NSString * const AFOAuth2ErrorDomain = @"com.alamofire.networking.oauth2.error";
+
 NSString * const kAFOAuthCodeGrantType = @"authorization_code";
 NSString * const kAFOAuthClientCredentialsGrantType = @"client_credentials";
 NSString * const kAFOAuthPasswordCredentialsGrantType = @"password";
@@ -39,6 +41,42 @@ static NSDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifi
       (__bridge id)kSecAttrService: kAFOAuth2CredentialServiceName,
       (__bridge id)kSecAttrAccount: identifier
     };
+}
+
+// See: http://tools.ietf.org/html/rfc6749#section-5.2
+static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
+    if (![object valueForKey:@"error"] || [[object valueForKey:@"error"] isEqual:[NSNull null]]) {
+        return nil;
+    }
+
+    NSMutableDictionary *mutableUserInfo = [NSMutableDictionary dictionary];
+
+    NSString *description = nil;
+    if ([object valueForKey:@"error_description"]) {
+        description = [object valueForKey:@"error_description"];
+    } else {
+        if ([[object valueForKey:@"error"] isEqualToString:@"invalid_request"]) {
+            description = NSLocalizedStringFromTable(@"The request is missing a required parameter, includes an unsupported parameter value (other than grant type), repeats a parameter, includes multiple credentials, utilizes more than one mechanism for authenticating the client, or is otherwise malformed.", @"AFOAuth2Client", @"invalid_request");
+        } else if ([[object valueForKey:@"error"] isEqualToString:@"invalid_client"]) {
+            description = NSLocalizedStringFromTable(@"Client authentication failed (e.g., unknown client, no client authentication included, or unsupported authentication method).  The authorization server MAY return an HTTP 401 (Unauthorized) status code to indicate which HTTP authentication schemes are supported.  If the client attempted to authenticate via the \"Authorization\" request header field, the authorization server MUST respond with an HTTP 401 (Unauthorized) status code and include the \"WWW-Authenticate\" response header field matching the authentication scheme used by the client.", @"AFOAuth2Client", @"invalid_request");
+        } else if ([[object valueForKey:@"error"] isEqualToString:@"invalid_grant"]) {
+            description = NSLocalizedStringFromTable(@"The provided authorization grant (e.g., authorization code, resource owner credentials) or refresh token is invalid, expired, revoked, does not match the redirection URI used in the authorization request, or was issued to another client.", @"AFOAuth2Client", @"invalid_request");
+        } else if ([[object valueForKey:@"error"] isEqualToString:@"unauthorized_client"]) {
+            description = NSLocalizedStringFromTable(@"The authenticated client is not authorized to use this authorization grant type.", @"AFOAuth2Client", @"invalid_request");
+        } else if ([[object valueForKey:@"error"] isEqualToString:@"unsupported_grant_type"]) {
+            description = NSLocalizedStringFromTable(@"The authorization grant type is not supported by the authorization server.", @"AFOAuth2Client", @"invalid_request");
+        }
+    }
+
+    if (description) {
+        mutableUserInfo[NSLocalizedDescriptionKey] = description;
+    }
+
+    if ([object valueForKey:@"error_uri"]) {
+        mutableUserInfo[NSLocalizedRecoverySuggestionErrorKey] = [object valueForKey:@"error_uri"];
+    }
+
+    return [NSError errorWithDomain:AFOAuth2ErrorDomain code:-1 userInfo:mutableUserInfo];
 }
 
 #pragma mark -
@@ -162,9 +200,7 @@ static NSDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifi
     [self POST:URLString parameters:parameters success:^(__unused AFHTTPRequestOperation *operation, id responseObject) {
         if ([responseObject valueForKey:@"error"]) {
             if (failure) {
-                // TODO: Resolve the `error` field into a proper NSError object
-                // http://tools.ietf.org/html/rfc6749#section-5.2
-                failure(nil);
+                failure(AFErrorFromRFC6749Section5_2Error(responseObject));
             }
 
             return;

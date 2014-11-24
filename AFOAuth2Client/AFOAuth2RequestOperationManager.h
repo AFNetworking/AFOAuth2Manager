@@ -278,6 +278,12 @@
 ///----------------
 
 /**
+ ## Error Domains
+
+ The following error domain is predefined.
+
+ - `NSString * const AFOAuth2ErrorDomain`
+
  ## OAuth Grant Types
  
  OAuth 2.0 provides several grant types, covering several different use cases. The following grant type string constants are provided:
@@ -287,6 +293,8 @@
  `kAFOAuthPasswordCredentialsGrantType`: "password"
  `kAFOAuthRefreshGrantType`: "refresh_token"
  */
+extern NSString * const AFOAuth2ErrorDomain;
+
 extern NSString * const kAFOAuthCodeGrantType;
 extern NSString * const kAFOAuthClientCredentialsGrantType;
 extern NSString * const kAFOAuthPasswordCredentialsGrantType;
