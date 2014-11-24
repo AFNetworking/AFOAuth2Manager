@@ -198,6 +198,14 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
 
     [self POST:URLString parameters:parameters success:^(__unused AFHTTPRequestOperation *operation, id responseObject) {
+        if (!responseObject) {
+            if (failure) {
+                failure(nil);
+            }
+
+            return;
+        }
+
         if ([responseObject valueForKey:@"error"]) {
             if (failure) {
                 failure(AFErrorFromRFC6749Section5_2Error(responseObject));
