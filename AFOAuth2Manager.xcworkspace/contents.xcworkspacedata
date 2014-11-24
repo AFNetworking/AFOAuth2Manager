@@ -2,19 +2,19 @@
 <Workspace
    version = "1.0">
    <Group
-      location = "group:AFOAuth2Client"
-      name = "AFOAuth2Client">
-      <FileRef
-         location = "group:AFOAuth2RequestOperationManager.h">
-      </FileRef>
-      <FileRef
-         location = "group:AFOAuth2RequestOperationManager.m">
-      </FileRef>
+      location = "group:AFOAuth2Manager"
+      name = "AFOAuth2Manager">
       <FileRef
          location = "group:AFHTTPRequestSerializer+OAuth2.h">
       </FileRef>
       <FileRef
          location = "group:AFHTTPRequestSerializer+OAuth2.m">
+      </FileRef>
+      <FileRef
+         location = "group:AFOAuth2Manager.h">
+      </FileRef>
+      <FileRef
+         location = "group:AFOAuth2Manager.m">
       </FileRef>
    </Group>
 </Workspace>
