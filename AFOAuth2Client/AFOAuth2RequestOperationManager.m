@@ -227,7 +227,9 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
             expireDate = [NSDate dateWithTimeIntervalSinceNow:[expiresIn doubleValue]];
         }
 
-        [credential setRefreshToken:refreshToken expiration:expireDate];
+        if (refreshToken && expireDate) {
+            [credential setRefreshToken:refreshToken expiration:expireDate];
+        }
 
         if (success) {
             success(credential);
