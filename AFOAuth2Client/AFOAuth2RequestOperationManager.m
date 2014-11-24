@@ -1,6 +1,6 @@
 // AFOAuth2RequestOperationManager.m
 //
-// Copyright (c) 2012 Mattt Thompson (http://mattt.me/)
+// Copyright (c) 2012-2014 AFNetworking (http://afnetworking.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -215,7 +215,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 
         NSDate *expireDate = [NSDate distantFuture];
         id expiresIn = [responseObject valueForKey:@"expires_in"];
-        if (expiresIn != nil && ![expiresIn isEqual:[NSNull null]]) {
+        if (expiresIn && ![expiresIn isEqual:[NSNull null]]) {
             expireDate = [NSDate dateWithTimeIntervalSinceNow:[expiresIn doubleValue]];
         }
 
