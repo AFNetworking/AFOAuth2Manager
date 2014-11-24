@@ -31,7 +31,7 @@ AFOAuth2Manager *OAuth2Manager =
 AFHTTPRequestOperationManager *manager =
     [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
 
-[manager.requestSerializer setAuthorizationHeaderFieldWithCredential:credential.accessToken];
+[manager.requestSerializer setAuthorizationHeaderFieldWithCredential:credential];
 
 [manager GET:@"/path/to/protected/resource"
   parameters:nil
