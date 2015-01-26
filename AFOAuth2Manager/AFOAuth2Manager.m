@@ -85,6 +85,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 @property (readwrite, nonatomic, copy) NSString *serviceProviderIdentifier;
 @property (readwrite, nonatomic, copy) NSString *clientID;
 @property (readwrite, nonatomic, copy) NSString *secret;
+@property (readonly, nonatomic)  BOOL basicAuth;
 @end
 
 @implementation AFOAuth2Manager
@@ -100,19 +101,31 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
              clientID:(NSString *)clientID
                secret:(NSString *)secret
 {
-    NSParameterAssert(clientID);
+    return [self initWithBaseURL:url clientID:clientID secret:secret withBasicAuth:YES];
+}
 
+- (id)initWithBaseURL:(NSURL *)url
+             clientID:(NSString *)clientID
+               secret:(NSString *)secret
+        withBasicAuth:(BOOL)basicAuth
+{
+    NSParameterAssert(clientID);
+    
     self = [super initWithBaseURL:url];
     if (!self) {
         return nil;
     }
-
+    
     self.serviceProviderIdentifier = [self.baseURL host];
     self.clientID = clientID;
     self.secret = secret;
-
+    _basicAuth = basicAuth;
+    if (self.basicAuth) {
+        [self.requestSerializer setAuthorizationHeaderFieldWithUsername:clientID password:secret];
+    }
+    
     [self.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-
+    
     return self;
 }
 

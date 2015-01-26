@@ -67,7 +67,7 @@
                            secret:(NSString *)secret;
 
 /**
- Initializes an `AFOAuth2Manager` object with the specified base URL, client identifier, and secret.
+ Initializes an `AFOAuth2Manager` object with the specified base URL, client identifier, and secret. The communication to to the server will use HTTP basic auth by default (use `-(id)initWithBaseURL:clientID:secret:withBasicAuth:` to change this).
 
  @param url The base URL for the HTTP client. This argument must not be `nil`.
  @param clientID The client identifier issued by the authorization server, uniquely representing the registration information provided by the client.
@@ -78,6 +78,21 @@
 - (id)initWithBaseURL:(NSURL *)url
              clientID:(NSString *)clientID
                secret:(NSString *)secret;
+
+/**
+ Initializes an `AFOAuth2Manager` object with the specified base URL, client identifier, and secret.
+ 
+ @param url The base URL for the HTTP client. This argument must not be `nil`.
+ @param clientID The client identifier issued by the authorization server, uniquely representing the registration information provided by the client.
+ @param secret The client secret.
+ @param whether to use HTTP basic auth when communicating with the server. It is recommended to use basic auth.
+ 
+ @return The newly-initialized OAuth 2 client
+ */
+- (id)initWithBaseURL:(NSURL *)url
+             clientID:(NSString *)clientID
+               secret:(NSString *)secret
+        withBasicAuth:(BOOL)basicAuth;
 
 ///---------------------
 /// @name Authenticating
