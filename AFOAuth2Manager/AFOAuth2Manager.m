@@ -206,8 +206,11 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
                                     failure:(void (^)(NSError *error))failure
 {
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
-    mutableParameters[@"client_id"] = self.clientID;
-    mutableParameters[@"client_secret"] = self.secret;
+    if (!self.basicAuth)
+    {
+        mutableParameters[@"client_id"] = self.clientID;
+        mutableParameters[@"client_secret"] = self.secret;
+    }
     parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
 
     [self POST:URLString parameters:parameters success:^(__unused AFHTTPRequestOperation *operation, id responseObject) {
