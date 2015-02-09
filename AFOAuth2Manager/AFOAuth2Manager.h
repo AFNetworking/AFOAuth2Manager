@@ -93,7 +93,7 @@
  @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes a single argument: the OAuth credential returned by the server.
  @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes a single argument: the error returned from the server.
  */
-- (void)authenticateUsingOAuthWithURLString:(NSString *)URLString
+- (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                    username:(NSString *)username
                                    password:(NSString *)password
                                       scope:(NSString *)scope
@@ -108,7 +108,7 @@
  @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes a single argument: the OAuth credential returned by the server.
  @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes a single argument: the error returned from the server.
  */
-- (void)authenticateUsingOAuthWithURLString:(NSString *)URLString
+- (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                       scope:(NSString *)scope
                                     success:(void (^)(AFOAuthCredential *credential))success
                                     failure:(void (^)(NSError *error))failure;
@@ -121,7 +121,7 @@
  @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes a single argument: the OAuth credential returned by the server.
  @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes a single argument: the error returned from the server.
  */
-- (void)authenticateUsingOAuthWithURLString:(NSString *)URLString
+- (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                refreshToken:(NSString *)refreshToken
                                     success:(void (^)(AFOAuthCredential *credential))success
                                     failure:(void (^)(NSError *error))failure;
@@ -135,7 +135,7 @@
  @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes a single argument: the OAuth credential returned by the server.
  @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes a single argument: the error returned from the server.
  */
-- (void)authenticateUsingOAuthWithURLString:(NSString *)URLString
+- (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                        code:(NSString *)code
                                 redirectURI:(NSString *)uri
                                     success:(void (^)(AFOAuthCredential *credential))success
@@ -149,7 +149,7 @@
  @param success A block object to be executed when the request operation finishes successfully. This block has no return value and takes a single argument: the OAuth credential returned by the server.
  @param failure A block object to be executed when the request operation finishes unsuccessfully, or that finishes successfully, but encountered an error while parsing the response data. This block has no return value and takes a single argument: the error returned from the server.
  */
-- (void)authenticateUsingOAuthWithURLString:(NSString *)URLString
+- (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                  parameters:(NSDictionary *)parameters
                                     success:(void (^)(AFOAuthCredential *credential))success
                                     failure:(void (^)(NSError *error))failure;
