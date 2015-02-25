@@ -303,7 +303,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 {
     id securityAccessibility = nil;
 #if (defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 43000) || (defined(__MAC_OS_X_VERSION_MAX_ALLOWED) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 1090)
-    if (&kSecAttrAccessibleWhenUnlocked != NULL) {
+    if (kSecAttrAccessibleWhenUnlocked != NULL) {
         securityAccessibility = (__bridge id)kSecAttrAccessibleWhenUnlocked;
     }
 #endif
