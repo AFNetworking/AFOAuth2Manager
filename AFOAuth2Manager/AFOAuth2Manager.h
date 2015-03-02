@@ -49,6 +49,11 @@
  */
 @property (readonly, nonatomic, copy) NSString *clientID;
 
+/**
+ Whether to encode client credentials in a Base64-encoded HTTP `Authorization` header, as opposed to the request body. Defaults to `YES`.
+ */
+@property (nonatomic, assign) BOOL useHTTPBasicAuthentication;
+
 ///------------------------------------------------
 /// @name Creating and Initializing OAuth 2 Clients
 ///------------------------------------------------
@@ -67,7 +72,7 @@
                            secret:(NSString *)secret;
 
 /**
- Initializes an `AFOAuth2Manager` object with the specified base URL, client identifier, and secret.
+ Initializes an `AFOAuth2Manager` object with the specified base URL, client identifier, and secret. The communication to to the server will use HTTP basic auth by default (use `-(id)initWithBaseURL:clientID:secret:withBasicAuth:` to change this).
 
  @param url The base URL for the HTTP client. This argument must not be `nil`.
  @param clientID The client identifier issued by the authorization server, uniquely representing the registration information provided by the client.

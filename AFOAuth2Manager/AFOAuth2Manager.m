@@ -85,6 +85,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 @property (readwrite, nonatomic, copy) NSString *serviceProviderIdentifier;
 @property (readwrite, nonatomic, copy) NSString *clientID;
 @property (readwrite, nonatomic, copy) NSString *secret;
+@property (readonly, nonatomic)  BOOL basicAuth;
 @end
 
 @implementation AFOAuth2Manager
@@ -101,19 +102,33 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
                secret:(NSString *)secret
 {
     NSParameterAssert(clientID);
-
+    
     self = [super initWithBaseURL:url];
     if (!self) {
         return nil;
     }
-
+    
     self.serviceProviderIdentifier = [self.baseURL host];
     self.clientID = clientID;
     self.secret = secret;
 
-    [self.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    self.useHTTPBasicAuthentication = YES;
 
+    [self.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    
     return self;
+}
+
+#pragma mark -
+
+- (void)setUseHTTPBasicAuthentication:(BOOL)useHTTPBasicAuthentication {
+    _useHTTPBasicAuthentication = useHTTPBasicAuthentication;
+
+    if (self.useHTTPBasicAuthentication) {
+        [self.requestSerializer setAuthorizationHeaderFieldWithUsername:self.clientID password:self.secret];
+    } else {
+        [self.requestSerializer setValue:nil forHTTPHeaderField:@"Authorization"];
+    }
 }
 
 #pragma mark -
@@ -193,8 +208,10 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
                                     failure:(void (^)(NSError *error))failure
 {
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
-    mutableParameters[@"client_id"] = self.clientID;
-    mutableParameters[@"client_secret"] = self.secret;
+    if (!self.useHTTPBasicAuthentication) {
+        mutableParameters[@"client_id"] = self.clientID;
+        mutableParameters[@"client_secret"] = self.secret;
+    }
     parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
 
     AFHTTPRequestOperation *requestOperation = [self POST:URLString parameters:parameters success:^(__unused AFHTTPRequestOperation *operation, id responseObject) {
