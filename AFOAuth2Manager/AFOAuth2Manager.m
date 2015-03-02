@@ -102,7 +102,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
                secret:(NSString *)secret
 {
     NSParameterAssert(clientID);
-    
+
     self = [super initWithBaseURL:url];
     if (!self) {
         return nil;
@@ -129,6 +129,14 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     } else {
         [self.requestSerializer setValue:nil forHTTPHeaderField:@"Authorization"];
     }
+}
+
+- (void)setSecret:(NSString *)secret {
+    if (!secret) {
+        secret = @"";
+    }
+
+    _secret = secret;
 }
 
 #pragma mark -

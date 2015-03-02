@@ -62,7 +62,7 @@
  Creates and initializes an `AFOAuth2Manager` object with the specified base URL, client identifier, and secret.
 
  @param url The base URL for the HTTP client. This argument must not be `nil`.
- @param clientID The client identifier issued by the authorization server, uniquely representing the registration information provided by the client.
+ @param clientID The client identifier issued by the authorization server, uniquely representing the registration information provided by the client. This argument must not be `nil`.
  @param secret The client secret.
 
  @return The newly-initialized OAuth 2 client
@@ -75,7 +75,7 @@
  Initializes an `AFOAuth2Manager` object with the specified base URL, client identifier, and secret. The communication to to the server will use HTTP basic auth by default (use `-(id)initWithBaseURL:clientID:secret:withBasicAuth:` to change this).
 
  @param url The base URL for the HTTP client. This argument must not be `nil`.
- @param clientID The client identifier issued by the authorization server, uniquely representing the registration information provided by the client.
+ @param clientID The client identifier issued by the authorization server, uniquely representing the registration information provided by the client. This argument must not be `nil`.
  @param secret The client secret.
 
  @return The newly-initialized OAuth 2 client
