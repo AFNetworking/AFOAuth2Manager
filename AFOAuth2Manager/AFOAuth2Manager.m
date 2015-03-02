@@ -221,14 +221,20 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 
         AFOAuthCredential *credential = [AFOAuthCredential credentialWithOAuthToken:[responseObject valueForKey:@"access_token"] tokenType:[responseObject valueForKey:@"token_type"]];
 
+
+        if (refreshToken) { // refreshToken is optional in the OAuth2 spec
+            [credential setRefreshToken:refreshToken];
+        }
+
+        // Expiration is optional, but recommended in the OAuth2 spec. It not provide, assume distantFuture === never expires
         NSDate *expireDate = [NSDate distantFuture];
         id expiresIn = [responseObject valueForKey:@"expires_in"];
         if (expiresIn && ![expiresIn isEqual:[NSNull null]]) {
             expireDate = [NSDate dateWithTimeIntervalSinceNow:[expiresIn doubleValue]];
         }
 
-        if (refreshToken && expireDate) {
-            [credential setRefreshToken:refreshToken expiration:expireDate];
+        if (expireDate) {
+            [credential setExpiration:expireDate];
         }
 
         if (success) {
@@ -284,8 +290,19 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 }
 
 - (void)setRefreshToken:(NSString *)refreshToken
+{
+    _refreshToken = refreshToken;
+}
+
+- (void)setExpiration:(NSDate *)expiration
+{
+    _expiration = expiration;
+}
+
+- (void)setRefreshToken:(NSString *)refreshToken
              expiration:(NSDate *)expiration
 {
+    NSParameterAssert(refreshToken);
     NSParameterAssert(expiration);
 
     self.refreshToken = refreshToken;

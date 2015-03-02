@@ -216,6 +216,22 @@
 ///----------------------------
 
 /**
+ Set the credential refresh token, without a specific expiration
+
+ @param refreshToken The OAuth refresh token.
+ */
+- (void)setRefreshToken:(NSString *)refreshToken;
+
+
+/**
+ Set the expiration on the access token. If no expiration is given by the OAuth2 provider,
+ you may pass in [NSDate distantFuture]
+
+ @param expiration The expiration of the access token. This must not be `nil`.
+ */
+- (void)setExpiration:(NSDate *)expiration;
+
+/**
  Set the credential refresh token, with a specified expiration.
 
  @param refreshToken The OAuth refresh token.
