@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'AFOAuth2Manager'
-  s.version  = '2.1.0'
+  s.version  = '2.2.0'
   s.license  = 'MIT'
   s.summary  = 'AFNetworking Extension for OAuth 2 Authentication.'
   s.homepage = 'https://github.com/AFNetworking/AFOAuth2Manager'
