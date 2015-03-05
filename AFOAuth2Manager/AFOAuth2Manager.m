@@ -85,7 +85,6 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 @property (readwrite, nonatomic, copy) NSString *serviceProviderIdentifier;
 @property (readwrite, nonatomic, copy) NSString *clientID;
 @property (readwrite, nonatomic, copy) NSString *secret;
-@property (readonly, nonatomic)  BOOL basicAuth;
 @end
 
 @implementation AFOAuth2Manager
