@@ -399,7 +399,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     return (status == errSecSuccess);
 }
 
-+ (AFOAuthCredential *):(NSString *)identifier {
++ (AFOAuthCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier {
     NSMutableDictionary *queryDictionary = [AFKeychainQueryDictionaryWithIdentifier(identifier) mutableCopy];
     queryDictionary[(__bridge id)kSecReturnData] = (__bridge id)kCFBooleanTrue;
     queryDictionary[(__bridge id)kSecMatchLimit] = (__bridge id)kSecMatchLimitOne;
