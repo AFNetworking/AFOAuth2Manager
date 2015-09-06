@@ -16,5 +16,11 @@
       <FileRef
          location = "group:AFOAuth2Manager.m">
       </FileRef>
+      <FileRef
+         location = "group:AFOAuthCredential.h">
+      </FileRef>
+      <FileRef
+         location = "group:AFOAuthCredential.m">
+      </FileRef>
    </Group>
 </Workspace>

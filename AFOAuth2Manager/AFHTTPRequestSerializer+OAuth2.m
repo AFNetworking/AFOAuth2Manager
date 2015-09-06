@@ -1,6 +1,6 @@
 // AFHTTPRequestSerializer+OAuth2.m
 //
-// Copyright (c) 2012-2014 AFNetworking (http://afnetworking.com)
+// Copyright (c) 2012-2015 AFNetworking (http://afnetworking.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,7 @@
 // THE SOFTWARE.
 
 #import "AFHTTPRequestSerializer+OAuth2.h"
-#import "AFOAuth2Manager.h"
+#import "AFOAuthCredential.h"
 
 @implementation AFHTTPRequestSerializer (OAuth2)
 
