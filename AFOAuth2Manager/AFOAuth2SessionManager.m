@@ -114,7 +114,7 @@
                                  @"username": username,
                                  @"password": password,
                                  @"scope": scope
-                                 };
+                                };
 
     return [self authenticateUsingOAuthWithURLString:URLString parameters:parameters success:success failure:failure];
 }
@@ -129,7 +129,7 @@
     NSDictionary *parameters = @{
                                  @"grant_type": kAFOAuthClientCredentialsGrantType,
                                  @"scope": scope
-                                 };
+                                };
 
     return [self authenticateUsingOAuthWithURLString:URLString parameters:parameters success:success failure:failure];
 }
@@ -144,7 +144,7 @@
     NSDictionary *parameters = @{
                                  @"grant_type": kAFOAuthRefreshGrantType,
                                  @"refresh_token": refreshToken
-                                 };
+                                };
 
     return [self authenticateUsingOAuthWithURLString:URLString parameters:parameters success:success failure:failure];
 }
@@ -162,7 +162,7 @@
                                  @"grant_type": kAFOAuthCodeGrantType,
                                  @"code": code,
                                  @"redirect_uri": uri
-                                 };
+                                };
 
     return [self authenticateUsingOAuthWithURLString:URLString parameters:parameters success:success failure:failure];
 }
@@ -218,7 +218,7 @@
         if (expireDate) {
             [credential setExpiration:expireDate];
         }
-        
+
         if (success) {
             success(credential);
         }
@@ -227,7 +227,7 @@
             failure(error);
         }
     }];
-    
+
     return task;
 }
 
