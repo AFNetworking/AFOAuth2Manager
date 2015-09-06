@@ -11,6 +11,12 @@
          location = "group:AFHTTPRequestSerializer+OAuth2.m">
       </FileRef>
       <FileRef
+         location = "group:AFOAuth2Constants.h">
+      </FileRef>
+      <FileRef
+         location = "group:AFOAuth2Constants.m">
+      </FileRef>
+      <FileRef
          location = "group:AFOAuth2Manager.h">
       </FileRef>
       <FileRef

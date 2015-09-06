@@ -79,9 +79,9 @@
 
  @return The newly-initialized OAuth 2 client
  */
-- (id)initWithBaseURL:(NSURL *)url
-             clientID:(NSString *)clientID
-               secret:(NSString *)secret;
+- (instancetype)initWithBaseURL:(NSURL *)url
+                       clientID:(NSString *)clientID
+                         secret:(NSString *)secret;
 
 ///---------------------
 /// @name Authenticating
@@ -161,33 +161,6 @@
 @end
 
 #pragma mark -
-
-///----------------
-/// @name Constants
-///----------------
-
-/**
- ## Error Domains
-
- The following error domain is predefined.
-
- - `NSString * const AFOAuth2ErrorDomain`
-
- ## OAuth Grant Types
-
- OAuth 2.0 provides several grant types, covering several different use cases. The following grant type string constants are provided:
-
- `kAFOAuthCodeGrantType`: "authorization_code"
- `kAFOAuthClientCredentialsGrantType`: "client_credentials"
- `kAFOAuthPasswordCredentialsGrantType`: "password"
- `kAFOAuthRefreshGrantType`: "refresh_token"
- */
-extern NSString * const AFOAuth2ErrorDomain;
-
-extern NSString * const kAFOAuthCodeGrantType;
-extern NSString * const kAFOAuthClientCredentialsGrantType;
-extern NSString * const kAFOAuthPasswordCredentialsGrantType;
-extern NSString * const kAFOAuthRefreshGrantType;
 
 @compatibility_alias AFOAuth2Client AFOAuth2Manager;
 @compatibility_alias AFOAuth2RequestOperationManager AFOAuth2Manager;
