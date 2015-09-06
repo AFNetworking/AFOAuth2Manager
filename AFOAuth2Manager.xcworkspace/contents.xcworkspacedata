@@ -23,6 +23,12 @@
          location = "group:AFOAuth2Manager.m">
       </FileRef>
       <FileRef
+         location = "group:AFOAuth2SessionManager.h">
+      </FileRef>
+      <FileRef
+         location = "group:AFOAuth2SessionManager.m">
+      </FileRef>
+      <FileRef
          location = "group:AFOAuthCredential.h">
       </FileRef>
       <FileRef
