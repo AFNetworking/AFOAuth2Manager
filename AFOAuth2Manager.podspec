@@ -34,7 +34,7 @@ Pod::Spec.new do |s|
     ss.dependency 'AFOAuth2Manager/Core'
     ss.dependency 'AFNetworking/NSURLSession', '~>2.2'
 
-    ss.source_files = 'AFNetworking/AFOAuth2SessionManager.{h,m}'
+    ss.source_files = 'AFOAuth2Manager/AFOAuth2SessionManager.{h,m}'
   end
 
 end
