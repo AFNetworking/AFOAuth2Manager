@@ -24,9 +24,9 @@
 #import "AFOAuthCredential.h"
 
 /**
- `AFOAuth2Manager` encapsulates common patterns to authenticate against a resource server conforming to the behavior outlined in the OAuth 2.0 specification.
+ `AFOAuth2SessionManager` encapsulates common patterns to authenticate against a resource server conforming to the behavior outlined in the OAuth 2.0 specification.
 
- In your application, it is recommended that you use `AFOAuth2Manager` exclusively to get an authorization token, which is then passed to another `AFHTTPClient` subclass.
+ In your application, it is recommended that you use `AFOAuth2SessionManager` exclusively to get an authorization token, which is then passed to another `AFHTTPSessionManager` subclass.
 
  @see RFC 6749 The OAuth 2.0 Authorization Framework: http://tools.ietf.org/html/rfc6749
  */
