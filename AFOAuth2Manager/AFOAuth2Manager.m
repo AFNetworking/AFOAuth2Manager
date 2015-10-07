@@ -33,12 +33,12 @@ NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
 
 NSString * const kAFOAuth2CredentialServiceName = @"AFOAuthCredentialService";
 
-static NSDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifier) {
+static NSDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifier, NSString *serviceName) {
     NSCParameterAssert(identifier);
 
     return @{
       (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-      (__bridge id)kSecAttrService: kAFOAuth2CredentialServiceName,
+      (__bridge id)kSecAttrService: serviceName ?: kAFOAuth2CredentialServiceName,
       (__bridge id)kSecAttrAccount: identifier
     };
 }
@@ -341,6 +341,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 
 + (BOOL)storeCredential:(AFOAuthCredential *)credential
          withIdentifier:(NSString *)identifier
+        withServiceName:(NSString *)serviceName
 {
     id securityAccessibility = nil;
 #if (defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 43000) || (defined(__MAC_OS_X_VERSION_MAX_ALLOWED) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 1090)
@@ -349,17 +350,18 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     }
 #endif
 
-    return [[self class] storeCredential:credential withIdentifier:identifier withAccessibility:securityAccessibility];
+    return [[self class] storeCredential:credential withIdentifier:identifier withServiceName:serviceName withAccessibility:securityAccessibility];
 }
 
 + (BOOL)storeCredential:(AFOAuthCredential *)credential
          withIdentifier:(NSString *)identifier
+        withServiceName:(NSString *)serviceName
       withAccessibility:(id)securityAccessibility
 {
-    NSMutableDictionary *queryDictionary = [AFKeychainQueryDictionaryWithIdentifier(identifier) mutableCopy];
+    NSMutableDictionary *queryDictionary = [AFKeychainQueryDictionaryWithIdentifier(identifier, serviceName) mutableCopy];
 
     if (!credential) {
-        return [self deleteCredentialWithIdentifier:identifier];
+        return [self deleteCredentialWithIdentifier:identifier withServiceName:serviceName];
     }
 
     NSMutableDictionary *updateDictionary = [NSMutableDictionary dictionary];
@@ -370,7 +372,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     }
 
     OSStatus status;
-    BOOL exists = ([self retrieveCredentialWithIdentifier:identifier] != nil);
+    BOOL exists = ([self retrieveCredentialWithIdentifier:identifier withServiceName:serviceName] != nil);
 
     if (exists) {
         status = SecItemUpdate((__bridge CFDictionaryRef)queryDictionary, (__bridge CFDictionaryRef)updateDictionary);
@@ -378,39 +380,39 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
         [queryDictionary addEntriesFromDictionary:updateDictionary];
         status = SecItemAdd((__bridge CFDictionaryRef)queryDictionary, NULL);
     }
-
+#ifdef DEBUG
     if (status != errSecSuccess) {
         NSLog(@"Unable to %@ credential with identifier \"%@\" (Error %li)", exists ? @"update" : @"add", identifier, (long int)status);
     }
-
+#endif
     return (status == errSecSuccess);
 }
 
-+ (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier {
-    NSMutableDictionary *queryDictionary = [AFKeychainQueryDictionaryWithIdentifier(identifier) mutableCopy];
++ (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier withServiceName:(NSString *)serviceName {
+    NSMutableDictionary *queryDictionary = [AFKeychainQueryDictionaryWithIdentifier(identifier, serviceName) mutableCopy];
 
     OSStatus status = SecItemDelete((__bridge CFDictionaryRef)queryDictionary);
-
+#ifdef DEBUG
     if (status != errSecSuccess) {
         NSLog(@"Unable to delete credential with identifier \"%@\" (Error %li)", identifier, (long int)status);
     }
-
+#endif
     return (status == errSecSuccess);
 }
 
-+ (AFOAuthCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier {
-    NSMutableDictionary *queryDictionary = [AFKeychainQueryDictionaryWithIdentifier(identifier) mutableCopy];
++ (AFOAuthCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier withServiceName:(NSString *)serviceName {
+    NSMutableDictionary *queryDictionary = [AFKeychainQueryDictionaryWithIdentifier(identifier, serviceName) mutableCopy];
     queryDictionary[(__bridge id)kSecReturnData] = (__bridge id)kCFBooleanTrue;
     queryDictionary[(__bridge id)kSecMatchLimit] = (__bridge id)kSecMatchLimitOne;
 
     CFDataRef result = nil;
     OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)queryDictionary, (CFTypeRef *)&result);
-
+#ifdef DEBUG
     if (status != errSecSuccess) {
         NSLog(@"Unable to fetch credential with identifier \"%@\" (Error %li)", identifier, (long int)status);
         return nil;
     }
-
+#endif
     return [NSKeyedUnarchiver unarchiveObjectWithData:(__bridge_transfer NSData *)result];
 }
 
