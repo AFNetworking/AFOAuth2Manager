@@ -22,6 +22,7 @@
 
 #import "AFHTTPRequestSerializer+OAuth2.h"
 #import "AFOAuth2Manager.h"
+#import "AFOAuthCredential.h"
 
 @implementation AFHTTPRequestSerializer (OAuth2)
 
