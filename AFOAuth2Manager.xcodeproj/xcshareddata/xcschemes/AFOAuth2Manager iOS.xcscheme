@@ -26,9 +26,29 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "2934F2CA1C15F373008B8AE4"
+               BuildableName = "AFOAuth2Manager iOS Tests.xctest"
+               BlueprintName = "AFOAuth2Manager iOS Tests"
+               ReferencedContainer = "container:AFOAuth2Manager.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "29490FC41BE11BD700893BE1"
+            BuildableName = "AFOAuth2Manager.framework"
+            BlueprintName = "AFOAuth2Manager iOS"
+            ReferencedContainer = "container:AFOAuth2Manager.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>

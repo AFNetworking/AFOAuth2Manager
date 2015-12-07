@@ -119,10 +119,6 @@ static NSDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifi
 {
     NSMutableDictionary *queryDictionary = [AFKeychainQueryDictionaryWithIdentifier(identifier) mutableCopy];
 
-    if (!credential) {
-        return [self deleteCredentialWithIdentifier:identifier];
-    }
-
     NSMutableDictionary *updateDictionary = [NSMutableDictionary dictionary];
     updateDictionary[(__bridge id)kSecValueData] = [NSKeyedArchiver archivedDataWithRootObject:credential];
 

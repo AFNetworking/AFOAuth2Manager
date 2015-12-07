@@ -22,6 +22,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  `AFOAuthCredential` models the credentials returned from an OAuth server, storing the token type, access & refresh tokens, and whether the token is expired.
 
@@ -140,7 +142,7 @@
 
  @return The retrieved OAuth credential.
  */
-+ (AFOAuthCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier;
++ (nullable AFOAuthCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier;
 
 /**
  Deletes the OAuth credential stored with the specified service identifier from the Keychain.
@@ -152,3 +154,5 @@
 + (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier;
 
 @end
+
+NS_ASSUME_NONNULL_END

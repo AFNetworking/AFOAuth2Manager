@@ -15,5 +15,7 @@ FOUNDATION_EXPORT double AFOAuth2ManagerVersionNumber;
 FOUNDATION_EXPORT const unsigned char AFOAuth2ManagerVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <AFOAuth2Manager/PublicHeader.h>
-
+#import <AFOAuth2Manager/AFOAuth2Manager.h>
+#import <AFOAuth2Manager/AFOAuthCredential.h>
+#import <AFOAuth2Manager/AFHTTPRequestSerializer+OAuth2.h>
 
