@@ -15,6 +15,7 @@ env:
     - FASTLANE_ENV=ios90
     - FASTLANE_ENV=ios91
     - FASTLANE_ENV=tvos90
+    - FASTLANE_ENV=osx
 before_install:
   - gem install fastlane --no-rdoc --no-ri --no-document --quiet
   - gem install cocoapods --no-rdoc --no-ri --no-document --quiet
