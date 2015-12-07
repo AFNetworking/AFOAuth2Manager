@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2934F28E1C15D9BE008B8AE4 /* AFOAuthCredential.h in Headers */ = {isa = PBXBuildFile; fileRef = 2934F28C1C15D9BE008B8AE4 /* AFOAuthCredential.h */; };
+		2934F28F1C15D9BE008B8AE4 /* AFOAuthCredential.m in Sources */ = {isa = PBXBuildFile; fileRef = 2934F28D1C15D9BE008B8AE4 /* AFOAuthCredential.m */; };
 		29490FD51BE11C5100893BE1 /* AFHTTPRequestSerializer+OAuth2.h in Headers */ = {isa = PBXBuildFile; fileRef = 29490FD11BE11C5100893BE1 /* AFHTTPRequestSerializer+OAuth2.h */; };
 		29490FD71BE11C5100893BE1 /* AFOAuth2Manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 29490FD31BE11C5100893BE1 /* AFOAuth2Manager.h */; };
 		29490FDD1BE11CBB00893BE1 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29490FDC1BE11CBB00893BE1 /* AFNetworking.framework */; };
@@ -15,6 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2934F28C1C15D9BE008B8AE4 /* AFOAuthCredential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOAuthCredential.h; sourceTree = "<group>"; };
+		2934F28D1C15D9BE008B8AE4 /* AFOAuthCredential.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOAuthCredential.m; sourceTree = "<group>"; };
 		29490FC51BE11BD700893BE1 /* AFOAuth2Manager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AFOAuth2Manager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		29490FD11BE11C5100893BE1 /* AFHTTPRequestSerializer+OAuth2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFHTTPRequestSerializer+OAuth2.h"; sourceTree = "<group>"; };
 		29490FD21BE11C5100893BE1 /* AFHTTPRequestSerializer+OAuth2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AFHTTPRequestSerializer+OAuth2.m"; sourceTree = "<group>"; };
@@ -66,6 +70,8 @@
 				29490FD41BE11C5100893BE1 /* AFOAuth2Manager.m */,
 				29490FDE1BE11D1000893BE1 /* AFOAuth2SessionManager.h */,
 				29490FDF1BE11D1000893BE1 /* AFOAuth2SessionManager.m */,
+				2934F28C1C15D9BE008B8AE4 /* AFOAuthCredential.h */,
+				2934F28D1C15D9BE008B8AE4 /* AFOAuthCredential.m */,
 			);
 			path = AFOAuth2Manager;
 			sourceTree = "<group>";
@@ -86,6 +92,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2934F28E1C15D9BE008B8AE4 /* AFOAuthCredential.h in Headers */,
 				29490FE01BE11D1000893BE1 /* AFOAuth2SessionManager.h in Headers */,
 				29490FD71BE11C5100893BE1 /* AFOAuth2Manager.h in Headers */,
 				29490FD51BE11C5100893BE1 /* AFHTTPRequestSerializer+OAuth2.h in Headers */,
@@ -160,6 +167,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				29490FE11BE11D1000893BE1 /* AFOAuth2SessionManager.m in Sources */,
+				2934F28F1C15D9BE008B8AE4 /* AFOAuthCredential.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

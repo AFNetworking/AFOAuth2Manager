@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "29490FC41BE11BD700893BE1"
-               BuildableName = "AFOAuth2Manager iOS.framework"
+               BuildableName = "AFOAuth2Manager.framework"
                BlueprintName = "AFOAuth2Manager iOS"
                ReferencedContainer = "container:AFOAuth2Manager.xcodeproj">
             </BuildableReference>
@@ -46,7 +46,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "29490FC41BE11BD700893BE1"
-            BuildableName = "AFOAuth2Manager iOS.framework"
+            BuildableName = "AFOAuth2Manager.framework"
             BlueprintName = "AFOAuth2Manager iOS"
             ReferencedContainer = "container:AFOAuth2Manager.xcodeproj">
          </BuildableReference>
@@ -64,7 +64,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "29490FC41BE11BD700893BE1"
-            BuildableName = "AFOAuth2Manager iOS.framework"
+            BuildableName = "AFOAuth2Manager.framework"
             BlueprintName = "AFOAuth2Manager iOS"
             ReferencedContainer = "container:AFOAuth2Manager.xcodeproj">
          </BuildableReference>
