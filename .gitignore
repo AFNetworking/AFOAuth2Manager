@@ -24,3 +24,6 @@ xcuserdata
 *.moved-aside
 *.xcuserstate
 
+fastlane/test-output/*
+fastlane/report.xml
+
