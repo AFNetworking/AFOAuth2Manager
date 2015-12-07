@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites tests='3' failures='0'>
+  <testsuite name='AFOAuthCredentialTests' tests='2' failures='0'>
+    <testcase classname='AFOAuthCredentialTests' name='testCredentialExpiration' time='0.109'/>
+    <testcase classname='AFOAuthCredentialTests' name='testCredentialStorage' time='0.016'/>
+  </testsuite>
+  <testsuite name='AFOAuthManagerTests' tests='1' failures='0'>
+    <testcase classname='AFOAuthManagerTests' name='testUserCredentialsSucceedsWithNoBasicAuthentication' time='0.432'/>
+  </testsuite>
+</testsuites>

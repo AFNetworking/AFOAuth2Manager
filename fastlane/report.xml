@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="fastlane">
+  <testsuite name="run">
+    
+      
+      <testcase name="0: Verifying required fastlane version" time="0.003668">
+        
+      </testcase>
+    
+      
+      <testcase name="1: import_from_git" time="1.297436">
+        
+      </testcase>
+    
+      
+      <testcase name="2: scan" time="18.745575">
+        
+      </testcase>
+    
+  </testsuite>
+</testsuites>
