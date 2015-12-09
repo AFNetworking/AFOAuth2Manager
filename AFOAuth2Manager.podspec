@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.ios.frameworks = 'Security'
 
   s.subspec 'Core' do |ss|
-    ss.dependency 'AFNetworking/Serialization', '~>2.2'
+    ss.dependency 'AFNetworking/Serialization', '>=2.2'
 
     ss.source_files = 'AFOAuth2Manager/AFOAuth2Constants.{h,m}', 'AFOAuth2Manager/AFOAuthCredential.{h,m}', 'AFOAuth2Manager/AFHTTPRequestSerializer+OAuth2.{h,m}'
   end
@@ -32,7 +32,7 @@ Pod::Spec.new do |s|
     ss.osx.deployment_target = '10.9'
 
     ss.dependency 'AFOAuth2Manager/Core'
-    ss.dependency 'AFNetworking/NSURLSession', '~>2.2'
+    ss.dependency 'AFNetworking/NSURLSession', '>=2.2'
 
     ss.source_files = 'AFOAuth2Manager/AFOAuth2SessionManager.{h,m}'
   end
