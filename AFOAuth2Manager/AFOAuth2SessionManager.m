@@ -1,4 +1,4 @@
-// AFOAuth2Manager.m
+// AFOAuth2SessionManager.m
 //
 // Copyright (c) 2012-2015 AFNetworking (http://afnetworking.com)
 //
@@ -20,31 +20,47 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import "AFOAuth2Manager.h"
+#import "AFOAuth2SessionManager.h"
 #import "AFOAuth2Constants.h"
 
-@interface AFOAuth2Manager ()
+@interface AFOAuth2SessionManager ()
 @property (readwrite, nonatomic, copy) NSString *serviceProviderIdentifier;
 @property (readwrite, nonatomic, copy) NSString *clientID;
 @property (readwrite, nonatomic, copy) NSString *secret;
 @end
 
-@implementation AFOAuth2Manager
+@implementation AFOAuth2SessionManager
 
 + (instancetype)clientWithBaseURL:(NSURL *)url
                          clientID:(NSString *)clientID
                            secret:(NSString *)secret
 {
-    return [[self alloc] initWithBaseURL:url clientID:clientID secret:secret];
+    return [[self alloc] initWithBaseURL:url clientID:clientID secret:secret sessionConfiguration:nil];
+}
+
++ (instancetype)clientWithBaseURL:(NSURL *)url
+                         clientID:(NSString *)clientID
+                           secret:(NSString *)secret
+             sessionConfiguration:(NSURLSessionConfiguration *)configuration
+{
+    return [[self alloc] initWithBaseURL:url clientID:clientID secret:secret sessionConfiguration:configuration];
 }
 
 - (instancetype)initWithBaseURL:(NSURL *)url
                        clientID:(NSString *)clientID
                          secret:(NSString *)secret
 {
+    return [self initWithBaseURL:url clientID:clientID secret:secret sessionConfiguration:nil];
+}
+
+- (instancetype)initWithBaseURL:(NSURL *)url
+                       clientID:(NSString *)clientID
+                         secret:(NSString *)secret
+           sessionConfiguration:(NSURLSessionConfiguration *)configuration
+{
     NSParameterAssert(clientID);
 
-    self = [super initWithBaseURL:url];
+    self = [super initWithBaseURL:url sessionConfiguration:configuration];
     if (!self) {
         return nil;
     }
@@ -82,12 +98,12 @@
 
 #pragma mark -
 
-- (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
-                                                       username:(NSString *)username
-                                                       password:(NSString *)password
-                                                          scope:(NSString *)scope
-                                                        success:(void (^)(AFOAuthCredential *credential))success
-                                                        failure:(void (^)(NSError *error))failure
+- (NSURLSessionDataTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
+                                                     username:(NSString *)username
+                                                     password:(NSString *)password
+                                                        scope:(NSString *)scope
+                                                      success:(void (^)(AFOAuthCredential *credential))success
+                                                      failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(username);
     NSParameterAssert(password);
@@ -103,10 +119,10 @@
     return [self authenticateUsingOAuthWithURLString:URLString parameters:parameters success:success failure:failure];
 }
 
-- (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
-                                                          scope:(NSString *)scope
-                                                        success:(void (^)(AFOAuthCredential *credential))success
-                                                        failure:(void (^)(NSError *error))failure
+- (NSURLSessionDataTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
+                                                        scope:(NSString *)scope
+                                                      success:(void (^)(AFOAuthCredential *credential))success
+                                                      failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(scope);
 
@@ -118,10 +134,10 @@
     return [self authenticateUsingOAuthWithURLString:URLString parameters:parameters success:success failure:failure];
 }
 
-- (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
-                                                   refreshToken:(NSString *)refreshToken
-                                                        success:(void (^)(AFOAuthCredential *credential))success
-                                                        failure:(void (^)(NSError *error))failure
+- (NSURLSessionDataTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
+                                                 refreshToken:(NSString *)refreshToken
+                                                      success:(void (^)(AFOAuthCredential *credential))success
+                                                      failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(refreshToken);
 
@@ -133,11 +149,11 @@
     return [self authenticateUsingOAuthWithURLString:URLString parameters:parameters success:success failure:failure];
 }
 
-- (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
-                                                           code:(NSString *)code
-                                                    redirectURI:(NSString *)uri
-                                                        success:(void (^)(AFOAuthCredential *credential))success
-                                                        failure:(void (^)(NSError *error))failure
+- (NSURLSessionDataTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
+                                                         code:(NSString *)code
+                                                  redirectURI:(NSString *)uri
+                                                      success:(void (^)(AFOAuthCredential *credential))success
+                                                      failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(code);
     NSParameterAssert(uri);
@@ -146,15 +162,15 @@
                                  @"grant_type": kAFOAuthCodeGrantType,
                                  @"code": code,
                                  @"redirect_uri": uri
-                                 };
+                                };
 
     return [self authenticateUsingOAuthWithURLString:URLString parameters:parameters success:success failure:failure];
 }
 
-- (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
-                                                     parameters:(NSDictionary *)parameters
-                                                        success:(void (^)(AFOAuthCredential *credential))success
-                                                        failure:(void (^)(NSError *error))failure
+- (NSURLSessionDataTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
+                                                   parameters:(NSDictionary *)parameters
+                                                      success:(void (^)(AFOAuthCredential *credential))success
+                                                      failure:(void (^)(NSError *error))failure
 {
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
     if (!self.useHTTPBasicAuthentication) {
@@ -163,7 +179,7 @@
     }
     parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
 
-    AFHTTPRequestOperation *requestOperation = [self POST:URLString parameters:parameters success:^(__unused AFHTTPRequestOperation *operation, id responseObject) {
+    NSURLSessionDataTask *task = [self POST:URLString parameters:parameters success:^(__unused NSURLSessionDataTask *task, id responseObject) {
         if (!responseObject) {
             if (failure) {
                 failure(nil);
@@ -206,13 +222,13 @@
         if (success) {
             success(credential);
         }
-    } failure:^(__unused AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(__unused NSURLSessionDataTask *task, NSError *error) {
         if (failure) {
             failure(error);
         }
     }];
 
-    return requestOperation;
+    return task;
 }
 
 @end

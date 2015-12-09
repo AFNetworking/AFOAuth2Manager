@@ -1,4 +1,4 @@
-// AFHTTPRequestSerializer+OAuth2.h
+// AFOAuth2Constants.h
 //
 // Copyright (c) 2012-2015 AFNetworking (http://afnetworking.com)
 //
@@ -20,17 +20,35 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <AFNetworking/AFURLRequestSerialization.h>
+#import <Foundation/Foundation.h>
 
-@class AFOAuthCredential;
-
-@interface AFHTTPRequestSerializer (OAuth2)
+///----------------
+/// @name Constants
+///----------------
 
 /**
- Sets the "Authorization" HTTP header set in request objects made by the HTTP client to contain the access token within the OAuth credential. This overwrites any existing value for this header.
+ ## Error Domains
 
- @param credential The OAuth2 credential
+ The following error domain is predefined.
+
+ - `NSString * const AFOAuth2ErrorDomain`
+
+ ## OAuth Grant Types
+
+ OAuth 2.0 provides several grant types, covering several different use cases. The following grant type string constants are provided:
+
+ `kAFOAuthCodeGrantType`: "authorization_code"
+ `kAFOAuthClientCredentialsGrantType`: "client_credentials"
+ `kAFOAuthPasswordCredentialsGrantType`: "password"
+ `kAFOAuthRefreshGrantType`: "refresh_token"
  */
-- (void)setAuthorizationHeaderFieldWithCredential:(AFOAuthCredential *)credential;
+extern NSString * const AFOAuth2ErrorDomain;
 
-@end
+extern NSString * const kAFOAuthCodeGrantType;
+extern NSString * const kAFOAuthClientCredentialsGrantType;
+extern NSString * const kAFOAuthPasswordCredentialsGrantType;
+extern NSString * const kAFOAuthRefreshGrantType;
+
+
+// See: http://tools.ietf.org/html/rfc6749#section-5.2
+NSError * AFErrorFromRFC6749Section5_2Error(id object);
