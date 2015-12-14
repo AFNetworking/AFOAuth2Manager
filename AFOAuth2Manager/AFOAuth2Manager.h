@@ -21,7 +21,9 @@
 // THE SOFTWARE
 
 #import <Foundation/Foundation.h>
-@class AFOAuthCredential;
+#import "AFOAuthCredential.h"
+#import "AFHTTPRequestSerializer+OAuth2.h"
+
 @import AFNetworking;
 
 NS_ASSUME_NONNULL_BEGIN
