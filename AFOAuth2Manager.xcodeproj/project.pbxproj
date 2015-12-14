@@ -673,7 +673,6 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
 				);
 				INFOPLIST_FILE = "$(PROJECT_DIR)/Resources/Info.plist";
@@ -697,7 +696,6 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
 				);
 				INFOPLIST_FILE = "$(PROJECT_DIR)/Resources/Info.plist";
@@ -717,7 +715,6 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
@@ -734,7 +731,6 @@
 			buildSettings = {
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
 				);
 				INFOPLIST_FILE = Tests/Info.plist;
@@ -1056,6 +1052,7 @@
 				2934F34A1C161603008B8AE4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2934F35E1C161652008B8AE4 /* Build configuration list for PBXNativeTarget "AFOAuth2Manager OS X Tests" */ = {
 			isa = XCConfigurationList;
@@ -1064,6 +1061,7 @@
 				2934F3601C161652008B8AE4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		29490FBF1BE11BD700893BE1 /* Build configuration list for PBXProject "AFOAuth2Manager" */ = {
 			isa = XCConfigurationList;
