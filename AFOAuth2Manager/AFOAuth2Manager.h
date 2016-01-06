@@ -24,6 +24,8 @@
 
 #import <AFNetworking/AFHTTPRequestOperationManager.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class AFOAuthCredential;
 
 /**
@@ -253,13 +255,14 @@
  Stores the specified OAuth credential for a given web service identifier in the Keychain.
  with the default Keychain Accessibilty of kSecAttrAccessibleWhenUnlocked.
 
- @param credential The OAuth credential to be stored.
- @param identifier The service identifier associated with the specified credential.
+ @param credential  The OAuth credential to be stored.
+ @param identifier  The service identifier associated with the specified credential.
+ @param accessGroup The optional access group for shared Keychains.
 
  @return Whether or not the credential was stored in the keychain.
  */
-+ (BOOL)storeCredential:(AFOAuthCredential *)credential
-         withIdentifier:(NSString *)identifier;
++ (BOOL)storeCredential:(AFOAuthCredential *)credential withIdentifier:(NSString *)identifier
+            accessGroup:(nullable NSString *)accessGroup;
 
 /**
  Stores the specified OAuth token for a given web service identifier in the Keychain.
@@ -267,30 +270,33 @@
  @param credential The OAuth credential to be stored.
  @param identifier The service identifier associated with the specified token.
  @param securityAccessibility The Keychain security accessibility to store the credential with.
+ @param accessGroup The optional access group for shared Keychains.
 
  @return Whether or not the credential was stored in the keychain.
  */
-+ (BOOL)storeCredential:(AFOAuthCredential *)credential
-         withIdentifier:(NSString *)identifier
-      withAccessibility:(id)securityAccessibility;
++ (BOOL)storeCredential:(AFOAuthCredential *)credential withIdentifier:(NSString *)identifier
+      withAccessibility:(id)securityAccessibility accessGroup:(nullable NSString *)accessGroup;
 
 /**
  Retrieves the OAuth credential stored with the specified service identifier from the Keychain.
 
  @param identifier The service identifier associated with the specified credential.
+ @param accessGroup The optional access group for shared Keychains.
 
  @return The retrieved OAuth credential.
  */
-+ (AFOAuthCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier;
++ (AFOAuthCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier
+                                            accessGroup:(nullable NSString *)accessGroup;
 
 /**
  Deletes the OAuth credential stored with the specified service identifier from the Keychain.
 
  @param identifier The service identifier associated with the specified credential.
+ @param accessGroup The optional access group for shared Keychains.
 
  @return Whether or not the credential was deleted from the keychain.
  */
-+ (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier;
++ (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier accessGroup:(nullable NSString *)accessGroup;
 
 @end
 
@@ -323,3 +329,5 @@ extern NSString * const kAFOAuthRefreshGrantType;
 
 @compatibility_alias AFOAuth2Client AFOAuth2Manager;
 @compatibility_alias AFOAuth2RequestOperationManager AFOAuth2Manager;
+
+NS_ASSUME_NONNULL_END
