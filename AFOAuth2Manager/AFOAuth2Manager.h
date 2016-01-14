@@ -285,7 +285,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @return The retrieved OAuth credential.
  */
-+ (AFOAuthCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier
++ (nullable AFOAuthCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier
                                             accessGroup:(nullable NSString *)accessGroup;
 
 /**
