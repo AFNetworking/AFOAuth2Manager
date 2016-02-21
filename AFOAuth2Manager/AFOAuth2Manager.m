@@ -367,7 +367,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     NSMutableDictionary *queryDictionary = [AFKeychainQueryDictionaryWithIdentifier(identifier) mutableCopy];
 
     if (!credential) {
-        return [self deleteCredentialWithIdentifier:identifier];
+        return [self deleteCredentialWithIdentifier:identifier status:reqStatus];
     }
 
     NSMutableDictionary *updateDictionary = [NSMutableDictionary dictionary];
@@ -378,7 +378,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     }
 
     OSStatus status;
-    BOOL exists = ([self retrieveCredentialWithIdentifier:identifier] != nil);
+    BOOL exists = ([self retrieveCredentialWithIdentifier:identifier status:reqStatus] != nil);
 
     if (exists) {
         status = SecItemUpdate((__bridge CFDictionaryRef)queryDictionary, (__bridge CFDictionaryRef)updateDictionary);
@@ -387,22 +387,22 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
         status = SecItemAdd((__bridge CFDictionaryRef)queryDictionary, NULL);
     }
 
-    *reqStatus = status
+    *reqStatus = status;
     return (status == errSecSuccess);
 }
 
 + (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier
-                                status:(OSStatus *)status {
+                                status:(OSStatus *)reqStatus {
     NSMutableDictionary *queryDictionary = [AFKeychainQueryDictionaryWithIdentifier(identifier) mutableCopy];
 
     OSStatus status = SecItemDelete((__bridge CFDictionaryRef)queryDictionary);
 
-    *reqStatus = status
+    *reqStatus = status;
     return (status == errSecSuccess);
 }
 
 + (AFOAuthStoredCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier
-                                                       status:(OSStatus *)status {
+                                                       status:(OSStatus *)reqStatus {
     NSMutableDictionary *queryDictionary = [AFKeychainQueryDictionaryWithIdentifier(identifier) mutableCopy];
     queryDictionary[(__bridge id)kSecReturnData] = (__bridge id)kCFBooleanTrue;
     queryDictionary[(__bridge id)kSecMatchLimit] = (__bridge id)kSecMatchLimitOne;
@@ -410,7 +410,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     CFDataRef result = nil;
     OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)queryDictionary, (CFTypeRef *)&result);
 
-    *reqStatus = status
+    *reqStatus = status;
     
     if (status != errSecSuccess) {
         return nil;
