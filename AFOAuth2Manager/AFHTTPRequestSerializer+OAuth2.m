@@ -25,7 +25,7 @@
 
 @implementation AFHTTPRequestSerializer (OAuth2)
 
-- (void)setAuthorizationHeaderFieldWithCredential:(AFOAuthCredential *)credential {
+- (void)setAuthorizationHeaderFieldWithCredential:(AFOAuthStoredCredential *)credential {
     if ([credential.tokenType compare:@"Bearer" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
         [self setValue:[NSString stringWithFormat:@"Bearer %@", credential.accessToken] forHTTPHeaderField:@"Authorization"];
     }

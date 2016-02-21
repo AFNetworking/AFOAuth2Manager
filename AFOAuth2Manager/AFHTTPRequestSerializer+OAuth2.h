@@ -22,7 +22,7 @@
 
 #import <AFNetworking/AFURLRequestSerialization.h>
 
-@class AFOAuthCredential;
+@class AFOAuthStoredCredential;
 
 @interface AFHTTPRequestSerializer (OAuth2)
 
@@ -31,6 +31,6 @@
 
  @param credential The OAuth2 credential
  */
-- (void)setAuthorizationHeaderFieldWithCredential:(AFOAuthCredential *)credential;
+- (void)setAuthorizationHeaderFieldWithCredential:(AFOAuthStoredCredential *)credential;
 
 @end
