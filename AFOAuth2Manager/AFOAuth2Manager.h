@@ -313,17 +313,17 @@
 
  OAuth 2.0 provides several grant types, covering several different use cases. The following grant type string constants are provided:
 
- `kAFOAuthCodeGrantType`: "authorization_code"
- `kAFOAuthClientCredentialsGrantType`: "client_credentials"
- `kAFOAuthPasswordCredentialsGrantType`: "password"
- `kAFOAuthRefreshGrantType`: "refresh_token"
+ `AFOAuthCodeGrantType`: "authorization_code"
+ `AFOAuthClientCredentialsGrantType`: "client_credentials"
+ `AFOAuthPasswordCredentialsGrantType`: "password"
+ `AFOAuthRefreshGrantType`: "refresh_token"
  */
 extern NSString * const AFOAuth2ErrorDomain;
 
-extern NSString * const kAFOAuthCodeGrantType;
-extern NSString * const kAFOAuthClientCredentialsGrantType;
-extern NSString * const kAFOAuthPasswordCredentialsGrantType;
-extern NSString * const kAFOAuthRefreshGrantType;
+extern NSString * const AFOAuthCodeGrantType;
+extern NSString * const AFOAuthClientCredentialsGrantType;
+extern NSString * const AFOAuthPasswordCredentialsGrantType;
+extern NSString * const AFOAuthRefreshGrantType;
 
 @compatibility_alias AFOAuth2Client AFOAuth2Manager;
 @compatibility_alias AFOAuth2RequestOperationManager AFOAuth2Manager;

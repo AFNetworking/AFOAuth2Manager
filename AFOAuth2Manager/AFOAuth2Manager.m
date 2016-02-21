@@ -26,19 +26,19 @@
 
 NSString * const AFOAuth2ErrorDomain = @"com.alamofire.networking.oauth2.error";
 
-NSString * const kAFOAuthCodeGrantType = @"authorization_code";
-NSString * const kAFOAuthClientCredentialsGrantType = @"client_credentials";
-NSString * const kAFOAuthPasswordCredentialsGrantType = @"password";
-NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
+NSString * const AFOAuthCodeGrantType = @"authorization_code";
+NSString * const AFOAuthClientCredentialsGrantType = @"client_credentials";
+NSString * const AFOAuthPasswordCredentialsGrantType = @"password";
+NSString * const AFOAuthRefreshGrantType = @"refresh_token";
 
-NSString * const kAFOAuth2CredentialServiceName = @"AFOAuthStoredCredentialService";
+NSString * const AFOAuth2CredentialServiceName = @"AFOAuthStoredCredentialService";
 
 static NSDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifier) {
     NSCParameterAssert(identifier);
 
     return @{
       (__bridge id)kSecClass: (__bridge id)kSecClassGenericPassword,
-      (__bridge id)kSecAttrService: kAFOAuth2CredentialServiceName,
+      (__bridge id)kSecAttrService: AFOAuth2CredentialServiceName,
       (__bridge id)kSecAttrAccount: identifier
     };
 }
@@ -152,7 +152,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     NSParameterAssert(scope);
 
     NSDictionary *parameters = @{
-                                 @"grant_type": kAFOAuthPasswordCredentialsGrantType,
+                                 @"grant_type": AFOAuthPasswordCredentialsGrantType,
                                  @"username": username,
                                  @"password": password,
                                  @"scope": scope
@@ -169,7 +169,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     NSParameterAssert(scope);
 
     NSDictionary *parameters = @{
-                                 @"grant_type": kAFOAuthClientCredentialsGrantType,
+                                 @"grant_type": AFOAuthClientCredentialsGrantType,
                                  @"scope": scope
                                 };
 
@@ -184,7 +184,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     NSParameterAssert(refreshToken);
 
     NSDictionary *parameters = @{
-                                 @"grant_type": kAFOAuthRefreshGrantType,
+                                 @"grant_type": AFOAuthRefreshGrantType,
                                  @"refresh_token": refreshToken
                                 };
 
@@ -201,7 +201,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     NSParameterAssert(uri);
 
     NSDictionary *parameters = @{
-                                 @"grant_type": kAFOAuthCodeGrantType,
+                                 @"grant_type": AFOAuthCodeGrantType,
                                  @"code": code,
                                  @"redirect_uri": uri
                                 };
