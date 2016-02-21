@@ -24,7 +24,7 @@
 
 #import <AFNetworking/AFHTTPRequestOperationManager.h>
 
-@class AFOAuthCredential;
+@class AFOAuthStoredCredential;
 
 /**
  `AFOAuth2Manager` encapsulates common patterns to authenticate against a resource server conforming to the behavior outlined in the OAuth 2.0 specification.
@@ -40,7 +40,7 @@
 ///------------------------------------------
 
 /**
- The service provider identifier used to store and retrieve OAuth credentials by `AFOAuthCredential`. Equivalent to the hostname of the client `baseURL`.
+ The service provider identifier used to store and retrieve OAuth credentials by `AFOAuthStoredCredential`. Equivalent to the hostname of the client `baseURL`.
  */
 @property (readonly, nonatomic, copy) NSString *serviceProviderIdentifier;
 
@@ -102,7 +102,7 @@
                                    username:(NSString *)username
                                    password:(NSString *)password
                                       scope:(NSString *)scope
-                                    success:(void (^)(AFOAuthCredential *credential))success
+                                    success:(void (^)(AFOAuthStoredCredential *credential))success
                                     failure:(void (^)(NSError *error))failure;
 
 /**
@@ -115,7 +115,7 @@
  */
 - (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                       scope:(NSString *)scope
-                                    success:(void (^)(AFOAuthCredential *credential))success
+                                    success:(void (^)(AFOAuthStoredCredential *credential))success
                                     failure:(void (^)(NSError *error))failure;
 
 /**
@@ -128,7 +128,7 @@
  */
 - (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                refreshToken:(NSString *)refreshToken
-                                    success:(void (^)(AFOAuthCredential *credential))success
+                                    success:(void (^)(AFOAuthStoredCredential *credential))success
                                     failure:(void (^)(NSError *error))failure;
 
 /**
@@ -143,7 +143,7 @@
 - (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                        code:(NSString *)code
                                 redirectURI:(NSString *)uri
-                                    success:(void (^)(AFOAuthCredential *credential))success
+                                    success:(void (^)(AFOAuthStoredCredential *credential))success
                                     failure:(void (^)(NSError *error))failure;
 
 /**
@@ -156,7 +156,7 @@
  */
 - (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                  parameters:(NSDictionary *)parameters
-                                    success:(void (^)(AFOAuthCredential *credential))success
+                                    success:(void (^)(AFOAuthStoredCredential *credential))success
                                     failure:(void (^)(NSError *error))failure;
 
 @end
@@ -164,11 +164,11 @@
 #pragma mark -
 
 /**
- `AFOAuthCredential` models the credentials returned from an OAuth server, storing the token type, access & refresh tokens, and whether the token is expired.
+ `AFOAuthStoredCredential` models the credentials returned from an OAuth server, storing the token type, access & refresh tokens, and whether the token is expired.
 
  OAuth credentials can be stored in the user's keychain, and retrieved on subsequent launches.
  */
-@interface AFOAuthCredential : NSObject <NSCoding>
+@interface AFOAuthStoredCredential : NSObject <NSCoding>
 
 ///--------------------------------------
 /// @name Accessing Credential Properties
@@ -258,8 +258,9 @@
 
  @return Whether or not the credential was stored in the keychain.
  */
-+ (BOOL)storeCredential:(AFOAuthCredential *)credential
-         withIdentifier:(NSString *)identifier;
++ (BOOL)storeCredential:(AFOAuthStoredCredential *)credential
+         withIdentifier:(NSString *)identifier
+                 status:(OSStatus *)reqStatus;
 
 /**
  Stores the specified OAuth token for a given web service identifier in the Keychain.
@@ -270,9 +271,10 @@
 
  @return Whether or not the credential was stored in the keychain.
  */
-+ (BOOL)storeCredential:(AFOAuthCredential *)credential
++ (BOOL)storeCredential:(AFOAuthStoredCredential *)credential
          withIdentifier:(NSString *)identifier
-      withAccessibility:(id)securityAccessibility;
+      withAccessibility:(id)securityAccessibility
+                 status:(OSStatus *)reqStatus;
 
 /**
  Retrieves the OAuth credential stored with the specified service identifier from the Keychain.
@@ -281,7 +283,8 @@
 
  @return The retrieved OAuth credential.
  */
-+ (AFOAuthCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier;
++ (AFOAuthStoredCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier
+                                                       status:(OSStatus *)reqStatus;
 
 /**
  Deletes the OAuth credential stored with the specified service identifier from the Keychain.
@@ -290,7 +293,8 @@
 
  @return Whether or not the credential was deleted from the keychain.
  */
-+ (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier;
++ (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier
+                                status:(OSStatus *)reqStatus;
 
 @end
 

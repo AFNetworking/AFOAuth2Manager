@@ -31,7 +31,7 @@ NSString * const kAFOAuthClientCredentialsGrantType = @"client_credentials";
 NSString * const kAFOAuthPasswordCredentialsGrantType = @"password";
 NSString * const kAFOAuthRefreshGrantType = @"refresh_token";
 
-NSString * const kAFOAuth2CredentialServiceName = @"AFOAuthCredentialService";
+NSString * const kAFOAuth2CredentialServiceName = @"AFOAuthStoredCredentialService";
 
 static NSDictionary * AFKeychainQueryDictionaryWithIdentifier(NSString *identifier) {
     NSCParameterAssert(identifier);
@@ -144,7 +144,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
                                    username:(NSString *)username
                                    password:(NSString *)password
                                       scope:(NSString *)scope
-                                    success:(void (^)(AFOAuthCredential *credential))success
+                                    success:(void (^)(AFOAuthStoredCredential *credential))success
                                     failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(username);
@@ -163,7 +163,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 
 - (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                       scope:(NSString *)scope
-                                    success:(void (^)(AFOAuthCredential *credential))success
+                                    success:(void (^)(AFOAuthStoredCredential *credential))success
                                     failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(scope);
@@ -178,7 +178,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 
 - (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                refreshToken:(NSString *)refreshToken
-                                    success:(void (^)(AFOAuthCredential *credential))success
+                                    success:(void (^)(AFOAuthStoredCredential *credential))success
                                     failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(refreshToken);
@@ -194,7 +194,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 - (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                        code:(NSString *)code
                                 redirectURI:(NSString *)uri
-                                    success:(void (^)(AFOAuthCredential *credential))success
+                                    success:(void (^)(AFOAuthStoredCredential *credential))success
                                     failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(code);
@@ -211,7 +211,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 
 - (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                  parameters:(NSDictionary *)parameters
-                                    success:(void (^)(AFOAuthCredential *credential))success
+                                    success:(void (^)(AFOAuthStoredCredential *credential))success
                                     failure:(void (^)(NSError *error))failure
 {
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
@@ -243,7 +243,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
             refreshToken = [parameters valueForKey:@"refresh_token"];
         }
 
-        AFOAuthCredential *credential = [AFOAuthCredential credentialWithOAuthToken:[responseObject valueForKey:@"access_token"] tokenType:[responseObject valueForKey:@"token_type"]];
+        AFOAuthStoredCredential *credential = [AFOAuthStoredCredential credentialWithOAuthToken:[responseObject valueForKey:@"access_token"] tokenType:[responseObject valueForKey:@"token_type"]];
 
 
         if (refreshToken) { // refreshToken is optional in the OAuth2 spec
@@ -277,14 +277,14 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 
 #pragma mark -
 
-@interface AFOAuthCredential ()
+@interface AFOAuthStoredCredential ()
 @property (readwrite, nonatomic, copy) NSString *accessToken;
 @property (readwrite, nonatomic, copy) NSString *tokenType;
 @property (readwrite, nonatomic, copy) NSString *refreshToken;
 @property (readwrite, nonatomic, copy) NSDate *expiration;
 @end
 
-@implementation AFOAuthCredential
+@implementation AFOAuthStoredCredential
 @dynamic expired;
 
 #pragma mark -
@@ -339,8 +339,9 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 
 #pragma mark Keychain
 
-+ (BOOL)storeCredential:(AFOAuthCredential *)credential
++ (BOOL)storeCredential:(AFOAuthStoredCredential *)credential
          withIdentifier:(NSString *)identifier
+                 status:(OSStatus *)reqStatus
 {
     id securityAccessibility = nil;
 #if (defined(__IPHONE_OS_VERSION_MAX_ALLOWED) && __IPHONE_OS_VERSION_MAX_ALLOWED >= 43000) || (defined(__MAC_OS_X_VERSION_MAX_ALLOWED) && __MAC_OS_X_VERSION_MAX_ALLOWED >= 1090)
@@ -352,12 +353,16 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 #pragma clang diagnostic pop
 #endif
 
-    return [[self class] storeCredential:credential withIdentifier:identifier withAccessibility:securityAccessibility];
+    return [[self class] storeCredential:credential
+                          withIdentifier:identifier
+                       withAccessibility:securityAccessibility
+                                  status:reqStatus];
 }
 
-+ (BOOL)storeCredential:(AFOAuthCredential *)credential
++ (BOOL)storeCredential:(AFOAuthStoredCredential *)credential
          withIdentifier:(NSString *)identifier
       withAccessibility:(id)securityAccessibility
+                 status:(OSStatus *)reqStatus
 {
     NSMutableDictionary *queryDictionary = [AFKeychainQueryDictionaryWithIdentifier(identifier) mutableCopy];
 
@@ -382,18 +387,22 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
         status = SecItemAdd((__bridge CFDictionaryRef)queryDictionary, NULL);
     }
 
+    *reqStatus = status
     return (status == errSecSuccess);
 }
 
-+ (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier {
++ (BOOL)deleteCredentialWithIdentifier:(NSString *)identifier
+                                status:(OSStatus *)status {
     NSMutableDictionary *queryDictionary = [AFKeychainQueryDictionaryWithIdentifier(identifier) mutableCopy];
 
     OSStatus status = SecItemDelete((__bridge CFDictionaryRef)queryDictionary);
 
+    *reqStatus = status
     return (status == errSecSuccess);
 }
 
-+ (AFOAuthCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier {
++ (AFOAuthStoredCredential *)retrieveCredentialWithIdentifier:(NSString *)identifier
+                                                       status:(OSStatus *)status {
     NSMutableDictionary *queryDictionary = [AFKeychainQueryDictionaryWithIdentifier(identifier) mutableCopy];
     queryDictionary[(__bridge id)kSecReturnData] = (__bridge id)kCFBooleanTrue;
     queryDictionary[(__bridge id)kSecMatchLimit] = (__bridge id)kSecMatchLimitOne;
@@ -401,6 +410,8 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     CFDataRef result = nil;
     OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)queryDictionary, (CFTypeRef *)&result);
 
+    *reqStatus = status
+    
     if (status != errSecSuccess) {
         return nil;
     }
