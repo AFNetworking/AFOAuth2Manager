@@ -334,7 +334,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 }
 
 - (BOOL)isExpired {
-    return [self.expiration compare:[NSDate date]] == NSOrderedAscending;
+    return [self.expiration compare:[[NSDate date] dateByAddingTimeInterval:-60]] == NSOrderedAscending;
 }
 
 #pragma mark Keychain
