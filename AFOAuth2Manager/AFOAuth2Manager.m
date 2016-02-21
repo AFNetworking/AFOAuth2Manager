@@ -85,6 +85,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 @property (readwrite, nonatomic, copy) NSString *serviceProviderIdentifier;
 @property (readwrite, nonatomic, copy) NSString *clientID;
 @property (readwrite, nonatomic, copy) NSString *secret;
+@property (readwrite, nonatomic, assign) BOOL   isRefreshing;
 @end
 
 @implementation AFOAuth2Manager
@@ -181,14 +182,39 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
                                     success:(void (^)(AFOAuthStoredCredential *credential))success
                                     failure:(void (^)(NSError *error))failure
 {
+    if (self.isRefreshing == YES)
+    {
+        return;
+    }
+    
     NSParameterAssert(refreshToken);
 
+    self.isRefreshing = YES;
+    
     NSDictionary *parameters = @{
                                  @"grant_type": AFOAuthRefreshGrantType,
                                  @"refresh_token": refreshToken
                                 };
-
-    return [self authenticateUsingOAuthWithURLString:URLString parameters:parameters success:success failure:failure];
+    
+    void (^successBlock)(AFOAuthStoredCredential *) = ^void(AFOAuthStoredCredential *credential) {
+        self.isRefreshing = NO;
+        
+        if (success)
+        {
+            success(credential);
+        }
+    }
+    
+    void (^failureBlock)(NSError *) = ^void(NSError *error) {
+        self.isRefreshing = NO;
+        
+        if (failure)
+        {
+            failure(error);
+        }
+    }
+    
+    return [self authenticateUsingOAuthWithURLString:URLString parameters:parameters success:successBlock failure:failureBlock];
 }
 
 - (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
