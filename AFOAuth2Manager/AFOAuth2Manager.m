@@ -356,7 +356,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
         [credential setExpiration:expireDate];
     }
     
-    return credentials;
+    return credential;
 }
 
 @end
