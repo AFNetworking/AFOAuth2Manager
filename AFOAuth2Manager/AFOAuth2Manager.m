@@ -330,7 +330,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     
     if ([responseObject valueForKey:@"error"]) {
         *outError = AFErrorFromRFC6749Section5_2Error(responseObject);
-        return responseObject;
+        return nil;
     }
     
     NSString *refreshToken = [responseObject valueForKey:@"refresh_token"];
@@ -356,7 +356,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
         [credential setExpiration:expireDate];
     }
     
-    return responseObject;
+    return credentials;
 }
 
 @end
