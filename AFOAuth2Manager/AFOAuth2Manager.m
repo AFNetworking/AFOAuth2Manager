@@ -324,7 +324,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     id responseObject = [op responseObject];
     if (outError != nil) *outError = [op error];
     
-    if (!responseObject || outError != nil) {
+    if (!responseObject || *outError != nil) {
         return nil;
     }
     
