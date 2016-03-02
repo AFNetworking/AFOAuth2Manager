@@ -166,7 +166,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
                                      username:(NSString *)username
                                      password:(NSString *)password
                                         scope:(NSString *)scope
-                                        error:(NSError **)error
+                                        error:(NSError **)outError
 {
     NSParameterAssert(username);
     NSParameterAssert(password);
@@ -179,7 +179,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
                                  @"scope": scope
                                  };
     
-    return [self syncAuthenticateUsingOAuthWithURLString:URLString parameters:parameters error:error];
+    return [self syncAuthenticateUsingOAuthWithURLString:URLString parameters:parameters error:outError];
 }
 
 - (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
@@ -212,9 +212,9 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     return [self authenticateUsingOAuthWithURLString:URLString parameters:parameters success:success failure:failure];
 }
 
-- (id)authenticateUsingOAuthWithURLString:(NSString *)URLString
-                             refreshToken:(NSString *)refreshToken
-                                    error:(NSError **)error
+- (id)syncAuthenticateUsingOAuthWithURLString:(NSString *)URLString
+                                 refreshToken:(NSString *)refreshToken
+                                        error:(NSError **)outError
 {
     NSParameterAssert(refreshToken);
     
@@ -223,7 +223,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
                                  @"refresh_token": refreshToken
                                  };
     
-    return [self syncAuthenticateUsingOAuthWithURLString:URLString parameters:parameters error:error];
+    return [self syncAuthenticateUsingOAuthWithURLString:URLString parameters:parameters error:outError];
 }
 
 - (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString

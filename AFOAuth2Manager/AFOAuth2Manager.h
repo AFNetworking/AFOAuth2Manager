@@ -106,6 +106,24 @@
                                     failure:(void (^)(NSError *error))failure;
 
 /**
+ Synchronously creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server with the specified parameters.
+ 
+ @param URLString The URL string used to create the request URL.
+ @param username The username used for authentication
+ @param password The password used for authentication
+ @param scope The authorization scope
+ @param outError pointer to the error in the request
+ 
+ @return the response object
+ */
+
+- (id)syncAuthenticateUsingOAuthWithURLString:(NSString *)URLString
+                                     username:(NSString *)username
+                                     password:(NSString *)password
+                                        scope:(NSString *)scope
+                                        error:(NSError **)outError;
+
+/**
  Creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server with a designated scope.
 
  @param URLString The URL string used to create the request URL.
@@ -130,6 +148,20 @@
                                refreshToken:(NSString *)refreshToken
                                     success:(void (^)(AFOAuthStoredCredential *credential))success
                                     failure:(void (^)(NSError *error))failure;
+
+/**
+ Synchronously creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server with the specified parameters.
+ 
+ @param URLString The URL string used to create the request URL.
+ @param refreshToken The OAuth refresh token
+ @param outError pointer to the error in the request
+ 
+ @return the response object
+ */
+
+- (id)syncAuthenticateUsingOAuthWithURLString:(NSString *)URLString
+                                 refreshToken:(NSString *)refreshToken
+                                        error:(NSError **)outError
 
 /**
  Creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server with an authorization code, redirecting to a specified URI upon successful authentication.
@@ -158,6 +190,19 @@
                                  parameters:(NSDictionary *)parameters
                                     success:(void (^)(AFOAuthStoredCredential *credential))success
                                     failure:(void (^)(NSError *error))failure;
+
+/**
+ Synchronously creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server with the specified parameters.
+ 
+ @param URLString The URL string used to create the request URL.
+ @param parameters The parameters to be encoded and set in the request HTTP body.
+ @param outError pointer to the error in the request
+ 
+ @return the response object
+ */
+- (id)syncAuthenticateUsingOAuthWithURLString:(NSString *)URLString
+                                   parameters:(NSDictionary *)parameters
+                                        error:(NSError *__autoreleasing *)outError
 
 @end
 
