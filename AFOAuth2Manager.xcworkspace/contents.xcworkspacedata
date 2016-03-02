@@ -16,5 +16,11 @@
       <FileRef
          location = "group:AFOAuth2Manager.m">
       </FileRef>
+      <FileRef
+         location = "group:AFHTTPRequestOperationManager+Synchronous.h">
+      </FileRef>
+      <FileRef
+         location = "group:AFHTTPRequestOperationManager+Synchronous.m">
+      </FileRef>
    </Group>
 </Workspace>
