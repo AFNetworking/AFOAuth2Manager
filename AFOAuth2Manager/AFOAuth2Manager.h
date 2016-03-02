@@ -161,7 +161,7 @@
 
 - (id)syncAuthenticateUsingOAuthWithURLString:(NSString *)URLString
                                  refreshToken:(NSString *)refreshToken
-                                        error:(NSError **)outError
+                                        error:(NSError **)outError;
 
 /**
  Creates and enqueues an `AFHTTPRequestOperation` to authenticate against the server with an authorization code, redirecting to a specified URI upon successful authentication.
@@ -202,7 +202,7 @@
  */
 - (id)syncAuthenticateUsingOAuthWithURLString:(NSString *)URLString
                                    parameters:(NSDictionary *)parameters
-                                        error:(NSError *__autoreleasing *)outError
+                                        error:(NSError *__autoreleasing *)outError;
 
 @end
 
