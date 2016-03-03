@@ -314,6 +314,9 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 {
     NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:@"POST" URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:parameters error:nil];
     
+    // Set 30 seconds timeout
+    [request setTimeoutInterval:30.0f];
+    
     AFHTTPRequestOperation *op = [self HTTPRequestOperationWithRequest:request
                                                                success:nil
                                                                failure:nil];
