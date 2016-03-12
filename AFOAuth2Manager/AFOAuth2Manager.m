@@ -407,6 +407,11 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     _refreshToken = refreshToken;
 }
 
+- (NSDate *)getExpiration
+{
+    return _expiration;
+}
+
 - (void)setExpiration:(NSDate *)expiration
 {
     _expiration = expiration;

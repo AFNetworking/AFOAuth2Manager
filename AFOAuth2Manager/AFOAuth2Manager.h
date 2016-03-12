@@ -272,6 +272,13 @@
  */
 - (void)setRefreshToken:(NSString *)refreshToken;
 
+/**
+ Returns the expiration date of the access token
+ 
+ @return the expiration date
+ */
+- (NSDate *)getExpiration;
+
 
 /**
  Set the expiration on the access token. If no expiration is given by the OAuth2 provider,
