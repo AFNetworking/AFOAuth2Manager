@@ -27,7 +27,7 @@
 
 - (id)synchronouslyPerformMethod:(NSString *)method
                        URLString:(NSString *)URLString
-                      parameters:(NSDictionary *)parameters
+                      parameters:(id)parameters
                        operation:(AFHTTPRequestOperation *__autoreleasing *)operationPtr
                            error:(NSError *__autoreleasing *)outError {
 
@@ -50,7 +50,7 @@
 }
 
 - (id)syncGET:(NSString *)URLString
-   parameters:(NSDictionary *)parameters
+   parameters:(id)parameters
     operation:(AFHTTPRequestOperation *__autoreleasing *)operationPtr
         error:(NSError *__autoreleasing *)outError
 {
@@ -58,7 +58,7 @@
 }
 
 - (id)syncPOST:(NSString *)URLString
-    parameters:(NSDictionary *)parameters
+    parameters:(id)parameters
      operation:(AFHTTPRequestOperation *__autoreleasing *) operationPtr
          error:(NSError *__autoreleasing *) outError
 {
@@ -66,7 +66,7 @@
 }
 
 - (id)syncPUT:(NSString *)URLString
-   parameters:(NSDictionary *)parameters
+   parameters:(id)parameters
     operation:(AFHTTPRequestOperation *__autoreleasing *) operationPtr
         error:(NSError *__autoreleasing *) outError
 {
@@ -74,7 +74,7 @@
 }
 
 - (id)syncDELETE:(NSString *)URLString
-      parameters:(NSDictionary *)parameters
+      parameters:(id)parameters
        operation:(AFHTTPRequestOperation *__autoreleasing *) operationPtr
            error:(NSError *__autoreleasing *) outError
 {
@@ -82,7 +82,7 @@
 }
 
 - (id)syncPATCH:(NSString *)URLString
-     parameters:(NSDictionary *)parameters
+     parameters:(id)parameters
       operation:(AFHTTPRequestOperation *__autoreleasing *) operationPtr
           error:(NSError *__autoreleasing *) outError
 {
