@@ -1,0 +1,1087 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2934F28E1C15D9BE008B8AE4 /* AFOAuthCredential.h in Headers */ = {isa = PBXBuildFile; fileRef = 2934F28C1C15D9BE008B8AE4 /* AFOAuthCredential.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2934F28F1C15D9BE008B8AE4 /* AFOAuthCredential.m in Sources */ = {isa = PBXBuildFile; fileRef = 2934F28D1C15D9BE008B8AE4 /* AFOAuthCredential.m */; };
+		2934F2D01C15F374008B8AE4 /* AFOAuth2Manager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29490FC51BE11BD700893BE1 /* AFOAuth2Manager.framework */; };
+		2934F2D71C15F3C6008B8AE4 /* AFNetworking.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 29490FDC1BE11CBB00893BE1 /* AFNetworking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2934F2D81C15F3CD008B8AE4 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29490FDC1BE11CBB00893BE1 /* AFNetworking.framework */; };
+		2934F2DA1C15F44E008B8AE4 /* AFOAuthManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2934F2D91C15F44E008B8AE4 /* AFOAuthManagerTests.m */; };
+		2934F2DC1C15FE8C008B8AE4 /* AFOAuthCredentialTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2934F2DB1C15FE8C008B8AE4 /* AFOAuthCredentialTests.m */; };
+		2934F2EA1C160D2B008B8AE4 /* AFHTTPRequestSerializer+OAuth2.m in Sources */ = {isa = PBXBuildFile; fileRef = 29490FD21BE11C5100893BE1 /* AFHTTPRequestSerializer+OAuth2.m */; };
+		2934F2EB1C160D2B008B8AE4 /* AFOAuth2Manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29490FDF1BE11D1000893BE1 /* AFOAuth2Manager.m */; };
+		2934F2ED1C160D37008B8AE4 /* AFHTTPRequestSerializer+OAuth2.m in Sources */ = {isa = PBXBuildFile; fileRef = 29490FD21BE11C5100893BE1 /* AFHTTPRequestSerializer+OAuth2.m */; };
+		2934F2EF1C160DBD008B8AE4 /* AFOAuthCredential.m in Sources */ = {isa = PBXBuildFile; fileRef = 2934F28D1C15D9BE008B8AE4 /* AFOAuthCredential.m */; };
+		2934F2F91C160E12008B8AE4 /* AFOAuth2Manager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2934F2E21C160CA4008B8AE4 /* AFOAuth2Manager.framework */; };
+		2934F2FF1C160E33008B8AE4 /* AFOAuthManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2934F2D91C15F44E008B8AE4 /* AFOAuthManagerTests.m */; };
+		2934F3001C160E33008B8AE4 /* AFOAuthCredentialTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2934F2DB1C15FE8C008B8AE4 /* AFOAuthCredentialTests.m */; };
+		2934F32A1C161514008B8AE4 /* AFHTTPRequestSerializer+OAuth2.m in Sources */ = {isa = PBXBuildFile; fileRef = 29490FD21BE11C5100893BE1 /* AFHTTPRequestSerializer+OAuth2.m */; };
+		2934F32B1C161517008B8AE4 /* AFOAuth2Manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29490FDF1BE11D1000893BE1 /* AFOAuth2Manager.m */; };
+		2934F32C1C161519008B8AE4 /* AFOAuthCredential.m in Sources */ = {isa = PBXBuildFile; fileRef = 2934F28D1C15D9BE008B8AE4 /* AFOAuthCredential.m */; };
+		2934F32E1C161573008B8AE4 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2934F32D1C161573008B8AE4 /* AFNetworking.framework */; };
+		2934F3301C161595008B8AE4 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2934F32F1C161595008B8AE4 /* AFNetworking.framework */; };
+		2934F3311C16159C008B8AE4 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2934F32F1C161595008B8AE4 /* AFNetworking.framework */; };
+		2934F34D1C161624008B8AE4 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2934F34C1C161624008B8AE4 /* AFNetworking.framework */; };
+		2934F34E1C161630008B8AE4 /* AFHTTPRequestSerializer+OAuth2.m in Sources */ = {isa = PBXBuildFile; fileRef = 29490FD21BE11C5100893BE1 /* AFHTTPRequestSerializer+OAuth2.m */; };
+		2934F34F1C161630008B8AE4 /* AFOAuth2Manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29490FDF1BE11D1000893BE1 /* AFOAuth2Manager.m */; };
+		2934F3501C161630008B8AE4 /* AFOAuthCredential.m in Sources */ = {isa = PBXBuildFile; fileRef = 2934F28D1C15D9BE008B8AE4 /* AFOAuthCredential.m */; };
+		2934F35B1C161652008B8AE4 /* AFOAuth2Manager.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2934F3441C161603008B8AE4 /* AFOAuth2Manager.framework */; };
+		2934F3611C16167D008B8AE4 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2934F34C1C161624008B8AE4 /* AFNetworking.framework */; };
+		2934F3621C161694008B8AE4 /* AFNetworking.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2934F32F1C161595008B8AE4 /* AFNetworking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2934F3641C1616B3008B8AE4 /* AFNetworking.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2934F34C1C161624008B8AE4 /* AFNetworking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		2934F3651C1616F3008B8AE4 /* AFOAuthManagerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2934F2D91C15F44E008B8AE4 /* AFOAuthManagerTests.m */; };
+		2934F3661C1616F3008B8AE4 /* AFOAuthCredentialTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 2934F2DB1C15FE8C008B8AE4 /* AFOAuthCredentialTests.m */; };
+		2934F3671C161796008B8AE4 /* AFHTTPRequestSerializer+OAuth2.h in Headers */ = {isa = PBXBuildFile; fileRef = 29490FD11BE11C5100893BE1 /* AFHTTPRequestSerializer+OAuth2.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2934F3681C161796008B8AE4 /* AFOAuth2Manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 29490FDE1BE11D1000893BE1 /* AFOAuth2Manager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2934F3691C161796008B8AE4 /* AFOAuthCredential.h in Headers */ = {isa = PBXBuildFile; fileRef = 2934F28C1C15D9BE008B8AE4 /* AFOAuthCredential.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2934F36A1C1617A0008B8AE4 /* AFHTTPRequestSerializer+OAuth2.h in Headers */ = {isa = PBXBuildFile; fileRef = 29490FD11BE11C5100893BE1 /* AFHTTPRequestSerializer+OAuth2.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2934F36B1C1617A0008B8AE4 /* AFOAuth2Manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 29490FDE1BE11D1000893BE1 /* AFOAuth2Manager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2934F36C1C1617A0008B8AE4 /* AFOAuthCredential.h in Headers */ = {isa = PBXBuildFile; fileRef = 2934F28C1C15D9BE008B8AE4 /* AFOAuthCredential.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2934F36D1C1617B0008B8AE4 /* AFHTTPRequestSerializer+OAuth2.h in Headers */ = {isa = PBXBuildFile; fileRef = 29490FD11BE11C5100893BE1 /* AFHTTPRequestSerializer+OAuth2.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2934F36E1C1617B0008B8AE4 /* AFOAuth2Manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 29490FDE1BE11D1000893BE1 /* AFOAuth2Manager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2934F36F1C1617B0008B8AE4 /* AFOAuthCredential.h in Headers */ = {isa = PBXBuildFile; fileRef = 2934F28C1C15D9BE008B8AE4 /* AFOAuthCredential.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		29490FD51BE11C5100893BE1 /* AFHTTPRequestSerializer+OAuth2.h in Headers */ = {isa = PBXBuildFile; fileRef = 29490FD11BE11C5100893BE1 /* AFHTTPRequestSerializer+OAuth2.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		29490FDD1BE11CBB00893BE1 /* AFNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29490FDC1BE11CBB00893BE1 /* AFNetworking.framework */; };
+		29490FE01BE11D1000893BE1 /* AFOAuth2Manager.h in Headers */ = {isa = PBXBuildFile; fileRef = 29490FDE1BE11D1000893BE1 /* AFOAuth2Manager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		29490FE11BE11D1000893BE1 /* AFOAuth2Manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29490FDF1BE11D1000893BE1 /* AFOAuth2Manager.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2934F2D11C15F374008B8AE4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29490FBC1BE11BD700893BE1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 29490FC41BE11BD700893BE1;
+			remoteInfo = "AFOAuth2Manager iOS";
+		};
+		2934F2FA1C160E12008B8AE4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29490FBC1BE11BD700893BE1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2934F2E11C160CA4008B8AE4;
+			remoteInfo = "AFOAuth2Manager tvOS";
+		};
+		2934F35C1C161652008B8AE4 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29490FBC1BE11BD700893BE1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2934F3431C161603008B8AE4;
+			remoteInfo = "AFOAuth2Manager OS X";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2934F2D61C15F3BD008B8AE4 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				2934F2D71C15F3C6008B8AE4 /* AFNetworking.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2934F3021C160E8A008B8AE4 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				2934F3621C161694008B8AE4 /* AFNetworking.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2934F3631C16169A008B8AE4 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				2934F3641C1616B3008B8AE4 /* AFNetworking.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		2934F28C1C15D9BE008B8AE4 /* AFOAuthCredential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOAuthCredential.h; sourceTree = "<group>"; };
+		2934F28D1C15D9BE008B8AE4 /* AFOAuthCredential.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOAuthCredential.m; sourceTree = "<group>"; };
+		2934F2CB1C15F373008B8AE4 /* AFOAuth2Manager iOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AFOAuth2Manager iOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2934F2CF1C15F374008B8AE4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2934F2D91C15F44E008B8AE4 /* AFOAuthManagerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOAuthManagerTests.m; sourceTree = "<group>"; };
+		2934F2DB1C15FE8C008B8AE4 /* AFOAuthCredentialTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOAuthCredentialTests.m; sourceTree = "<group>"; };
+		2934F2E21C160CA4008B8AE4 /* AFOAuth2Manager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AFOAuth2Manager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2934F2F41C160E12008B8AE4 /* AFOAuth2Manager tvOS Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AFOAuth2Manager tvOS Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2934F3221C16150B008B8AE4 /* AFOAuth2Manager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AFOAuth2Manager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2934F32D1C161573008B8AE4 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = Carthage/Build/watchOS/AFNetworking.framework; sourceTree = "<group>"; };
+		2934F32F1C161595008B8AE4 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = Carthage/Build/tvOS/AFNetworking.framework; sourceTree = "<group>"; };
+		2934F3441C161603008B8AE4 /* AFOAuth2Manager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AFOAuth2Manager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2934F34C1C161624008B8AE4 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = Carthage/Build/Mac/AFNetworking.framework; sourceTree = "<group>"; };
+		2934F3561C161652008B8AE4 /* AFOAuth2Manager OS X Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "AFOAuth2Manager OS X Tests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		29490FC51BE11BD700893BE1 /* AFOAuth2Manager.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AFOAuth2Manager.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		29490FD11BE11C5100893BE1 /* AFHTTPRequestSerializer+OAuth2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AFHTTPRequestSerializer+OAuth2.h"; sourceTree = "<group>"; };
+		29490FD21BE11C5100893BE1 /* AFHTTPRequestSerializer+OAuth2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AFHTTPRequestSerializer+OAuth2.m"; sourceTree = "<group>"; };
+		29490FDA1BE11C5C00893BE1 /* AFOAuth2Manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AFOAuth2Manager.h; sourceTree = "<group>"; };
+		29490FDB1BE11C5C00893BE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		29490FDC1BE11CBB00893BE1 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = Carthage/Build/iOS/AFNetworking.framework; sourceTree = "<group>"; };
+		29490FDE1BE11D1000893BE1 /* AFOAuth2Manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFOAuth2Manager.h; sourceTree = "<group>"; };
+		29490FDF1BE11D1000893BE1 /* AFOAuth2Manager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFOAuth2Manager.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2934F2C81C15F373008B8AE4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2934F2D01C15F374008B8AE4 /* AFOAuth2Manager.framework in Frameworks */,
+				2934F2D81C15F3CD008B8AE4 /* AFNetworking.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2934F2DE1C160CA4008B8AE4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2934F3301C161595008B8AE4 /* AFNetworking.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2934F2F11C160E12008B8AE4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2934F2F91C160E12008B8AE4 /* AFOAuth2Manager.framework in Frameworks */,
+				2934F3311C16159C008B8AE4 /* AFNetworking.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2934F31E1C16150B008B8AE4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2934F32E1C161573008B8AE4 /* AFNetworking.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2934F3401C161603008B8AE4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2934F34D1C161624008B8AE4 /* AFNetworking.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2934F3531C161652008B8AE4 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2934F35B1C161652008B8AE4 /* AFOAuth2Manager.framework in Frameworks */,
+				2934F3611C16167D008B8AE4 /* AFNetworking.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		29490FC11BE11BD700893BE1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				29490FDD1BE11CBB00893BE1 /* AFNetworking.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2934F2CC1C15F374008B8AE4 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				2934F2CF1C15F374008B8AE4 /* Info.plist */,
+				2934F2D91C15F44E008B8AE4 /* AFOAuthManagerTests.m */,
+				2934F2DB1C15FE8C008B8AE4 /* AFOAuthCredentialTests.m */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		2934F3511C16163C008B8AE4 /* Vendor */ = {
+			isa = PBXGroup;
+			children = (
+				2934F34C1C161624008B8AE4 /* AFNetworking.framework */,
+				2934F32F1C161595008B8AE4 /* AFNetworking.framework */,
+				2934F32D1C161573008B8AE4 /* AFNetworking.framework */,
+				29490FDC1BE11CBB00893BE1 /* AFNetworking.framework */,
+			);
+			name = Vendor;
+			sourceTree = "<group>";
+		};
+		29490FBB1BE11BD700893BE1 = {
+			isa = PBXGroup;
+			children = (
+				2934F3511C16163C008B8AE4 /* Vendor */,
+				29490FD01BE11C5100893BE1 /* AFOAuth2Manager */,
+				29490FD91BE11C5C00893BE1 /* Resources */,
+				2934F2CC1C15F374008B8AE4 /* Tests */,
+				29490FC61BE11BD700893BE1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		29490FC61BE11BD700893BE1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				29490FC51BE11BD700893BE1 /* AFOAuth2Manager.framework */,
+				2934F2CB1C15F373008B8AE4 /* AFOAuth2Manager iOS Tests.xctest */,
+				2934F2E21C160CA4008B8AE4 /* AFOAuth2Manager.framework */,
+				2934F2F41C160E12008B8AE4 /* AFOAuth2Manager tvOS Tests.xctest */,
+				2934F3221C16150B008B8AE4 /* AFOAuth2Manager.framework */,
+				2934F3441C161603008B8AE4 /* AFOAuth2Manager.framework */,
+				2934F3561C161652008B8AE4 /* AFOAuth2Manager OS X Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29490FD01BE11C5100893BE1 /* AFOAuth2Manager */ = {
+			isa = PBXGroup;
+			children = (
+				29490FD11BE11C5100893BE1 /* AFHTTPRequestSerializer+OAuth2.h */,
+				29490FD21BE11C5100893BE1 /* AFHTTPRequestSerializer+OAuth2.m */,
+				29490FDE1BE11D1000893BE1 /* AFOAuth2Manager.h */,
+				29490FDF1BE11D1000893BE1 /* AFOAuth2Manager.m */,
+				2934F28C1C15D9BE008B8AE4 /* AFOAuthCredential.h */,
+				2934F28D1C15D9BE008B8AE4 /* AFOAuthCredential.m */,
+			);
+			path = AFOAuth2Manager;
+			sourceTree = "<group>";
+		};
+		29490FD91BE11C5C00893BE1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				29490FDA1BE11C5C00893BE1 /* AFOAuth2Manager.h */,
+				29490FDB1BE11C5C00893BE1 /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		2934F2DF1C160CA4008B8AE4 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2934F3671C161796008B8AE4 /* AFHTTPRequestSerializer+OAuth2.h in Headers */,
+				2934F3681C161796008B8AE4 /* AFOAuth2Manager.h in Headers */,
+				2934F3691C161796008B8AE4 /* AFOAuthCredential.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2934F31F1C16150B008B8AE4 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2934F36A1C1617A0008B8AE4 /* AFHTTPRequestSerializer+OAuth2.h in Headers */,
+				2934F36B1C1617A0008B8AE4 /* AFOAuth2Manager.h in Headers */,
+				2934F36C1C1617A0008B8AE4 /* AFOAuthCredential.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2934F3411C161603008B8AE4 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2934F36D1C1617B0008B8AE4 /* AFHTTPRequestSerializer+OAuth2.h in Headers */,
+				2934F36E1C1617B0008B8AE4 /* AFOAuth2Manager.h in Headers */,
+				2934F36F1C1617B0008B8AE4 /* AFOAuthCredential.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		29490FC21BE11BD700893BE1 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2934F28E1C15D9BE008B8AE4 /* AFOAuthCredential.h in Headers */,
+				29490FE01BE11D1000893BE1 /* AFOAuth2Manager.h in Headers */,
+				29490FD51BE11C5100893BE1 /* AFHTTPRequestSerializer+OAuth2.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		2934F2CA1C15F373008B8AE4 /* AFOAuth2Manager iOS Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2934F2D51C15F374008B8AE4 /* Build configuration list for PBXNativeTarget "AFOAuth2Manager iOS Tests" */;
+			buildPhases = (
+				2934F2C71C15F373008B8AE4 /* Sources */,
+				2934F2C81C15F373008B8AE4 /* Frameworks */,
+				2934F2C91C15F373008B8AE4 /* Resources */,
+				2934F2D61C15F3BD008B8AE4 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2934F2D21C15F374008B8AE4 /* PBXTargetDependency */,
+			);
+			name = "AFOAuth2Manager iOS Tests";
+			productName = "AFOAuth2Manager iOS Tests";
+			productReference = 2934F2CB1C15F373008B8AE4 /* AFOAuth2Manager iOS Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		2934F2E11C160CA4008B8AE4 /* AFOAuth2Manager tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2934F2E71C160CA4008B8AE4 /* Build configuration list for PBXNativeTarget "AFOAuth2Manager tvOS" */;
+			buildPhases = (
+				2934F2DD1C160CA4008B8AE4 /* Sources */,
+				2934F2DE1C160CA4008B8AE4 /* Frameworks */,
+				2934F2DF1C160CA4008B8AE4 /* Headers */,
+				2934F2E01C160CA4008B8AE4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AFOAuth2Manager tvOS";
+			productName = "AFOAuth2Manager tvOS";
+			productReference = 2934F2E21C160CA4008B8AE4 /* AFOAuth2Manager.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		2934F2F31C160E12008B8AE4 /* AFOAuth2Manager tvOS Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2934F2FC1C160E12008B8AE4 /* Build configuration list for PBXNativeTarget "AFOAuth2Manager tvOS Tests" */;
+			buildPhases = (
+				2934F2F01C160E12008B8AE4 /* Sources */,
+				2934F2F11C160E12008B8AE4 /* Frameworks */,
+				2934F2F21C160E12008B8AE4 /* Resources */,
+				2934F3021C160E8A008B8AE4 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2934F2FB1C160E12008B8AE4 /* PBXTargetDependency */,
+			);
+			name = "AFOAuth2Manager tvOS Tests";
+			productName = "AFOAuth2Manager tvOS Tests";
+			productReference = 2934F2F41C160E12008B8AE4 /* AFOAuth2Manager tvOS Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		2934F3211C16150B008B8AE4 /* AFOAuth2Manager watchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2934F3291C16150B008B8AE4 /* Build configuration list for PBXNativeTarget "AFOAuth2Manager watchOS" */;
+			buildPhases = (
+				2934F31D1C16150B008B8AE4 /* Sources */,
+				2934F31E1C16150B008B8AE4 /* Frameworks */,
+				2934F31F1C16150B008B8AE4 /* Headers */,
+				2934F3201C16150B008B8AE4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AFOAuth2Manager watchOS";
+			productName = "AFOAuth2Manager watchOS";
+			productReference = 2934F3221C16150B008B8AE4 /* AFOAuth2Manager.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		2934F3431C161603008B8AE4 /* AFOAuth2Manager OS X */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2934F34B1C161603008B8AE4 /* Build configuration list for PBXNativeTarget "AFOAuth2Manager OS X" */;
+			buildPhases = (
+				2934F33F1C161603008B8AE4 /* Sources */,
+				2934F3401C161603008B8AE4 /* Frameworks */,
+				2934F3411C161603008B8AE4 /* Headers */,
+				2934F3421C161603008B8AE4 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AFOAuth2Manager OS X";
+			productName = "AFOAuth2Manager OS X";
+			productReference = 2934F3441C161603008B8AE4 /* AFOAuth2Manager.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		2934F3551C161652008B8AE4 /* AFOAuth2Manager OS X Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2934F35E1C161652008B8AE4 /* Build configuration list for PBXNativeTarget "AFOAuth2Manager OS X Tests" */;
+			buildPhases = (
+				2934F3521C161652008B8AE4 /* Sources */,
+				2934F3531C161652008B8AE4 /* Frameworks */,
+				2934F3541C161652008B8AE4 /* Resources */,
+				2934F3631C16169A008B8AE4 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2934F35D1C161652008B8AE4 /* PBXTargetDependency */,
+			);
+			name = "AFOAuth2Manager OS X Tests";
+			productName = "AFOAuth2Manager OS X Tests";
+			productReference = 2934F3561C161652008B8AE4 /* AFOAuth2Manager OS X Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		29490FC41BE11BD700893BE1 /* AFOAuth2Manager iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 29490FCD1BE11BD700893BE1 /* Build configuration list for PBXNativeTarget "AFOAuth2Manager iOS" */;
+			buildPhases = (
+				29490FC01BE11BD700893BE1 /* Sources */,
+				29490FC11BE11BD700893BE1 /* Frameworks */,
+				29490FC21BE11BD700893BE1 /* Headers */,
+				29490FC31BE11BD700893BE1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "AFOAuth2Manager iOS";
+			productName = AFOAuth2Manager;
+			productReference = 29490FC51BE11BD700893BE1 /* AFOAuth2Manager.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29490FBC1BE11BD700893BE1 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0710;
+				ORGANIZATIONNAME = Alamofire;
+				TargetAttributes = {
+					2934F2CA1C15F373008B8AE4 = {
+						CreatedOnToolsVersion = 7.1.1;
+					};
+					2934F2E11C160CA4008B8AE4 = {
+						CreatedOnToolsVersion = 7.1.1;
+					};
+					2934F2F31C160E12008B8AE4 = {
+						CreatedOnToolsVersion = 7.1.1;
+					};
+					2934F3211C16150B008B8AE4 = {
+						CreatedOnToolsVersion = 7.1.1;
+					};
+					2934F3431C161603008B8AE4 = {
+						CreatedOnToolsVersion = 7.1.1;
+					};
+					2934F3551C161652008B8AE4 = {
+						CreatedOnToolsVersion = 7.1.1;
+					};
+					29490FC41BE11BD700893BE1 = {
+						CreatedOnToolsVersion = 7.1;
+					};
+				};
+			};
+			buildConfigurationList = 29490FBF1BE11BD700893BE1 /* Build configuration list for PBXProject "AFOAuth2Manager" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 29490FBB1BE11BD700893BE1;
+			productRefGroup = 29490FC61BE11BD700893BE1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				29490FC41BE11BD700893BE1 /* AFOAuth2Manager iOS */,
+				2934F2E11C160CA4008B8AE4 /* AFOAuth2Manager tvOS */,
+				2934F3211C16150B008B8AE4 /* AFOAuth2Manager watchOS */,
+				2934F3431C161603008B8AE4 /* AFOAuth2Manager OS X */,
+				2934F2CA1C15F373008B8AE4 /* AFOAuth2Manager iOS Tests */,
+				2934F2F31C160E12008B8AE4 /* AFOAuth2Manager tvOS Tests */,
+				2934F3551C161652008B8AE4 /* AFOAuth2Manager OS X Tests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2934F2C91C15F373008B8AE4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2934F2E01C160CA4008B8AE4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2934F2F21C160E12008B8AE4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2934F3201C16150B008B8AE4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2934F3421C161603008B8AE4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2934F3541C161652008B8AE4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		29490FC31BE11BD700893BE1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2934F2C71C15F373008B8AE4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2934F2DA1C15F44E008B8AE4 /* AFOAuthManagerTests.m in Sources */,
+				2934F2DC1C15FE8C008B8AE4 /* AFOAuthCredentialTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2934F2DD1C160CA4008B8AE4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2934F2EA1C160D2B008B8AE4 /* AFHTTPRequestSerializer+OAuth2.m in Sources */,
+				2934F2EB1C160D2B008B8AE4 /* AFOAuth2Manager.m in Sources */,
+				2934F2EF1C160DBD008B8AE4 /* AFOAuthCredential.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2934F2F01C160E12008B8AE4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2934F2FF1C160E33008B8AE4 /* AFOAuthManagerTests.m in Sources */,
+				2934F3001C160E33008B8AE4 /* AFOAuthCredentialTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2934F31D1C16150B008B8AE4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2934F32A1C161514008B8AE4 /* AFHTTPRequestSerializer+OAuth2.m in Sources */,
+				2934F32B1C161517008B8AE4 /* AFOAuth2Manager.m in Sources */,
+				2934F32C1C161519008B8AE4 /* AFOAuthCredential.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2934F33F1C161603008B8AE4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2934F34E1C161630008B8AE4 /* AFHTTPRequestSerializer+OAuth2.m in Sources */,
+				2934F34F1C161630008B8AE4 /* AFOAuth2Manager.m in Sources */,
+				2934F3501C161630008B8AE4 /* AFOAuthCredential.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2934F3521C161652008B8AE4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2934F3651C1616F3008B8AE4 /* AFOAuthManagerTests.m in Sources */,
+				2934F3661C1616F3008B8AE4 /* AFOAuthCredentialTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		29490FC01BE11BD700893BE1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				29490FE11BE11D1000893BE1 /* AFOAuth2Manager.m in Sources */,
+				2934F28F1C15D9BE008B8AE4 /* AFOAuthCredential.m in Sources */,
+				2934F2ED1C160D37008B8AE4 /* AFHTTPRequestSerializer+OAuth2.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2934F2D21C15F374008B8AE4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 29490FC41BE11BD700893BE1 /* AFOAuth2Manager iOS */;
+			targetProxy = 2934F2D11C15F374008B8AE4 /* PBXContainerItemProxy */;
+		};
+		2934F2FB1C160E12008B8AE4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2934F2E11C160CA4008B8AE4 /* AFOAuth2Manager tvOS */;
+			targetProxy = 2934F2FA1C160E12008B8AE4 /* PBXContainerItemProxy */;
+		};
+		2934F35D1C161652008B8AE4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2934F3431C161603008B8AE4 /* AFOAuth2Manager OS X */;
+			targetProxy = 2934F35C1C161652008B8AE4 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2934F2D31C15F374008B8AE4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alamofire.AFOAuth2Manager-iOS-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		2934F2D41C15F374008B8AE4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alamofire.AFOAuth2Manager-iOS-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		2934F2E81C160CA4008B8AE4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/tvOS",
+				);
+				INFOPLIST_FILE = "$(PROJECT_DIR)/Resources/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alamofire.AFOAuth2Manager-tvOS";
+				PRODUCT_NAME = AFOAuth2Manager;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		2934F2E91C160CA4008B8AE4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/tvOS",
+				);
+				INFOPLIST_FILE = "$(PROJECT_DIR)/Resources/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alamofire.AFOAuth2Manager-tvOS";
+				PRODUCT_NAME = AFOAuth2Manager;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
+		2934F2FD1C160E12008B8AE4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/tvOS",
+				);
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alamofire.AFOAuth2Manager-tvOS-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		2934F2FE1C160E12008B8AE4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/tvOS",
+				);
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alamofire.AFOAuth2Manager-tvOS-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = appletvos;
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
+		2934F3271C16150B008B8AE4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/watchOS",
+				);
+				INFOPLIST_FILE = Resources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alamofire.AFOAuth2Manager-watchOS";
+				PRODUCT_NAME = AFOAuth2Manager;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Debug;
+		};
+		2934F3281C16150B008B8AE4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/watchOS",
+				);
+				INFOPLIST_FILE = Resources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alamofire.AFOAuth2Manager-watchOS";
+				PRODUCT_NAME = AFOAuth2Manager;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
+			};
+			name = Release;
+		};
+		2934F3491C161603008B8AE4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = Resources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alamofire.AFOAuth2Manager-OS-X";
+				PRODUCT_NAME = AFOAuth2Manager;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		2934F34A1C161603008B8AE4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = Resources/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alamofire.AFOAuth2Manager-OS-X";
+				PRODUCT_NAME = AFOAuth2Manager;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		2934F35F1C161652008B8AE4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alamofire.AFOAuth2Manager-OS-X-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		2934F3601C161652008B8AE4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alamofire.AFOAuth2Manager-OS-X-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		29490FCB1BE11BD700893BE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		29490FCC1BE11BD700893BE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		29490FCE1BE11BD700893BE1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = "$(PROJECT_DIR)/Resources/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alamofire.AFOAuth2Manager-iOS";
+				PRODUCT_NAME = AFOAuth2Manager;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		29490FCF1BE11BD700893BE1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = "$(PROJECT_DIR)/Resources/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.alamofire.AFOAuth2Manager-iOS";
+				PRODUCT_NAME = AFOAuth2Manager;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2934F2D51C15F374008B8AE4 /* Build configuration list for PBXNativeTarget "AFOAuth2Manager iOS Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2934F2D31C15F374008B8AE4 /* Debug */,
+				2934F2D41C15F374008B8AE4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2934F2E71C160CA4008B8AE4 /* Build configuration list for PBXNativeTarget "AFOAuth2Manager tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2934F2E81C160CA4008B8AE4 /* Debug */,
+				2934F2E91C160CA4008B8AE4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2934F2FC1C160E12008B8AE4 /* Build configuration list for PBXNativeTarget "AFOAuth2Manager tvOS Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2934F2FD1C160E12008B8AE4 /* Debug */,
+				2934F2FE1C160E12008B8AE4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2934F3291C16150B008B8AE4 /* Build configuration list for PBXNativeTarget "AFOAuth2Manager watchOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2934F3271C16150B008B8AE4 /* Debug */,
+				2934F3281C16150B008B8AE4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2934F34B1C161603008B8AE4 /* Build configuration list for PBXNativeTarget "AFOAuth2Manager OS X" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2934F3491C161603008B8AE4 /* Debug */,
+				2934F34A1C161603008B8AE4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2934F35E1C161652008B8AE4 /* Build configuration list for PBXNativeTarget "AFOAuth2Manager OS X Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2934F35F1C161652008B8AE4 /* Debug */,
+				2934F3601C161652008B8AE4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		29490FBF1BE11BD700893BE1 /* Build configuration list for PBXProject "AFOAuth2Manager" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				29490FCB1BE11BD700893BE1 /* Debug */,
+				29490FCC1BE11BD700893BE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		29490FCD1BE11BD700893BE1 /* Build configuration list for PBXNativeTarget "AFOAuth2Manager iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				29490FCE1BE11BD700893BE1 /* Debug */,
+				29490FCF1BE11BD700893BE1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29490FBC1BE11BD700893BE1 /* Project object */;
+}
