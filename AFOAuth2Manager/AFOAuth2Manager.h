@@ -23,8 +23,7 @@
 #import <Foundation/Foundation.h>
 #import "AFOAuthCredential.h"
 #import "AFHTTPRequestSerializer+OAuth2.h"
-
-@import AFNetworking;
+#import <AFNetworking/AFHTTPSessionManager.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
