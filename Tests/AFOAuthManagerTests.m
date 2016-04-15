@@ -56,14 +56,16 @@
      username:@"demouser"
      password:@"testpass"
      scope:nil
-     success:^(AFOAuthCredential * _Nonnull credential) {
+     success:^(NSURLSessionDataTask * _Nonnull task, id  _Nonnull responseObject, AFOAuthCredential * _Nonnull credential) {
+         XCTAssertNotNil(task);
+         XCTAssertNotNil(responseObject);
          XCTAssertNotNil(credential);
          XCTAssertNotNil(credential.accessToken);
          XCTAssertTrue([credential.tokenType isEqualToString:@"Bearer"]);
          XCTAssertNotNil(credential.refreshToken);
          [expectation fulfill];
      }
-     failure:^(NSError * _Nonnull error) {
+     failure:^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error) {
          XCTFail(@"Request should succeed");
      }];
 

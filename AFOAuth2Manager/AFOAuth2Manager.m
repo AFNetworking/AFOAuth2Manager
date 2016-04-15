@@ -143,8 +143,9 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
                                                  username:(NSString *)username
                                                  password:(NSString *)password
                                                     scope:(NSString *)scope
-                                                  success:(void (^)(AFOAuthCredential * _Nonnull))success
-                                                  failure:(void (^)(NSError * _Nonnull))failure {
+                                                  success:(void (^)(NSURLSessionDataTask *task, id responseObject, AFOAuthCredential *credential))success
+                                                  failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure
+{
     NSParameterAssert(username);
     NSParameterAssert(password);
 
@@ -162,9 +163,9 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 
 - (NSURLSessionTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                                     scope:(NSString *)scope
-                                                  success:(void (^)(AFOAuthCredential * _Nonnull))success
-                                                  failure:(void (^)(NSError * _Nonnull))failure {
-
+                                                  success:(void (^)(NSURLSessionDataTask *task, id responseObject, AFOAuthCredential *credential))success
+                                                  failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure
+{
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     [parameters setValue:kAFOAuthClientCredentialsGrantType forKey:@"grant_type"];
 
@@ -178,8 +179,8 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 
 - (NSURLSessionTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                              refreshToken:(NSString *)refreshToken
-                                                  success:(void (^)(AFOAuthCredential *credential))success
-                                                  failure:(void (^)(NSError *error))failure
+                                                  success:(void (^)(NSURLSessionDataTask *task, id responseObject, AFOAuthCredential *credential))success
+                                                  failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure
 {
     NSParameterAssert(refreshToken);
 
@@ -194,8 +195,8 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 - (NSURLSessionTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                                      code:(NSString *)code
                                               redirectURI:(NSString *)uri
-                                                  success:(void (^)(AFOAuthCredential *credential))success
-                                                  failure:(void (^)(NSError *error))failure
+                                                  success:(void (^)(NSURLSessionDataTask *task, id responseObject, AFOAuthCredential *credential))success
+                                                  failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure
 {
     NSParameterAssert(code);
     NSParameterAssert(uri);
@@ -211,8 +212,8 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 
 - (NSURLSessionTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                                parameters:(NSDictionary *)parameters
-                                                  success:(void (^)(AFOAuthCredential *credential))success
-                                                  failure:(void (^)(NSError *error))failure
+                                                  success:(void (^)(NSURLSessionDataTask *task, id responseObject, AFOAuthCredential *credential))success
+                                                  failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure
 {
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
     if (!self.useHTTPBasicAuthentication) {
@@ -225,14 +226,14 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     task = [self POST:URLString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         if (!responseObject) {
             if (failure) {
-                failure(nil);
+                failure(task, nil);
             }
             return;
         }
 
         if ([responseObject valueForKey:@"error"]) {
             if (failure) {
-                failure(AFErrorFromRFC6749Section5_2Error(responseObject));
+                failure(task, AFErrorFromRFC6749Section5_2Error(responseObject));
             }
         }
 
@@ -260,12 +261,12 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
         }
 
         if (success) {
-            success(credential);
+            success(task, responseObject, credential);
         }
 
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         if (failure) {
-            failure(error);
+            failure(task, error);
         }
     }];
 
