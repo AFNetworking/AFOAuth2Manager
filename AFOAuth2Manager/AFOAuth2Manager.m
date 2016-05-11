@@ -432,7 +432,10 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 }
 
 - (BOOL)isExpired {
-    return [self.expiration compare:[[NSDate date] dateByAddingTimeInterval:-60]] == NSOrderedAscending;
+    // Get the date from 60 secs ago
+    NSTimeInterval interval = [[NSDate date] timeIntervalSince1970];
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:interval - 60];
+    return [self.expiration compare:date] == NSOrderedAscending;
 }
 
 #pragma mark Keychain
