@@ -485,7 +485,11 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
         status = SecItemAdd((__bridge CFDictionaryRef)queryDictionary, NULL);
     }
     
-    *reqStatus = status;
+    if (reqStatus != nil)
+    {
+        *reqStatus = status;
+    }
+    
     return (status == errSecSuccess);
 }
 
@@ -495,7 +499,11 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     
     OSStatus status = SecItemDelete((__bridge CFDictionaryRef)queryDictionary);
     
-    *reqStatus = status;
+    if (reqStatus != nil)
+    {
+        *reqStatus = status;
+    }
+    
     return (status == errSecSuccess);
 }
 
@@ -508,7 +516,10 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     CFDataRef result = nil;
     OSStatus status = SecItemCopyMatching((__bridge CFDictionaryRef)queryDictionary, (CFTypeRef *)&result);
     
-    *reqStatus = status;
+    if (reqStatus != nil)
+    {
+        *reqStatus = status;
+    }
     
     if (status != errSecSuccess) {
         return nil;
