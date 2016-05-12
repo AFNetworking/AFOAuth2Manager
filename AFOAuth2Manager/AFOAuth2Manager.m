@@ -359,10 +359,6 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
         [credential setExpiration:expireDate];
     }
     
-    // TODO: HACK TO REMOVE!!!
-    // Send notification with newly created credenitals
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"newCred" object:responseObject];
-    
     return credential;
 }
 
