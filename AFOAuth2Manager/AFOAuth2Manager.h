@@ -121,7 +121,7 @@
                                      username:(NSString *)username
                                      password:(NSString *)password
                                         scope:(NSString *)scope
-                                    operation:(AFHTTPRequestOperation * __autoreleasing *)operationPtr
+                                    operation:(AFHTTPRequestOperation **)operationPtr
                                         error:(NSError **)outError;
 
 /**
@@ -162,7 +162,7 @@
 
 - (id)syncAuthenticateUsingOAuthWithURLString:(NSString *)URLString
                                  refreshToken:(NSString *)refreshToken
-                                    operation:(AFHTTPRequestOperation *)operationPtr
+                                    operation:(AFHTTPRequestOperation **)operationPtr
                                         error:(NSError **)outError;
 
 /**
@@ -204,8 +204,8 @@
  */
 - (id)syncAuthenticateUsingOAuthWithURLString:(NSString *)URLString
                                    parameters:(NSDictionary *)parameters
-                                    operation:(AFHTTPRequestOperation *)operationPtr
-                                        error:(NSError *__autoreleasing *)outError;
+                                    operation:(AFHTTPRequestOperation **)operationPtr
+                                        error:(NSError **)outError;
 
 @end
 
