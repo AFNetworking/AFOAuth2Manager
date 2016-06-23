@@ -166,7 +166,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
                                      username:(NSString *)username
                                      password:(NSString *)password
                                         scope:(NSString *)scope
-                                    operation:(AFHTTPRequestOperation *)operationPtr
+                                    operation:(AFHTTPRequestOperation **)operationPtr
                                         error:(NSError **)outError
 {
     NSParameterAssert(username);
@@ -215,7 +215,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 
 - (id)syncAuthenticateUsingOAuthWithURLString:(NSString *)URLString
                                  refreshToken:(NSString *)refreshToken
-                                    operation:(AFHTTPRequestOperation *)operationPtr
+                                    operation:(AFHTTPRequestOperation **)operationPtr
                                         error:(NSError **)outError
 {
     NSParameterAssert(refreshToken);
@@ -225,7 +225,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
                                  @"refresh_token": refreshToken
                                  };
     
-    return [self syncAuthenticateUsingOAuthWithURLString:URLString parameters:parameters operation:(AFHTTPRequestOperation *)operationPtr error:outError];
+    return [self syncAuthenticateUsingOAuthWithURLString:URLString parameters:parameters operation:operationPtr error:outError];
 }
 
 - (AFHTTPRequestOperation *)authenticateUsingOAuthWithURLString:(NSString *)URLString
@@ -312,8 +312,8 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 
 - (id)syncAuthenticateUsingOAuthWithURLString:(NSString *)URLString
                                    parameters:(NSDictionary *)parameters
-                                    operation:(AFHTTPRequestOperation *)operationPtr
-                                        error:(NSError *__autoreleasing *)outError
+                                    operation:(AFHTTPRequestOperation **)operationPtr
+                                        error:(NSError **)outError
 {
     NSMutableURLRequest *request = [self.requestSerializer requestWithMethod:@"POST" URLString:[[NSURL URLWithString:URLString relativeToURL:self.baseURL] absoluteString] parameters:parameters error:nil];
     

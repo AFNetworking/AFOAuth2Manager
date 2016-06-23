@@ -121,7 +121,7 @@
                                      username:(NSString *)username
                                      password:(NSString *)password
                                         scope:(NSString *)scope
-                                    operation:(AFHTTPRequestOperation *)operationPtr
+                                    operation:(AFHTTPRequestOperation * __autoreleasing *)operationPtr
                                         error:(NSError **)outError;
 
 /**
