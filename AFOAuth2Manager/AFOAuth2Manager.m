@@ -234,6 +234,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
             if (failure) {
                 failure(AFErrorFromRFC6749Section5_2Error(responseObject));
             }
+            return;
         }
 
         NSString *refreshToken = [responseObject valueForKey:@"refresh_token"];
