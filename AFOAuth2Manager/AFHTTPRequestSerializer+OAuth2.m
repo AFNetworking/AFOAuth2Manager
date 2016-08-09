@@ -24,11 +24,13 @@
 #import "AFOAuth2Manager.h"
 #import "AFOAuthCredential.h"
 
+NSString * const AFOAuth2HTTPRequestHeaderField = @"Authorization";
+
 @implementation AFHTTPRequestSerializer (OAuth2)
 
 - (void)setAuthorizationHeaderFieldWithCredential:(AFOAuthCredential *)credential {
     if ([credential.tokenType compare:@"Bearer" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
-        [self setValue:[NSString stringWithFormat:@"Bearer %@", credential.accessToken] forHTTPHeaderField:@"Authorization"];
+        [self setValue:[NSString stringWithFormat:@"Bearer %@", credential.accessToken] forHTTPHeaderField:AFOAuth2HTTPRequestHeaderField];
     }
 }
 
