@@ -24,6 +24,8 @@
 
 @class AFOAuthCredential;
 
+extern NSString * const AFOAuth2HTTPRequestHeaderField;
+
 @interface AFHTTPRequestSerializer (OAuth2)
 
 /**
