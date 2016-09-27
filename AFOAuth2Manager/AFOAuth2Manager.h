@@ -20,10 +20,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE
 
-#import <Foundation/Foundation.h>
+#if __has_feature(modules)
+	@import Foundation;
+	@import AFNetworking;
+#else
+	#import <Foundation/Foundation.h>
+	#import <AFNetworking/AFHTTPSessionManager.h>
+#endif
 #import "AFOAuthCredential.h"
 #import "AFHTTPRequestSerializer+OAuth2.h"
-#import <AFNetworking/AFHTTPSessionManager.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

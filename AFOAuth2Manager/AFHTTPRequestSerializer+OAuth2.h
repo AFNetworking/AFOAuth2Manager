@@ -20,7 +20,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <AFNetworking/AFURLRequestSerialization.h>
+#if __has_feature(modules)
+	@import AFNetworking;
+#else
+	#import <AFNetworking/AFURLRequestSerialization.h>
+#endif
 
 @class AFOAuthCredential;
 
