@@ -23,7 +23,7 @@
 #if __has_feature(modules)
 	@import AFNetworking;
 #else
-	#import <AFNetworking/AFHTTPSessionManager.h>
+	#import <AFNetworking/FURLRequestSerialization.h>
 #endif
 
 @class AFOAuthCredential;
