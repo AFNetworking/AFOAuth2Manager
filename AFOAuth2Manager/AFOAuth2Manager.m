@@ -99,8 +99,6 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
              clientID:(NSString *)clientID
                secret:(NSString *)secret {
     NSParameterAssert(url);
-    NSParameterAssert(clientID);
-    NSParameterAssert(secret);
 
     self = [super initWithBaseURL:url sessionConfiguration:configuration];
     if (!self) {
@@ -123,9 +121,9 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     _useHTTPBasicAuthentication = useHTTPBasicAuthentication;
 
     if (self.useHTTPBasicAuthentication) {
-        [self.requestSerializer setAuthorizationHeaderFieldWithUsername:self.clientID password:self.secret];
-    } else {
         [self.requestSerializer setValue:nil forHTTPHeaderField:@"Authorization"];
+    } else {
+        [self.requestSerializer setAuthorizationHeaderFieldWithUsername:self.clientID password:self.secret];
     }
 }
 
@@ -216,6 +214,9 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
 {
     NSMutableDictionary *mutableParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
     if (!self.useHTTPBasicAuthentication) {
+        NSParameterAssert(self.clientID);
+        NSParameterAssert(self.secret);
+        
         mutableParameters[@"client_id"] = self.clientID;
         mutableParameters[@"client_secret"] = self.secret;
     }
