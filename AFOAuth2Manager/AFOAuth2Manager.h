@@ -107,7 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                  password:(NSString *)password
                                                     scope:(nullable NSString *)scope
                                                   success:(void (^)(AFOAuthCredential *credential))success
-                                                  failure:(void (^)(NSError *error))failure;
+                                                  failure:(void (^)(NSURLSessionDataTask * _Nullable task, NSError *error))failure;
 
 /**
  Creates and enqueues an `NSURLSessionTask` to authenticate against the server with a designated scope.
@@ -120,7 +120,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSURLSessionTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                                     scope:(nullable NSString *)scope
                                                   success:(void (^)(AFOAuthCredential *credential))success
-                                                  failure:(void (^)(NSError *error))failure;
+                                                  failure:(void (^)(NSURLSessionDataTask * _Nullable task, NSError *error))failure;
 
 /**
  Creates and enqueues an `NSURLSessionTask` to authenticate against the server using the specified refresh token.
@@ -132,7 +132,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSURLSessionTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                              refreshToken:(NSString *)refreshToken
                                                   success:(void (^)(AFOAuthCredential *credential))success
-                                                  failure:(void (^)(NSError *error))failure;
+                                                  failure:(void (^)(NSURLSessionDataTask * _Nullable task, NSError *error))failure;
 
 /**
  Creates and enqueues an `NSURLSessionTask` to authenticate against the server with an authorization code, redirecting to a specified URI upon successful authentication.
@@ -146,7 +146,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                      code:(NSString *)code
                                               redirectURI:(NSString *)uri
                                                   success:(void (^)(AFOAuthCredential *credential))success
-                                                  failure:(void (^)(NSError *error))failure;
+                                                  failure:(void (^)(NSURLSessionDataTask * _Nullable task, NSError *error))failure;
 
 /**
  Creates and enqueues an `NSURLSessionTask` to authenticate against the server with the specified parameters.
@@ -159,7 +159,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSURLSessionTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                                parameters:(NSDictionary *)parameters
                                                   success:(void (^)(AFOAuthCredential *credential))success
-                                                  failure:(void (^)(NSError *error))failure;
+                                                  failure:(void (^)(NSURLSessionDataTask * _Nullable task, NSError *error))failure;
 
 @end
 
