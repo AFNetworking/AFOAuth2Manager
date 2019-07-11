@@ -28,17 +28,18 @@ AFOAuth2Manager *OAuth2Manager =
 ### Authorizing Requests
 
 ```objective-c
-AFHTTPRequestOperationManager *manager =
-    [[AFHTTPRequestOperationManager alloc] initWithBaseURL:baseURL];
+AFHTTPSessionManager *manager =
+    [[AFHTTPSessionManager alloc] initWithBaseURL:baseURL];
 
 [manager.requestSerializer setAuthorizationHeaderFieldWithCredential:credential];
 
 [manager GET:@"/path/to/protected/resource"
   parameters:nil
-     success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    progress:nil
+     success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
          NSLog(@"Success: %@", responseObject);
      }
-     failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+     failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
          NSLog(@"Failure: %@", error);
      }];
 ```
@@ -61,13 +62,6 @@ AFOAuthCredential *credential =
 
 Documentation for all releases of AFOAuth2Manager are [available on CocoaDocs](http://cocoadocs.org/docsets/AFOAuth2Manager/).
 
-## Contact
-
-Mattt Thompson
-
-- http://github.com/mattt
-- http://twitter.com/mattt
-- m@mattt.me
 
 ## License
 
