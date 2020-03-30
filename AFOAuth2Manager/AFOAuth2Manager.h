@@ -159,7 +159,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (NSURLSessionTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
                                                parameters:(NSDictionary *)parameters
-                                                  headers:(NSDictionary<NSString *,NSString *> *)headers
+                                                  headers:(nullable NSDictionary<NSString *,NSString *> *)headers
                                                   success:(void (^)(AFOAuthCredential *credential))success
                                                   failure:(void (^)(NSError *error))failure;
 
