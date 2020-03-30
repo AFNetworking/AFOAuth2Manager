@@ -157,7 +157,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
         [parameters setValue:scope forKey:@"scope"];
     }
 
-    return [self authenticateUsingOAuthWithURLString:URLString parameters:parameters success:success failure:failure];
+    return [self authenticateUsingOAuthWithURLString:URLString parameters:parameters headers:nil success:success failure:failure];
 }
 
 - (NSURLSessionTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
@@ -172,7 +172,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
         [parameters setValue:scope forKey:@"scope"];
     }
 
-    return [self authenticateUsingOAuthWithURLString:URLString parameters:parameters success:success failure:failure];
+    return [self authenticateUsingOAuthWithURLString:URLString parameters:parameters headers:nil success:success failure:failure];
 }
 
 
@@ -188,7 +188,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
                                  @"refresh_token": refreshToken
                                  };
 
-    return [self authenticateUsingOAuthWithURLString:URLString parameters:parameters success:success failure:failure];
+    return [self authenticateUsingOAuthWithURLString:URLString parameters:parameters headers:nil success:success failure:failure];
 }
 
 - (NSURLSessionTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
@@ -206,7 +206,7 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
                                  @"redirect_uri": uri
                                  };
 
-    return [self authenticateUsingOAuthWithURLString:URLString parameters:parameters success:success failure:failure];
+    return [self authenticateUsingOAuthWithURLString:URLString parameters:parameters headers:nil success:success failure:failure];
 }
 
 - (NSURLSessionTask *)authenticateUsingOAuthWithURLString:(NSString *)URLString
