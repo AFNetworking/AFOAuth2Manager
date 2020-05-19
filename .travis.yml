@@ -33,8 +33,7 @@ matrix:
     - osx_image: xcode7
       env: FASTLANE_ENV=ios90_xcode7	  
 before_install:
-  - gem install faraday -v 0.17.3
-  - gem install jwt -v 1.5.6
+  - gem install bundler
   - gem install fastlane --no-rdoc --no-ri --no-document --quiet
   - gem install cocoapods --no-rdoc --no-ri --no-document --quiet
   - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
