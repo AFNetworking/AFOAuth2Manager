@@ -38,7 +38,9 @@ before_install:
   - gem install bundler
   - gem install fastlane
   - gem install cocoapods
-  - gem install xcpretty 
+  - gem install xcpretty
+  - gem install carthage
+  - carthage update
 script:
   - set -o pipefail
   - fastlane $FASTLANE_LANE configuration:Debug --env $FASTLANE_ENV
