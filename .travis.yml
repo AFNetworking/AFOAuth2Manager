@@ -39,7 +39,6 @@ before_install:
   - gem install fastlane
   - gem install cocoapods
   - gem install xcpretty
-  - brew install carthage
   - carthage update
 script:
   - set -o pipefail
