@@ -31,6 +31,8 @@ NSString * const AFOAuthCodeGrantType = @"authorization_code";
 NSString * const AFOAuthClientCredentialsGrantType = @"client_credentials";
 NSString * const AFOAuthPasswordCredentialsGrantType = @"password";
 NSString * const AFOAuthRefreshGrantType = @"refresh_token";
+NSString * const AFOAuthSSOCredentialsGrantType = @"sso";
+
 
 NSString * const AFOAuth2CredentialServiceName = @"AFOAuthStoredCredentialService";
 
@@ -162,6 +164,27 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     return [self authenticateUsingOAuthWithURLString:URLString parameters:parameters success:success failure:failure];
 }
 
+- (id)syncAuthenticateUsingOAuthWithURLString:(NSString *)URLString
+                                     username:(NSString *)username
+                                    authReqId:(NSString *)authReqId
+                                        scope:(NSString *)scope
+                                    operation:(AFHTTPRequestOperation **)operationPtr
+                                        error:(NSError **)outError
+{
+    NSParameterAssert(username);
+    NSParameterAssert(authReqId);
+    NSParameterAssert(scope);
+    
+    NSDictionary *parameters = @{
+                                 @"grant_type": AFOAuthSSOCredentialsGrantType,
+                                 @"username": username,
+                                 @"authn_req_id": authReqId,
+                                 @"scope": scope
+                                 };
+    
+    return [self syncAuthenticateUsingOAuthWithURLString:URLString parameters:parameters operation:operationPtr error:outError];
+
+}
 - (id)syncAuthenticateUsingOAuthWithURLString:(NSString *)URLString
                                      username:(NSString *)username
                                      password:(NSString *)password
