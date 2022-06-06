@@ -221,53 +221,59 @@ static NSError * AFErrorFromRFC6749Section5_2Error(id object) {
     }
     parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
 
+    NSURL* url = [NSURL URLWithString: URLString];
+    NSURLRequest* request = [NSURLRequest requestWithURL: url];
     NSURLSessionTask *task;
-    task = [self POST:URLString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        if (!responseObject) {
-            if (failure) {
-                failure(nil);
-            }
-            return;
-        }
+    task = [self dataTaskWithRequest: request
+                      uploadProgress: nil
+                    downloadProgress: nil
+                   completionHandler:^(NSURLResponse *response, id _Nullable responseObject,  NSError * _Nullable error) {
+                       if (error != nil) {
+                           if (failure) {
+                               failure(error);
+                           }
+                       } else {
+                           if (!responseObject) {
+                               if (failure) {
+                                   failure(nil);
+                               }
+                               return;
+                           }
 
-        if ([responseObject valueForKey:@"error"]) {
-            if (failure) {
-                failure(AFErrorFromRFC6749Section5_2Error(responseObject));
-            }
-        }
+                           if ([responseObject valueForKey:@"error"]) {
+                               if (failure) {
+                                   failure(AFErrorFromRFC6749Section5_2Error(responseObject));
+                               }
+                           }
 
-        NSString *refreshToken = [responseObject valueForKey:@"refresh_token"];
-        if (!refreshToken || [refreshToken isEqual:[NSNull null]]) {
-            refreshToken = [parameters valueForKey:@"refresh_token"];
-        }
+                           NSString *refreshToken = [responseObject valueForKey:@"refresh_token"];
+                           if (!refreshToken || [refreshToken isEqual:[NSNull null]]) {
+                               refreshToken = [parameters valueForKey:@"refresh_token"];
+                           }
 
-        AFOAuthCredential *credential = [AFOAuthCredential credentialWithOAuthToken:[responseObject valueForKey:@"access_token"] tokenType:[responseObject valueForKey:@"token_type"]];
+                           AFOAuthCredential *credential = [AFOAuthCredential credentialWithOAuthToken:[responseObject valueForKey:@"access_token"] tokenType:[responseObject valueForKey:@"token_type"]];
 
 
-        if (refreshToken) { // refreshToken is optional in the OAuth2 spec
-            [credential setRefreshToken:refreshToken];
-        }
+                           if (refreshToken) { // refreshToken is optional in the OAuth2 spec
+                               [credential setRefreshToken:refreshToken];
+                           }
 
-        // Expiration is optional, but recommended in the OAuth2 spec. It not provide, assume distantFuture === never expires
-        NSDate *expireDate = [NSDate distantFuture];
-        id expiresIn = [responseObject valueForKey:@"expires_in"];
-        if (expiresIn && ![expiresIn isEqual:[NSNull null]]) {
-            expireDate = [NSDate dateWithTimeIntervalSinceNow:[expiresIn doubleValue]];
-        }
+                           // Expiration is optional, but recommended in the OAuth2 spec. It not provide, assume distantFuture === never expires
+                           NSDate *expireDate = [NSDate distantFuture];
+                           id expiresIn = [responseObject valueForKey:@"expires_in"];
+                           if (expiresIn && ![expiresIn isEqual:[NSNull null]]) {
+                               expireDate = [NSDate dateWithTimeIntervalSinceNow:[expiresIn doubleValue]];
+                           }
 
-        if (expireDate) {
-            [credential setExpiration:expireDate];
-        }
+                           if (expireDate) {
+                               [credential setExpiration:expireDate];
+                           }
 
-        if (success) {
-            success(credential);
-        }
-
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
+                           if (success) {
+                               success(credential);
+                           }
+                       }
+                   }];
 
     return task;
 }
