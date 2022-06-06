@@ -1,0 +1,1 @@
+../../AFOAuth2Manager/AFOAuthCredential.m
